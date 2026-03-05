@@ -1,9 +1,0 @@
-import { drizzle } from 'drizzle-orm/node-postgres';  // ← hindi better-sqlite3
-import { Pool } from 'pg';
-import * as schema from './schema';
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL!,
-});
-
-export const db = drizzle(pool, { schema });
