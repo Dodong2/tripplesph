@@ -1,8 +1,65 @@
-# Docker + Prisma 7 Reference (PERN Stack)
+# TriPPLesPH — Backend API
+
+> Express + TypeScript + PostgreSQL + Redis · PERN Stack
 
 ---
 
-## 🐳 Docker — Linux Mint
+## 📋 Table of Contents
+
+- [Project Structure](#-project-structure)
+- [Naming Conventions](#-naming-conventions)
+- [Docker Setup](#-docker-setup-linux-mint)
+- [Prisma Setup](#-prisma-7-setup-esm)
+- [Adding a New Model](#-adding-a-new-model)
+- [Other Prisma Commands](#-other-useful-prisma-commands)
+
+---
+
+## 📁 Project Structure
+
+```
+src/
+├── index.ts              # Entry point — app setup, middleware, routes, bootstrap
+├── config/
+│   ├── redis.ts          # Redis client instance and connection
+│   └── postgres.ts       # Postgres connection via Prisma
+├── db/
+│   └── prisma.ts         # Prisma client singleton
+├── lib/
+│   └── auth.ts           # BetterAuth configuration
+├── routes/               # Express route definitions
+├── controllers/          # Request / response handling
+├── services/             # Business logic and Prisma queries
+├── middleware/           # Express middleware (auth guards, validators, etc.)
+│   └── auth.middleware.ts
+└── types/
+    └── express.d.ts      # Global TypeScript type declarations
+```
+
+### Feature Pattern
+
+When adding a new feature (e.g. `users`, `trips`), follow this structure:
+
+```
+routes/user.route.ts            → Express Router only
+controllers/user.controller.ts  → Handles req / res
+services/user.service.ts        → Business logic + Prisma queries
+```
+
+---
+
+## ✏️ Naming Conventions
+
+| Type | Convention | Example |
+|---|---|---|
+| Files | `kebab-case` + role suffix | `auth.route.ts`, `auth.middleware.ts` |
+| Functions / Variables | `camelCase` | `connectRedis()`, `userRole` |
+| Env Variables | `SCREAMING_SNAKE_CASE` | `GOOGLE_CLIENT_ID` |
+| Classes / Types | `PascalCase` | `UserService`, `SessionUser` |
+
+---
+
+## 🐳 Docker Setup (Linux Mint)
 
 ### Service Management
 
@@ -47,7 +104,7 @@ npx prisma init
 ### Generate & Migrate
 
 ```bash
-# Generate Prisma Client (run every time schema.prisma changes)
+# Generate Prisma Client — run every time schema.prisma changes
 npx prisma generate
 
 # Create and apply initial migration
@@ -63,13 +120,13 @@ npx prisma studio
 
 ---
 
-## ➕ Adding a New Model / Schema
+## ➕ Adding a New Model
 
-After editing `prisma/schema.prisma`, run in order:
+After editing `prisma/schema.prisma`, run in this order:
 
 ```bash
 # 1. Create and apply migration
-npx prisma migrate dev --name add_your_model_name_here
+npx prisma migrate dev --name add_your_model_name
 # e.g. npx prisma migrate dev --name add_users_table
 
 # 2. Regenerate Prisma Client (required in Prisma 7)

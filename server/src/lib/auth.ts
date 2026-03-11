@@ -10,7 +10,6 @@ export const auth = betterAuth({
     database: prismaAdapter(prisma, {
         provider: "postgresql",
     }),
-
     socialProviders: {
         google: {
             prompt: "select_account",
@@ -19,10 +18,7 @@ export const auth = betterAuth({
         }
     },
     
-    plugins: [
-        admin()
-    ],
-
+    plugins: [admin()],
     databaseHooks: {
         user: {
             create: {
