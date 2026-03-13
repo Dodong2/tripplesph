@@ -1,38 +1,26 @@
-import { authClient } from "./lib/auth-client"
-
-type userWithRole = {
-  id: string
-  email: string
-  name: string
-  image?: string | null
-  role: "user" | "writer" | "admin" | "super_admin"
-}
+import { useAuth } from "./hooks/useAuth"
+import { signInWithGoogle, signOut } from "./services/auth.service"
 
 function App() {
-  const { data: session, isPending } = authClient.useSession()
+  const { user, isPending, isLoggedIn } = useAuth()
 
-  const user = session?.user as userWithRole | undefined
   if(isPending) return <p>Loading...</p>
 
   return (
-    <div> 
-    {user ? (
-      <div>
-        <p>Logged in as: {user.email}</p>
-        <p>Role: {user.role}</p>
-        <button onClick={() => authClient.signOut()}>
-          Sign Out
+    <div>
+      {isLoggedIn ? (
+        <div>
+          <p>Logged in as {user?.email}</p>
+          <p>Role: {user!.role}</p>
+          <button onClick={signOut}>
+            Sign out
+          </button>
+        </div>
+      ): (
+        <button onClick={signInWithGoogle}>
+          Sign In
         </button>
-
-      </div>
-    ) : (
-      <button onClick={() => authClient.signIn.social({
-        provider: "google",
-        callbackURL: "http://localhost:5173"
-      })}>
-        Sign in with Google
-      </button>
-    ) }  
+      )}
     </div>
   )
 }
