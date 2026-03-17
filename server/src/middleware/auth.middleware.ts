@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { auth } from "../lib/auth.js";
 import { fromNodeHeaders } from "better-auth/node";
+import { ForbiddenError, UnauthorizedError } from "../errors/HttpErrors.js";
 
 export const requireRole = (roles: string[]) => {
     return async (req: Request, res: Response, next: NextFunction) => {
@@ -9,16 +10,11 @@ export const requireRole = (roles: string[]) => {
                 headers: fromNodeHeaders( req.headers)
             })
 
-            if(!session) {
-                return res.status(401).json({ message: "Unauthorized" })
-            }
+            if(!session) throw new UnauthorizedError()
         
             const userRole = session.user.role as string
         
-            if(!roles.includes(userRole)) {
-                return res.status(403).json({ message: "Forbidden" })
-            }
-
+            if(!roles.includes(userRole)) throw new ForbiddenError()
             req.user = session.user;
             next()
         } catch(err) {
