@@ -1,6 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
+import { globalErrorHandler } from './middleware/error.middleware.js'
 
 dotenv.config()
 
@@ -31,6 +32,8 @@ app.get('/', (_req, res) => {
 // Bootstrap
 await connectRedis()
 await connectPostgres()
+
+app.use(globalErrorHandler)
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
