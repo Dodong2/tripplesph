@@ -7,6 +7,7 @@ interface IParams extends ParamsDictionary {
     id: string
 }
 
+
 // GET /api/articles
 // Public — returns all PUBLISHED articles (for blog listing page)
 export const getArticles = async (req: Request, res: Response, next: NextFunction) => {
@@ -29,7 +30,7 @@ export const getArticles = async (req: Request, res: Response, next: NextFunctio
             orderBy: { publishedAt: "desc" }
         })
 
-        res.json(article)
+        res.status(200).json(article)
     } catch(err) {
             next(err)
         }
@@ -57,7 +58,7 @@ export const getArticle = async (req: Request<IParams>, res: Response, next: Nex
             throw new ForbiddenError('You do not have access to this article')
         }
 
-        res.json(article)
+        res.status(200).json(article)
     } catch(err) {
         next(err)
     }
@@ -109,16 +110,17 @@ export const updateArticle = async (req: Request<IParams>, res: Response, next: 
         const updated = await prisma.article.update({
             where: { id },
             data: {
-                title,
-                subtitle,
-                content,
-                status,
+                ...(title && { title }),
+                ...(subtitle && { subtitle }),
+                ...(content && { content }),
+                ...(status && { status }),
+                ...(scheduleAt && { scheduleAt: new Date(scheduleAt) }),
                 scheduledAt: scheduleAt ? new Date(scheduleAt) : null,
                 publishedAt: status === 'PUBLISHED' && !article.publishedAt ? new Date() : article.publishedAt
             }
         })
 
-        res.json(updated)
+        res.status(200).json(updated)
     } catch(err) {
         next(err)
     }
@@ -152,7 +154,7 @@ export const getMyArticles = async (req: Request, res: Response, next: NextFunct
             orderBy: { createdAt: "desc" }
         })
 
-        res.json(articles)
+        res.status(200).json(articles)
     } catch(err) {
         next(err)
     }

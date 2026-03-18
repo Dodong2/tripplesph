@@ -31,7 +31,7 @@ import {
     createArticle
  )
 
- router.put("/:id",
+ router.patch("/:id",
     requireRole(["writer", "admin", "super_admin"]),
     updateArticle
  )
