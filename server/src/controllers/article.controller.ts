@@ -3,11 +3,11 @@ import { ParamsDictionary } from 'express-serve-static-core'
 import prisma from "../db/prisma.js"
 import { NotFoundError, ForbiddenError } from "../errors/HttpErrors.js"
 import { clearCache } from '../middleware/cache.middleware.js'
+import { Tag } from '../generated/prisma/enums.js'
 
 interface IParams extends ParamsDictionary {
     id: string
 }
-
 
 // GET /api/articles?cursor=clx123abc&limit=10
 // Public — returns PUBLISHED articles with cursor-based pagination (load more)
@@ -123,6 +123,7 @@ export const createArticle = async (req: Request, res: Response, next: NextFunct
         })
 
         await clearCache('articles')
+        await clearCache('search')
 
         res.status(201).json(article)
     } catch(err) {
@@ -172,6 +173,7 @@ export const updateArticle = async (req: Request<IParams>, res: Response, next: 
         })
 
         await clearCache('articles')
+        await clearCache('search')
 
         res.status(200).json(updated)
     } catch(err) {
@@ -193,6 +195,7 @@ export const deleteArticle = async(req: Request<IParams>, res: Response, next: N
     await prisma.article.delete({ where: { id } })
 
     await clearCache('articles')
+    await clearCache('search')
         
     res.status(200).json({ message: 'Article deleted' })
    } catch(err) {
@@ -230,6 +233,73 @@ export const getMyArticles = async (req: Request, res: Response, next: NextFunct
             })
 
             res.status(200).json(articles)
+    } catch(err) {
+        next(err)
+    }
+}
+
+// GET /api/articles/search?q=keyword&cursor=xxx&limit=10
+// Public — search published articles by title, subtitle, or tag
+export const searchArticles = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+            const q = req.query.q as string | undefined
+            const limit = parseInt(req.query.limit as string) || 10
+            const cursor = req.query.cursor as string | undefined
+            const tagFilter = req.query.tag as Tag
+
+            const validTag = tagFilter && Object.values(Tag).includes(tagFilter) ? tagFilter : undefined
+
+            if(!q || q.trim() === '') {
+                return res.status(400).json({ message: 'Search keyword is required'  })
+            }
+
+            const articles = await prisma.article.findMany({
+                where: {
+                        status: 'PUBLISHED',
+                        OR: [
+                            { title: { contains: q, mode: 'insensitive'} },
+                            { subtitle: { contains: q, mode: 'insensitive' } },
+                            { content: { contains: q, mode: 'insensitive' } },
+                            ...(validTag ? [{
+                                tags: {
+                                    some: { tag: validTag }
+                                }
+                            }]: [])
+                        ]   
+                },
+                select: {
+                    id: true,
+                    title: true,
+                    subtitle: true,
+                    content: true,
+                    publishedAt: true,
+                    author: {
+                        select: { name: true, image: true }
+                    },
+                    tags: {
+                        select: { tag: true }
+                    },
+                    _count: {
+                        select: {
+                            reactions: true,
+                            shares: true,
+                            views: true
+                        }
+                    }
+                },
+                orderBy: { publishedAt: 'desc' },
+                take: limit + 1,
+                ...(cursor && {
+                    cursor: { id: cursor },
+                    skip: 1
+                })
+            })
+
+            const hasMore = articles.length > limit
+            const data = hasMore ? articles.slice(0, limit) : articles
+            const nextCursor = hasMore ? data[data.length - 1].id : null
+
+            res.status(200).json({ data, nextCursor, hasMore })
     } catch(err) {
         next(err)
     }

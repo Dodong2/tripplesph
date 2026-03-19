@@ -6,7 +6,8 @@ import {
     createArticle,
     updateArticle,
     deleteArticle,
-    getMyArticles
+    getMyArticles,
+    searchArticles
  } from "../controllers/article.controller.js";
  import { cacheMiddleware } from "../middleware/cache.middleware.js";
 
@@ -14,6 +15,7 @@ import {
 
  // ── PUBLIC ────────────────────────────────────────────
  router.get("/", cacheMiddleware('articles', 300), getArticles)
+ router.get("/search", cacheMiddleware('search'),searchArticles)
 
  // ── WRITER + ABOVE ────────────────────────────────────
  router.get("/my/articles", 
