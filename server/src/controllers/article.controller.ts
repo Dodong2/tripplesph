@@ -25,9 +25,16 @@ export const getArticles = async (req: Request, res: Response, next: NextFunctio
                 content: true,
                 publishedAt: true,
                 author: {
+                    select: { name: true, image: true }
+                },
+                tags: {
+                    select: { tag: true }
+                },
+                _count: {
                     select: {
-                        name: true,
-                        image: true
+                        reactions: true,
+                        shares: true,
+                        views: true
                     }
                 }
             },
@@ -64,6 +71,16 @@ export const getArticle = async (req: Request<IParams>, res: Response, next: Nex
             include: {
                 author: {
                     select: { name: true, image: true }
+                },
+                tags: {
+                    select: { tag: true }
+                },
+                _count: {
+                    select: {
+                        reactions: true,
+                        shares: true,
+                        views: true
+                    }
                 }
             }
         })
@@ -83,9 +100,9 @@ export const getArticle = async (req: Request<IParams>, res: Response, next: Nex
 
 // POST /api/articles
 // Writer/admin/super_admin only
-export const createArticle = async (req: Request, res: Response, next: NextFunction) => {
+export const createArticle = async (req: Request, res: Response, next: NextFunction) => {   
     try {
-        const { title, subtitle, content, status, scheduleAt } = req.body
+        const { title, subtitle, content, status, scheduleAt, tags } = req.body
 
         const article = await prisma.article.create({
             data: {
@@ -95,7 +112,13 @@ export const createArticle = async (req: Request, res: Response, next: NextFunct
                 status: status ?? "DRAFT",
                 scheduledAt: scheduleAt ? new Date(scheduleAt) : null,
                 publishedAt: status === "PUBLISHED" ? new Date() : null,
-                authorId: req.user!.id
+                authorId: req.user!.id,
+                tags: {
+                    create: tags?.map((tag: string) => ({ tag })) ?? []
+                }
+            },
+            include: {
+                tags: { select: { tag: true } }
             }
         })
 
@@ -112,7 +135,7 @@ export const createArticle = async (req: Request, res: Response, next: NextFunct
 export const updateArticle = async (req: Request<IParams>, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params
-        const { title, subtitle, content, status, scheduleAt } = req.body
+        const { title, subtitle, content, status, scheduleAt, tags } = req.body
         const role = req.user!.role as string
 
         const article = await prisma.article.findUnique({
@@ -135,7 +158,16 @@ export const updateArticle = async (req: Request<IParams>, res: Response, next: 
                 ...(status && { status }),
                 ...(scheduleAt && { scheduleAt: new Date(scheduleAt) }),
                 scheduledAt: scheduleAt ? new Date(scheduleAt) : null,
-                publishedAt: status === 'PUBLISHED' && !article.publishedAt ? new Date() : article.publishedAt
+                publishedAt: status === 'PUBLISHED' && !article.publishedAt ? new Date() : article.publishedAt,
+                ...(tags && {
+                    tags: {
+                        deleteMany: {},
+                        create: tags.map((tag: string) => ({ tag }))
+                    }
+                })
+            },
+            include: {
+                tags: { select: { tag: true } }
             }
         })
 
@@ -172,12 +204,32 @@ export const deleteArticle = async(req: Request<IParams>, res: Response, next: N
 // Writer dashboard — sariling articles lang
 export const getMyArticles = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const articles = await prisma.article.findMany({
-            where: { authorId: req.user!.id },
-            orderBy: { createdAt: "desc" }
-        })
+            const search = req.query.search as string | undefined
+            
+            const articles = await prisma.article.findMany({
+                where: { 
+                    authorId: req.user!.id,
+                    ...(search && {
+                        OR: [
+                            { title: { contains: search, mode: 'insensitive' } },
+                            { subtitle: { contains: search, mode: 'insensitive' } }
+                        ]
+                    })
+                },
+                include: {
+                    tags: { select: { tag: true } },
+                    _count: {
+                        select: {
+                            reactions: true,
+                            shares: true,
+                            views: true
+                        }
+                    }
+                },
+                orderBy: { createdAt: "desc" }
+            })
 
-        res.status(200).json(articles)
+            res.status(200).json(articles)
     } catch(err) {
         next(err)
     }
