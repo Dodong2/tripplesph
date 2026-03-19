@@ -31,13 +31,6 @@ export const getArticles = async (req: Request, res: Response, next: NextFunctio
                 tags: {
                     select: { tag: true }
                 },
-                _count: {
-                    select: {
-                        reactions: true,
-                        shares: true,
-                        views: true
-                    }
-                }
             },
             orderBy: { publishedAt: "desc" },
             take: limit + 1,
@@ -76,13 +69,6 @@ export const getArticle = async (req: Request<IParams>, res: Response, next: Nex
                 tags: {
                     select: { tag: true }
                 },
-                _count: {
-                    select: {
-                        reactions: true,
-                        shares: true,
-                        views: true
-                    }
-                }
             }
         })
 
@@ -225,13 +211,6 @@ export const getMyArticles = async (req: Request, res: Response, next: NextFunct
                 },
                 include: {
                     tags: { select: { tag: true } },
-                    _count: {
-                        select: {
-                            reactions: true,
-                            shares: true,
-                            views: true
-                        }
-                    }
                 },
                 orderBy: { createdAt: "desc" }
             })
@@ -355,6 +334,33 @@ export const getRelatedArticles = async (req: Request<IParams>, res: Response, n
             })
 
             res.status(200).json({ data: related })
+    } catch(err) {
+        next(err)
+    }
+}
+
+// GET /api/articles/:id/counts
+// Public — real-time counts, walang cache
+export const getArticleCounts = async (req: Request<IParams>, res: Response, next: NextFunction) => {
+    try {
+            const { id } = req.params
+
+            const counts = await prisma.article.findUnique({
+                where: { id },
+                select: {
+                    _count: {
+                        select: {
+                            reactions: true,
+                            shares: true,
+                            views: true
+                        }
+                    }
+                }
+            })
+
+            if(!counts) throw new NotFoundError('Article not found')
+
+            res.status(200).json(counts._count)
     } catch(err) {
         next(err)
     }

@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { ParamsDictionary } from "express-serve-static-core";
 import  prisma  from '../db/prisma.js'
 import { NotFoundError, ForbiddenError, BadrequestError } from "../errors/HttpErrors.js";
-import { clearCache } from "../middleware/cache.middleware.js";
 
 interface IParams extends ParamsDictionary {
     id: string
@@ -47,8 +46,6 @@ export const addReaction = async (req: Request<IParams>, res: Response, next: Ne
                 }
             })
 
-            await clearCache('articles')
-
             const count = await prisma.reaction.count({
                 where: { articleId: req.params.id }
             })
@@ -89,8 +86,6 @@ export const removeReactions = async (req: Request<IParams>, res: Response, next
                 }
             })
 
-            await clearCache('articles')
-
             const count = await prisma.reaction.count({
                 where: { articleId: req.params.id }
             })
@@ -128,8 +123,6 @@ export const addShare = async (req: Request<IParams>, res: Response, next: NextF
                 }
             })
 
-            await clearCache('articles')
-
             const count = await prisma.share.count({
                 where: { articleId: req.params.id }
             })
@@ -164,8 +157,6 @@ export const addView = async(req: Request<IParams>, res: Response, next: NextFun
                 }
             })
         }
-
-        await clearCache('articles')
 
         const count = await prisma.view.count({
             where: { articleId: req.params.id }
