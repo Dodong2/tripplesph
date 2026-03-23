@@ -12,9 +12,9 @@ const ProtectedRoute = ({ children, allowedRoles }: Props) => {
 
     if(isPending) return <p>Loading...</p>
 
-    if(!isLoggedIn) return <Navigate to='/manage' replace/>
+    if(!isLoggedIn) return <Navigate to='/' replace/>
 
-    if(!allowedRoles.includes(user?.role as Role)) {
+    if(!allowedRoles.includes(user!.role)) {
         return <Navigate to='/unauthorized' replace />
     }
 

@@ -11,26 +11,25 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* ── PUBLIC ───────────────────────────────── */}
-        <Route path="/" element={<Home/>}/>
-        <Route path="/unauthorized" element={<Unauthorized/>}/>
+        <Route path="/" element={<Home />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
 
         {/* ── AUTO REDIRECT after login ─────────── */}
-        <Route path='/redirect' element={<RoleDirect/>}/>
+        <Route path='/redirect' element={<RoleDirect />} />
 
         {/* ── WRITER ONLY ──────────────────────────────── */}
         <Route path="/writer" element={
           <ProtectedRoute allowedRoles={["writer"]}>
-            <WriterDashboard/>
+            <WriterDashboard />
           </ProtectedRoute>
-        }/>
+        } />
 
         {/* ── ADMIN + ABOVE ─────────────────────────── */}
         <Route path="/admin" element={
           <ProtectedRoute allowedRoles={["admin", "super_admin"]}>
-            <Dashboard/>
+            <Dashboard />
           </ProtectedRoute>
         } />
-
 
       </Routes>
     </BrowserRouter>
