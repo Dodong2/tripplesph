@@ -1,27 +1,37 @@
-import { useAuth } from "./hooks/useAuth"
-import { signInWithGoogle, signOut } from "./services/auth.service"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import ProtectedRoute from "./components/ProtectedRoute"
+import Home from "./pages/Home"
+import Login from "./pages/Login"
+import Dashboard from "./pages/Dashboard"
+import UserManagement from "./pages/UserManagement"
+import Unauthorized from "./pages/Unauthorized"
 
 function App() {
-  const { user, isPending, isLoggedIn } = useAuth()
-
-  if(isPending) return <p>Loading...</p>
-
   return (
-    <div>
-      {isLoggedIn ? (
-        <div>
-          <p>Logged in as {user?.email}</p>
-          <p>Role: {user!.role}</p>
-          <button onClick={signOut}>
-            Sign out
-          </button>
-        </div>
-      ): (
-        <button onClick={signInWithGoogle}>
-          Sign In
-        </button>
-      )}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        {/* ── PUBLIC ───────────────────────────────── */}
+        <Route path="/" element={<Home/>}/>
+        <Route path="/manage" element={<Login/>}/>
+        <Route path="/unauthorized" element={<Unauthorized/>}/>
+
+        {/* ── WRITER + ABOVE ────────────────────────── */}
+        <Route path="/dashboard" element={
+          <ProtectedRoute allowedRoles={["writer", "admin", "super_admin"]}>
+            <Dashboard/>
+          </ProtectedRoute>
+        }/>
+
+        {/* ── ADMIN + ABOVE ─────────────────────────── */}
+        <Route path="/dashboard/users" element={
+          <ProtectedRoute allowedRoles={["admin", "super_admin"]}>
+            <UserManagement/>
+          </ProtectedRoute>
+        } />
+
+
+      </Routes>
+    </BrowserRouter>
   )
 }
 
