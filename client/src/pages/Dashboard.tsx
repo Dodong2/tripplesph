@@ -1,44 +1,24 @@
-import { useState } from "react"
-import { useGetUsers } from "../hooks/user/useGetUsers"
-import { useUpdateUser } from "../hooks/user/useUpdateUser"
-import { useDeleteUser } from "../hooks/user/useDeleteUser"
+import { useGetUsers } from "../hooks/user/queries/useGetUsers"
+import { useUserTable } from "../hooks/user/ui/useUserTable"
 import { useAuth } from "../hooks/useAuth"
 import { signOut } from "./../services/auth.service"
 import type { User, Role } from "../types/index.types"
 
 const Dashboard = () => {
     const { user: currentUser } = useAuth()
-    const [page, setPage] = useState(1)
-    const [roleFilter, setRoleFilter] = useState('')
-    const [search, setSearch] = useState('')
-
-    const [editingId, setEditingId] = useState<string | null>(null)
-    const [editRole, setEditRole] = useState<Role | ''>('')
+    const { 
+        page, setPage,
+        search, handleSearchChange,
+        roleFilter, handleRoleFilterChange,
+        editingId, editRole, setEditRole,
+        startEdit, cancelEdit,
+        handleUpdate, handleDelete,
+        roleOptions,
+        isUpdating, isDeleting
+     } = useUserTable()
 
     const { data, isLoading, error } = useGetUsers({ page, search, role: roleFilter || undefined })
-    const { mutate: update, isPending: isUpdating } = useUpdateUser()
-    const { mutate: remove, isPending: isDeleting } = useDeleteUser()
-
-    const roleOptions = currentUser?.role === 'super_admin'
-        ? ['user', 'writer', 'admin'] : ['writer']
-
-    const handleUpdate = (id: string) => {
-        if (!editRole) return
-        update(
-            { id, data: { role: editRole } },
-            {
-                onSuccess: () => setEditingId(null),
-                onError: (err) => alert(err.message)
-            }
-        )
-    }
-
-    const handleDelete = (id: string, name: string | null) => {
-        if (!confirm(`Delete user ${name ?? id}?`)) return
-        remove(id, {
-            onError: (err) => alert(err.message)
-        })
-    }
+    
 
     return (
         <div>
@@ -48,13 +28,13 @@ const Dashboard = () => {
             <button onClick={signOut}>Sign out</button><br />
 
             <input type="text" placeholder="Search users" value={search} onChange={(e) => {
-                setSearch(e.target.value)
+                handleSearchChange(e.target.value)
                 setPage(1)
             }
             } />
 
             <select value={roleFilter} onChange={(e) => {
-                setRoleFilter(e.target.value)
+                handleRoleFilterChange(e.target.value)
                 setPage(1)
             }}>
                 <option value="">All Roles</option>
@@ -115,15 +95,14 @@ const Dashboard = () => {
                                                         >
                                                             {isUpdating ? 'Saving...' : 'Save'}
                                                         </button>
-                                                        <button onClick={() => setEditingId(null)}>
+                                                        <button onClick={cancelEdit}>
                                                             Cancel
                                                         </button>
                                                     </>
                                                 ) : (
                                                     <>
                                                         <button onClick={() => {
-                                                            setEditingId(user.id)
-                                                            setEditRole(user.role)
+                                                            startEdit(user.id, user.role)
                                                         }}>
                                                             Edit Role
                                                         </button>
