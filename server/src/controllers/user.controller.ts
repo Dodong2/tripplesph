@@ -10,14 +10,24 @@ interface IParams extends ParamsDictionary {
 
 // GET /api/users?page=1&limit=10&role=writer
 // Admin/super_admin only — via requireRole middleware
+// Role Filter & Search & Pagination
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
             const page = parseInt(req.query.page as string) || 1
             const limit = parseInt(req.query.limit as string) || 10
             const skip = (page - 1) * limit
             const roleFilter = req.query.role as Role | undefined
+            const search = req.query.search as string | undefined
 
-            const where = roleFilter ? { role: roleFilter } : {}
+            const where = {
+                ...(roleFilter && { role: roleFilter }),
+                ...(search && {
+                    OR: [
+                        { name: { contains: search, mode: 'insensitive' as const } },
+                        { email: { contains: search, mode: 'insensitive' as const } }
+                    ]
+                })
+            }
 
 
             const [users, total] = await Promise.all([

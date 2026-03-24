@@ -10,6 +10,6 @@ export const getUsers = async (params: PageBasedParams = {}): Promise<UserRespon
     if (role) query.append('role', role)
     if (search) query.append('search', search)
 
-    const { data } = await apiClient.get(`/api/users?${params.toString()}`)
+    const { data } = await apiClient.get(`/api/users?${query.toString()}`)
     return data
 }

@@ -6,8 +6,9 @@ import { signOut } from "./../services/auth.service"
 const Dashboard = () => {
     const { user } = useAuth()
     const [page, setPage] = useState(1)
+    const [roleFilter, setRoleFilter] = useState('')
     const [search, setSearch] = useState('')
-    const { data, isLoading, error } = useGetUsers({ page, search })
+    const { data, isLoading, error } = useGetUsers({ page, search, role: roleFilter || undefined })
 
     return (
         <div>
@@ -21,6 +22,17 @@ const Dashboard = () => {
                 setPage(1)
             }
             } />
+
+            <select value={roleFilter} onChange={(e) => {
+                setRoleFilter(e.target.value)
+                setPage(1)
+            }}>
+                <option value="">All Roles</option>
+                <option value="user">User</option>
+                <option value="writer">Writer</option>
+                <option value="admin">Admin</option>
+                <option value="super_admin">Super Admin</option>
+            </select>
 
             <div>
                 {isLoading && <p>loading users</p>}
