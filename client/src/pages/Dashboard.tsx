@@ -1,20 +1,50 @@
 import { useState } from "react"
 import { useGetUsers } from "../hooks/user/useGetUsers"
+import { useUpdateUser } from "../hooks/user/useUpdateUser"
+import { useDeleteUser } from "../hooks/user/useDeleteUser"
 import { useAuth } from "../hooks/useAuth"
 import { signOut } from "./../services/auth.service"
+import type { User, Role } from "../types/index.types"
 
 const Dashboard = () => {
-    const { user } = useAuth()
+    const { user: currentUser } = useAuth()
     const [page, setPage] = useState(1)
     const [roleFilter, setRoleFilter] = useState('')
     const [search, setSearch] = useState('')
+
+    const [editingId, setEditingId] = useState<string | null>(null)
+    const [editRole, setEditRole] = useState<Role | ''>('')
+
     const { data, isLoading, error } = useGetUsers({ page, search, role: roleFilter || undefined })
+    const { mutate: update, isPending: isUpdating } = useUpdateUser()
+    const { mutate: remove, isPending: isDeleting } = useDeleteUser()
+
+    const roleOptions = currentUser?.role === 'super_admin'
+        ? ['user', 'writer', 'admin'] : ['writer']
+
+    const handleUpdate = (id: string) => {
+        if (!editRole) return
+        update(
+            { id, data: { role: editRole } },
+            {
+                onSuccess: () => setEditingId(null),
+                onError: (err) => alert(err.message)
+            }
+        )
+    }
+
+    const handleDelete = (id: string, name: string | null) => {
+        if (!confirm(`Delete user ${name ?? id}?`)) return
+        remove(id, {
+            onError: (err) => alert(err.message)
+        })
+    }
 
     return (
         <div>
             <h1>Dashboard</h1>
-            <p>Welcome, {user?.name}</p>
-            <p>Role: {user?.role}</p>
+            <p>Welcome, {currentUser?.name}</p>
+            <p>Role: {currentUser?.role}</p>
             <button onClick={signOut}>Sign out</button><br />
 
             <input type="text" placeholder="Search users" value={search} onChange={(e) => {
@@ -56,16 +86,55 @@ const Dashboard = () => {
                                         <td colSpan={6}>No users found</td>
                                     </tr>
                                 ) : (
-                                    data.data.map((user) => (
+                                    data.data.map((user: User) => (
                                         <tr key={user.id}>
                                             <td>{user.name ?? '-'}</td>
                                             <td>{user.email}</td>
-                                            <td>{user.role}</td>
+                                            <td>
+                                                {editingId === user.id ? (
+                                                    <select
+                                                        value={editRole}
+                                                        onChange={(e) => setEditRole(e.target.value as Role)}
+                                                    >
+                                                        <option value="">Select role</option>
+                                                        {roleOptions.map(r => (
+                                                            <option key={r} value={r}>{r}</option>
+                                                        ))}
+                                                    </select>
+                                                ) : (
+                                                    user.role
+                                                )}
+                                            </td>
                                             <td>{new Date(user.createdAt).toLocaleDateString()}</td>
                                             <td>
-                                                <button>
-                                                    Delete
-                                                </button>
+                                                {editingId === user.id ? (
+                                                    <>
+                                                        <button
+                                                            onClick={() => handleUpdate(user.id)}
+                                                            disabled={isUpdating || !editRole}
+                                                        >
+                                                            {isUpdating ? 'Saving...' : 'Save'}
+                                                        </button>
+                                                        <button onClick={() => setEditingId(null)}>
+                                                            Cancel
+                                                        </button>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <button onClick={() => {
+                                                            setEditingId(user.id)
+                                                            setEditRole(user.role)
+                                                        }}>
+                                                            Edit Role
+                                                        </button>
+                                                        <button
+                                                            onClick={() => handleDelete(user.id, user.name)}
+                                                            disabled={isDeleting}
+                                                        >
+                                                            {isDeleting ? 'Deleting...' : 'Delete'}
+                                                        </button>
+                                                    </>
+                                                )}
                                             </td>
                                         </tr>
                                     ))

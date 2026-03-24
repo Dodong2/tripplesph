@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { getUsers } from "../../services/user.service";
 import type { PageBasedParams } from "../../types/index.types"
 
