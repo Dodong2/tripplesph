@@ -6,7 +6,7 @@ export interface PageBasedParams {
 }
 
 export interface CursorBasedParams {
-    cursor?: number
+    cursor?: string
     limit?: number
     search?: string
     tag?: string

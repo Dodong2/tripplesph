@@ -4,7 +4,6 @@ import prisma from "../db/prisma.js"
 import { NotFoundError, ForbiddenError } from "../errors/HttpErrors.js"
 import { clearCache } from '../middleware/cache.middleware.js'
 import { Tag } from '../generated/prisma/enums.js'
-import { testUtils } from 'better-auth/plugins'
 
 interface IParams extends ParamsDictionary {
     id: string
@@ -196,8 +195,10 @@ export const deleteArticle = async(req: Request<IParams>, res: Response, next: N
 // GET /api/articles/me
 // Writer dashboard — sariling articles lang
 export const getMyArticles = async (req: Request, res: Response, next: NextFunction) => {
-    try {
+    try {   
             const search = req.query.search as string | undefined
+            const limit = parseInt(req.query.limit as string) || 10
+            const cursor = req.query.cursor as string | undefined
             
             const articles = await prisma.article.findMany({
                 where: { 
@@ -212,10 +213,20 @@ export const getMyArticles = async (req: Request, res: Response, next: NextFunct
                 include: {
                     tags: { select: { tag: true } },
                 },
-                orderBy: { createdAt: "desc" }
+                orderBy: { createdAt: "desc" },
+                take: limit + 1,
+                ...(cursor && {
+                    cursor: { id: cursor },
+                    skip: 1
+                })
             })
 
-            res.status(200).json(articles)
+            const hasMore = articles.length > limit
+            const data = hasMore ? articles.slice(0, limit) : articles
+            const nextCursor = hasMore ?  data[data.length -1].id : null
+
+
+            res.status(200).json({ data, nextCursor, hasMore })
     } catch(err) {
         next(err)
     }

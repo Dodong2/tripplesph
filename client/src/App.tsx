@@ -5,6 +5,7 @@ import Home from "./pages/Home"
 import Dashboard from "./pages/Dashboard"
 import WriterDashboard from "./pages/WriterDashboard"
 import Unauthorized from "./pages/Unauthorized"
+import CreateArticle from "./pages/CreateArticle"
 
 function App() {
   return (
@@ -23,6 +24,12 @@ function App() {
             <WriterDashboard />
           </ProtectedRoute>
         } />
+        
+        <Route path="/writer/create" element={
+          <ProtectedRoute allowedRoles={["writer", "admin", "super_admin"]}>
+            <CreateArticle/>
+          </ProtectedRoute>
+        }/>
 
         {/* ── ADMIN + ABOVE ─────────────────────────── */}
         <Route path="/admin" element={
