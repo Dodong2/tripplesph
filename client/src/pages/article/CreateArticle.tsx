@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { useCreateArticle } from "../hooks/article/mutations/useCreateArticles"
-import type { ArticleStatus, ArticleTag } from "../types/index.types"
+import { useCreateArticle } from "../../hooks/article/mutations/useCreateArticles"
+import type { ArticleStatus, ArticleTag } from "../../types/index.types"
 
 const TAGS: ArticleTag[] = [
   "FACT", "FAD", "FAITH", "FAMILY", "FASHION",

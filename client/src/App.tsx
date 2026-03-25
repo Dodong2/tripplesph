@@ -2,10 +2,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import ProtectedRoute from "./components/ProtectedRoute"
 import RoleDirect from "./components/RoleRedirect"
 import Home from "./pages/Home"
-import Dashboard from "./pages/Dashboard"
-import WriterDashboard from "./pages/WriterDashboard"
+import Dashboard from "./pages/admin/Dashboard"
+import WriterDashboard from "./pages/writer/WriterDashboard"
 import Unauthorized from "./pages/Unauthorized"
-import CreateArticle from "./pages/CreateArticle"
+import CreateArticle from "./pages/article/CreateArticle"
 
 function App() {
   return (

@@ -1,8 +1,8 @@
-import { useGetUsers } from "../hooks/user/queries/useGetUsers"
-import { useUserTable } from "../hooks/user/ui/useUserTable"
-import { useAuth } from "../hooks/useAuth"
-import { signOut } from "./../services/auth.service"
-import type { User, Role } from "../types/index.types"
+import { useGetUsers } from "../../hooks/user/queries/useGetUsers"
+import { useUserTable } from "../../hooks/user/ui/useUserTable"
+import { useAuth } from "../../hooks/useAuth"
+import { signOut } from "../../services/auth.service"
+import type { User, Role } from "../../types/index.types"
 
 const Dashboard = () => {
     const { user: currentUser } = useAuth()
