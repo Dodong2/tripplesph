@@ -6,8 +6,6 @@ import { clearCache } from '../middleware/cache.middleware.js'
 import { Tag } from '../generated/prisma/enums.js'
 import { auth } from '../lib/auth.js'
 import { fromNodeHeaders } from 'better-auth/node'
-import { error } from 'node:console'
-import { stat } from 'node:fs'
 
 interface IParams extends ParamsDictionary {
     id: string
