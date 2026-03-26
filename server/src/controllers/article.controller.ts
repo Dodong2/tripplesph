@@ -1,12 +1,13 @@
 import { Request, Response, NextFunction } from 'express'
 import { ParamsDictionary } from 'express-serve-static-core'
 import prisma from "../db/prisma.js"
-import { NotFoundError, ForbiddenError } from "../errors/HttpErrors.js"
+import { NotFoundError, ForbiddenError, BadrequestError } from "../errors/HttpErrors.js"
 import { clearCache } from '../middleware/cache.middleware.js'
 import { Tag } from '../generated/prisma/enums.js'
 import { auth } from '../lib/auth.js'
 import { fromNodeHeaders } from 'better-auth/node'
 import { error } from 'node:console'
+import { stat } from 'node:fs'
 
 interface IParams extends ParamsDictionary {
     id: string
@@ -97,7 +98,19 @@ export const getArticle = async (req: Request<IParams>, res: Response, next: Nex
 // Writer/admin/super_admin only
 export const createArticle = async (req: Request, res: Response, next: NextFunction) => {   
     try {
-        const { title, subtitle, content, status, scheduleAt, tags } = req.body
+        const { title, subtitle, content, status, scheduledAt, tags } = req.body
+
+        if(!title?.trim()) {
+            throw new BadrequestError('Title is required')
+        }
+
+        if(!content?.trim()) {
+            throw new BadrequestError('Content is required')
+        }
+
+        if(!tags?.length) {
+            throw new BadrequestError('At least one tag is required')
+        }
 
         const article = await prisma.article.create({
             data: {
@@ -105,7 +118,7 @@ export const createArticle = async (req: Request, res: Response, next: NextFunct
                 subtitle,
                 content,    
                 status: status ?? "DRAFT",
-                scheduledAt: scheduleAt ? new Date(scheduleAt) : null,
+                scheduledAt: scheduledAt ? new Date(scheduledAt) : null,
                 publishedAt: status === "PUBLISHED" ? new Date() : null,
                 authorId: req.user!.id,
                 tags: {
@@ -132,7 +145,7 @@ export const createArticle = async (req: Request, res: Response, next: NextFunct
 export const updateArticle = async (req: Request<IParams>, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params
-        const { title, subtitle, content, status, scheduleAt, tags } = req.body
+        const { title, subtitle, content, status, scheduledAt, tags } = req.body
         const role = req.user!.role as string
 
         const article = await prisma.article.findUnique({
@@ -150,12 +163,19 @@ export const updateArticle = async (req: Request<IParams>, res: Response, next: 
             where: { id },
             data: {
                 ...(title && { title }),
-                ...(subtitle && { subtitle }),
+                ...(subtitle !== undefined && { subtitle }),
                 ...(content && { content }),
                 ...(status && { status }),
-                ...(scheduleAt && { scheduleAt: new Date(scheduleAt) }),
-                scheduledAt: scheduleAt ? new Date(scheduleAt) : null,
-                publishedAt: status === 'PUBLISHED' && !article.publishedAt ? new Date() : article.publishedAt,
+                scheduledAt: status === 'SCHEDULED' && scheduledAt
+                    ? new Date(scheduledAt)
+                    : status !== 'SCHEDULED'
+                        ? null
+                        : article.scheduledAt,
+                publishedAt: status === 'PUBLISHED' && !article.publishedAt
+                    ? new Date()
+                    : status === 'DRAFT' || status === 'SCHEDULED'
+                        ? null
+                        : article.publishedAt,
                 ...(tags && {
                     tags: {
                         deleteMany: {},
