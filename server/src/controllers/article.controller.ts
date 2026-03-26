@@ -4,6 +4,9 @@ import prisma from "../db/prisma.js"
 import { NotFoundError, ForbiddenError } from "../errors/HttpErrors.js"
 import { clearCache } from '../middleware/cache.middleware.js'
 import { Tag } from '../generated/prisma/enums.js'
+import { auth } from '../lib/auth.js'
+import { fromNodeHeaders } from 'better-auth/node'
+import { error } from 'node:console'
 
 interface IParams extends ParamsDictionary {
     id: string
@@ -62,20 +65,26 @@ export const getArticle = async (req: Request<IParams>, res: Response, next: Nex
         const article = await prisma.article.findUnique({
             where: { id },
             include: {
-                author: {
-                    select: { name: true, image: true }
-                },
-                tags: {
-                    select: { tag: true }
-                },
+                author: { select: { name: true, image: true } },
+                tags: { select: { tag: true } },
             }
         })
 
         if(!article) throw new NotFoundError('Article not found')
 
         // Users can only see published articles
-        if(article.status !== 'PUBLISHED' && !req.user) {
-            throw new ForbiddenError('You do not have access to this article')
+        if(article.status !== 'PUBLISHED') {
+            const session = await auth.api.getSession({
+                headers: fromNodeHeaders(req.headers)
+            })
+
+            if(!session) throw new ForbiddenError('You do not have access to this article')
+
+            const role = session.user.role as string
+
+            if(role === 'writer' && article.authorId !== session.user.id) {
+                throw new ForbiddenError('You do not have access to this article')
+            }
         }
 
         res.status(200).json(article)

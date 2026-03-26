@@ -12,6 +12,12 @@ export const getArticles = async (params: CursorBasedParams = {}): Promise<Artic
     return data
 }
 
+// ── Single article ────────────────────────────────────
+export const getArticle = async (id: string): Promise<Article> => {
+    const { data } = await apiClient.get(`/api/articles/${id}`)
+    return data
+}
+
 export const getMyArticles = async (params: CursorBasedParams ={}): Promise<ArticleResponse> => {
     const { cursor, limit = 10, search } = params
     const query = new URLSearchParams()

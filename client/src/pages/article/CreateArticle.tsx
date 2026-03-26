@@ -131,7 +131,7 @@ const CreateArticle = () => {
         <div>
           <label>Schedule Date *</label><br />
           <input
-            type="datetime-local"
+            type="date"
             value={scheduledAt}
             onChange={(e) => setScheduledAt(e.target.value)}
           />

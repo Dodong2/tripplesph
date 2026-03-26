@@ -6,6 +6,7 @@ import Dashboard from "./pages/admin/Dashboard"
 import WriterDashboard from "./pages/writer/WriterDashboard"
 import Unauthorized from "./pages/Unauthorized"
 import CreateArticle from "./pages/article/CreateArticle"
+import UpdateArticle from "./pages/article/UpdateArticle"
 
 function App() {
   return (
@@ -28,6 +29,12 @@ function App() {
         <Route path="/writer/create" element={
           <ProtectedRoute allowedRoles={["writer", "admin", "super_admin"]}>
             <CreateArticle/>
+          </ProtectedRoute>
+        }/>
+
+        <Route path="/writer/edit/:id" element={
+          <ProtectedRoute allowedRoles={["writer", "admin", "super_admin"]}>
+            <UpdateArticle/>
           </ProtectedRoute>
         }/>
 

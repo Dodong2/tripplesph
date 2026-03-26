@@ -53,7 +53,7 @@ const WriterDashboard = () => {
                             <td>{article.tags.map(t => t.tag).join(', ')}</td>
                             <td>
                                 <button onClick={() => navigate(`/writer/edit/${article.id}`)}>
-                                    Edit
+                                    view
                                 </button>
                                 {(user?.role === 'admin' || user?.role === 'super_admin') && (
                                     <button

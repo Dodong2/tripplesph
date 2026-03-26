@@ -1,0 +1,194 @@
+import { useState, useEffect } from "react"
+import { useNavigate, useParams } from "react-router-dom"
+import { useGetArticle } from "../../hooks/article/queries/useGetArticle"
+import { useUpdateArticle } from "../../hooks/article/mutations/useUpdateArticles"
+import { useAuth } from "../../hooks/useAuth"
+import type { ArticleStatus, ArticleTag } from "../../types/article.types"
+
+const TAGS: ArticleTag[] = [
+  "FACT", "FAD", "FAITH", "FAMILY", "FASHION",
+  "FILM", "FLORA_AND_FAUNA", "FOOD_FORTUNE",
+  "FUN", "FUTURE", "NEWS", "UNCATEGORIZED"
+]
+
+const UpdateArticle = () => {
+  const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
+  const { user } = useAuth()
+
+  const { data: article, isLoading, error } = useGetArticle(id!)
+  const { mutate: update, isPending } = useUpdateArticle()
+
+  const [title, setTitle] = useState('')
+  const [subtitle, setSubtitle] = useState('')
+  const [content, setContent] = useState('')
+  const [status, setStatus] = useState<ArticleStatus>('DRAFT')
+  const [scheduledAt, setScheduledAt] = useState('')
+  const [selectedTags, setSelectedTags] = useState<ArticleTag[]>([])
+  const [initialized, setInitialized] = useState(false)
+
+  // ── Populate form once article is fetched ─────────
+  useEffect(() => {
+    if (article && !initialized) {
+      setTitle(article.title)
+      setSubtitle(article.subtitle ?? '')
+      setContent(article.content)
+      setStatus(article.status)
+      setScheduledAt(
+        article.scheduledAt ? new Date(article.scheduledAt).toISOString().split('T')[0]
+          : ''
+      )
+      setSelectedTags(article.tags?.map(t => t.tag) ?? [])
+      setInitialized(true)
+    }
+  }, [article, initialized])
+
+  // ── Change detection ──────────────────────────────
+  const hasChanges = article && initialized && (
+    title !== article.title ||
+    subtitle !== (article.subtitle ?? '') ||
+    content !== article.content ||
+    status !== article.status ||
+    scheduledAt !== (article.scheduledAt
+      ? new Date(article.scheduledAt).toISOString().split('T')[0]
+      : '') ||
+    JSON.stringify([...selectedTags].sort()) !==
+    JSON.stringify([...(article.tags?.map(t => t.tag) ?? [])].sort())
+  )
+
+  // ── Tag toggle ────────────────────────────────────
+  const toggleTag = (tag: ArticleTag) => {
+    setSelectedTags(prev =>
+      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
+    )
+  }
+
+  // ── Permission check ──────────────────────────────
+  const canEdit = article && (
+    user?.role === 'admin' ||
+    user?.role == 'super_admin' ||
+    (user?.role === 'writer' && article.authorId === user.id)
+  )
+
+  // ── Submit ────────────────────────────────────────
+  const handleSubmit = () => {
+    if (!title.trim()) return alert('Title is required')
+    if (!content.trim()) return alert('Content is required')
+    if (selectedTags.length === 0) return alert('Select at least one tag')
+    if (status === 'SCHEDULED' && !scheduledAt) return alert('Schedule date is required')
+
+    update({
+      id: id!,
+      input: {
+        title,
+        subtitle: subtitle || undefined,
+        content,
+        status,
+        scheduleAt: scheduledAt || undefined,
+        tags: selectedTags
+      }
+    },
+      {
+        onSuccess: () => navigate('/writer'),
+        onError: (err) => alert(err.message)
+      }
+    )
+  }
+
+  if (isLoading) return <p>Loading article...</p>
+  if (error) return <p style={{ color: 'red' }}>{error.message}</p>
+  if (!canEdit) return <p>You don't have permission to edit this article.</p>
+
+
+  return (
+    <div>
+      <h1>Edit Article</h1>
+      <button onClick={() => navigate('/writer')}>← Back</button>
+
+      <br /><br />
+
+      <div>
+        <label>Title *</label><br />
+        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)}
+          style={{ width: '400px' }}
+        />
+      </div>
+
+      <br />
+
+      <div>
+        <label>Subtitle</label><br />
+        <input type="text" value={subtitle} onChange={(e) => setSubtitle(e.target.value)}
+          style={{ width: '400px' }}
+        />
+      </div>
+
+      <br />
+
+      <div>
+        <label>Content *</label><br />
+        <textarea value={content} onChange={(e) => setContent(e.target.value)} rows={10}
+          style={{ width: '400px' }}
+        />
+      </div>
+
+      <br />
+
+      <div>
+        <label>Tags *</label> <br />
+        {TAGS.map(tag => (
+          <label key={tag} style={{ marginRight: '10px' }}>
+            <input type="checkbox" checked={selectedTags.includes(tag)}
+              onChange={() => toggleTag(tag)} />
+            {tag}
+          </label>
+        ))}
+      </div>
+
+        <br />
+
+        <div>
+          <label>Status *</label><br />
+          <select
+          value={status}
+          onChange={(e) => setStatus(e.target.value as ArticleStatus)}
+        >
+          <option value="DRAFT">Draft</option>
+          <option value="PUBLISHED">Publish Now</option>
+          <option value="SCHEDULED">Schedule</option>
+        </select>
+        </div>
+
+         <br />
+
+         {status === 'SCHEDULED' && (
+        <div>
+          <label>Schedule Date *</label><br />
+          <input
+            type="date"
+            value={scheduledAt}
+            onChange={(e) => setScheduledAt(e.target.value)}
+          />
+        </div>
+      )}
+
+      <br />
+
+      <button
+        onClick={handleSubmit}
+        disabled={!hasChanges || isPending}
+      >
+        {isPending ? 'Saving...' : 'Save Changes'}
+      </button>
+
+      {!hasChanges && initialized && (
+        <p style={{ color: 'gray', fontSize: '12px' }}>
+          No changes yet
+        </p>
+      )}
+
+    </div>
+  )
+}
+
+export default UpdateArticle
