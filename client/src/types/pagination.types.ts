@@ -10,6 +10,7 @@ export interface CursorBasedParams {
     limit?: number
     search?: string
     tag?: string
+    status?: string
 }
 
 export interface PageBaseMeta {

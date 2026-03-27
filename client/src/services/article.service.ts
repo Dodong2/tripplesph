@@ -3,10 +3,11 @@ import type { Article, ArticleResponse, CreateArticleInput, UpdateArticleInput }
 import type { CursorBasedParams } from "../types/index.types";
 
 export const getArticles = async (params: CursorBasedParams = {}): Promise<ArticleResponse> => {
-    const { cursor, limit = 10 } = params
+    const { cursor, limit = 10, tag } = params
     const query = new URLSearchParams()
     query.append('limit', String(limit))
     if (cursor) query.append('cursor', String(cursor))
+    if(tag) query.append('tag', tag)
     
     const { data } = await apiClient.get(`/api/articles?${query.toString()}`)
     return data
@@ -19,11 +20,12 @@ export const getArticle = async (id: string): Promise<Article> => {
 }
 
 export const getMyArticles = async (params: CursorBasedParams ={}): Promise<ArticleResponse> => {
-    const { cursor, limit = 10, search } = params
+    const { cursor, limit = 10, search, status } = params
     const query = new URLSearchParams()
     query.append('limit', String(limit))
     if(cursor) query.append('cursor', String(cursor))
     if(search) query.append('search', search)
+    if(status) query.append('status', status)
 
     const { data } = await apiClient.get(`/api/articles/my/articles?${query.toString()}`)
     return data

@@ -3,7 +3,7 @@ import { ParamsDictionary } from 'express-serve-static-core'
 import prisma from "../db/prisma.js"
 import { NotFoundError, ForbiddenError, BadrequestError } from "../errors/HttpErrors.js"
 import { clearCache } from '../middleware/cache.middleware.js'
-import { Tag } from '../generated/prisma/enums.js'
+import { ArticleStatus, Tag } from '../generated/prisma/enums.js'
 import { auth } from '../lib/auth.js'
 import { fromNodeHeaders } from 'better-auth/node'
 
@@ -17,21 +17,26 @@ export const getArticles = async (req: Request, res: Response, next: NextFunctio
     try {
         const limit = parseInt(req.query.limit as string) || 10
         const cursor = req.query.cursor as string | undefined
+        const tagFilter = req.query.tag as Tag | undefined
+
+        const validTag = tagFilter && Object.values(Tag).includes(tagFilter) ? tagFilter : undefined
+
 
         const articles = await prisma.article.findMany({
-            where: { status: "PUBLISHED" },
+            where: { 
+                status: "PUBLISHED",
+                ...(validTag && {
+                    tags: { some: { tag: validTag } }
+                })
+             },
             select: {
                 id: true,
                 title: true,
                 subtitle: true,
                 content: true,
                 publishedAt: true,
-                author: {
-                    select: { name: true, image: true }
-                },
-                tags: {
-                    select: { tag: true }
-                },
+                author: { select: { name: true, image: true } },
+                tags: { select: { tag: true } },
             },
             orderBy: { publishedAt: "desc" },
             take: limit + 1,
@@ -226,10 +231,16 @@ export const getMyArticles = async (req: Request, res: Response, next: NextFunct
             const search = req.query.search as string | undefined
             const limit = parseInt(req.query.limit as string) || 10
             const cursor = req.query.cursor as string | undefined
+            const statusFilter = req.query.status as string | undefined
             
+            const validStatus = ['DRAFT', "PUBLISHED", "SCHEDULED"].includes(statusFilter as ArticleStatus) 
+            ? statusFilter as ArticleStatus 
+            : undefined
+
             const articles = await prisma.article.findMany({
                 where: { 
                     authorId: req.user!.id,
+                    ...(validStatus && { status: validStatus }),
                     ...(search && {
                         OR: [
                             { title: { contains: search, mode: 'insensitive' } },

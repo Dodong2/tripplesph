@@ -4,18 +4,46 @@ import { useGetArticles } from "../../hooks/article/queries/useGetArticles"
 import { useGetMyArticles } from "../../hooks/article/queries/useGetMyArticles"
 import { useDeleteArticle } from "../../hooks/article/mutations/useDeleteArticles"
 import { useNavigate } from "react-router-dom"
-import type { Article } from "../../types/index.types"
+import type { Article, ArticleTag } from "../../types/index.types"
 import { useState } from "react"
+
+const TAGS: ArticleTag[] = [
+    "FACT", "FAD", "FAITH", "FAMILY", "FASHION",
+    "FILM", "FLORA_AND_FAUNA", "FOOD_FORTUNE",
+    "FUN", "FUTURE", "NEWS", "UNCATEGORIZED"
+]
+
+const STATUS_OPTIONS = ["DRAFT", "PUBLISHED", "SCHEDULED"]
 
 const WriterDashboard = () => {
     const { user } = useAuth()
     const navigate = useNavigate()
 
+    // ── My Articles filters ───────────────────────────
     const [searchInput, setSearchInput] = useState('')
     const [activeSearch, setActiveSearch] = useState('')
+    const [statusFilter, setStatusFilter] = useState('')
 
-    const { data: myData, isLoading: myLoading, fetchNextPage: fetchMoreMine, hasNextPage: hasMoreMine } = useGetMyArticles({ search: activeSearch || undefined })
-    const { data: allData, isLoading: allLoading, fetchNextPage: fetchMoreAll, hasNextPage: hasMoreAll } = useGetArticles()
+    // ── All Articles tag filter ───────────────────────
+    const [tagFilter, setTagFilter] = useState('')
+
+    const {
+        data: myData,
+        isLoading: myLoading,
+        fetchNextPage: fetchMoreMine,
+        hasNextPage: hasMoreMine
+    } = useGetMyArticles({
+        search: activeSearch || undefined,
+        status: statusFilter || undefined
+    })
+
+    const {
+        data: allData,
+        isLoading: allLoading,
+        fetchNextPage: fetchMoreAll,
+        hasNextPage: hasMoreAll
+    } = useGetArticles({ tag: tagFilter || undefined })
+
     const { mutate: remove, isPending: isDeleting } = useDeleteArticle()
 
     const handleDelete = (id: string) => {
@@ -30,6 +58,7 @@ const WriterDashboard = () => {
     const handleClear = () => {
         setSearchInput('')
         setActiveSearch('')
+        setTagFilter('')
     }
 
     return (
@@ -50,6 +79,25 @@ const WriterDashboard = () => {
                     onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                 />
                 <button onClick={handleSearch}>Search</button>
+
+                {/* Status filter buttons */}
+                <span style={{ marginLeft: '10px' }}>
+                    <button
+                        onClick={() => setStatusFilter('')}
+                        style={{ fontWeight: !statusFilter ? 'bold' : 'normal' }}>
+                        ALL
+                    </button>
+                    {STATUS_OPTIONS.map(s => (
+                        <button
+                            key={s}
+                            onClick={() => setStatusFilter(s)}
+                            style={{ fontWeight: statusFilter === s ? 'bold' : 'normal' }}>
+                            {s}
+                        </button>
+
+                    ))}
+                </span>
+
                 {activeSearch && (
                     <button onClick={handleClear}>Clear</button>
                 )}
@@ -57,7 +105,6 @@ const WriterDashboard = () => {
 
             {myLoading && <p>Loading...</p>}
 
-            {myLoading && <p>Loading...</p>}
             <table border={1} cellPadding={8} cellSpacing={0}>
                 <thead>
                     <tr>
@@ -106,7 +153,24 @@ const WriterDashboard = () => {
 
 
             <h2>All Published Articles</h2>
+            
+            <div>
+                <button
+                    onClick={() => setTagFilter('')}
+                     style={{ fontWeight: !tagFilter ? 'bold' : 'normal' }}
+                >
+                    All Tags
+                </button>
+                {TAGS.map(tag => (
+                    <button key={tag} onClick={() => setTagFilter(tag)}
+                     style={{ fontWeight: tagFilter === tag ? 'bold' : 'normal' }}>
+                        {tag}
+                     </button>
+                ))}
+            </div>
+
             {allLoading && <p>Loading...</p>}
+
             <table border={1} cellPadding={8} cellSpacing={0}>
                 <thead>
                     <tr>
