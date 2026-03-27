@@ -21,6 +21,11 @@ export interface Article {
         image: string | null
     }
     tags: { tag: ArticleTag }[]
+    _count?: {
+        reactions: number
+        shares: number
+        views: number
+    }
     createdAt: string
     updatedAt: string
 }

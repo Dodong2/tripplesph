@@ -42,3 +42,14 @@ export const updateArticle = async (id: string, input: UpdateArticleInput): Prom
 export const deleteArticle = async (id: string): Promise<void> => {
     await apiClient.delete(`/api/articles/${id}`)  
 }
+
+export const searchArticles = async (params: CursorBasedParams & { q: string }): Promise<ArticleResponse> => {
+    const { q, cursor, limit = 10, tag } = params
+    const query = new URLSearchParams()
+    query.append('q', q)
+    query.append('limit', String(limit))
+    if(cursor) query.append('cursor', cursor)
+    if(tag) query.append('tag', tag)
+    const { data } = await apiClient.get(`/api/articles/search?${query.toString()}`)
+    return data 
+}
