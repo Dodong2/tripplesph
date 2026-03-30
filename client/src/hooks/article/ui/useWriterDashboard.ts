@@ -33,7 +33,7 @@ export const useWriterDashboard = () => {
     return {
         TAGS, STATUS_OPTIONS,
         searchInput, setSearchInput,
-        activeSearch, setActiveSearch,
+        activeSearch,
         statusFilter, setStatusFilter,
         tagFilter, setTagFilter,
         handleDelete, isDeleting,

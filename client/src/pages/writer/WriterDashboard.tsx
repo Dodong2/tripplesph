@@ -9,7 +9,7 @@ import { useWriterDashboard } from "../../hooks/article/ui/useWriterDashboard"
 const WriterDashboard = () => {
     const { user } = useAuth()
     const navigate = useNavigate()
-    const { 
+    const {
         TAGS, STATUS_OPTIONS,
         searchInput, setSearchInput,
         activeSearch,
@@ -18,7 +18,7 @@ const WriterDashboard = () => {
         handleDelete, isDeleting,
         handleSearch,
         handleClear,
-     } = useWriterDashboard()
+    } = useWriterDashboard()
 
     const {
         data: myData,
@@ -129,19 +129,19 @@ const WriterDashboard = () => {
 
 
             <h2>All Published Articles</h2>
-            
+
             <div>
                 <button
                     onClick={() => setTagFilter('')}
-                     style={{ fontWeight: !tagFilter ? 'bold' : 'normal' }}
+                    style={{ fontWeight: !tagFilter ? 'bold' : 'normal' }}
                 >
                     All Tags
                 </button>
                 {TAGS.map(tag => (
                     <button key={tag} onClick={() => setTagFilter(tag)}
-                     style={{ fontWeight: tagFilter === tag ? 'bold' : 'normal' }}>
+                        style={{ fontWeight: tagFilter === tag ? 'bold' : 'normal' }}>
                         {tag}
-                     </button>
+                    </button>
                 ))}
             </div>
 
