@@ -1,53 +1,55 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { TAGS } from "../../constants/article.constants"
 import { useCreateArticle } from "../../hooks/article/mutations/useCreateArticles"
 import type { ArticleStatus, ArticleTag } from "../../types/index.types"
-
-const TAGS: ArticleTag[] = [
-  "FACT", "FAD", "FAITH", "FAMILY", "FASHION",
-  "FILM", "FLORA_AND_FAUNA", "FOOD_FORTUNE",
-  "FUN", "FUTURE", "NEWS", "UNCATEGORIZED"
-]
+import toast from 'react-hot-toast'
+import { UI_MESSAGES, VALIDATION_ERRORS } from "../../errors/message"
 
 const CreateArticle = () => {
-    const navigate = useNavigate()
-    const { mutate: create, isPending, error } = useCreateArticle()
+  const navigate = useNavigate()
+  const { mutateAsync: createAsync, isPending, error } = useCreateArticle()
 
-    const [title, setTitle] = useState('')
-    const [subtitle, setSubtitle] = useState('')
-    const [content, setContent] = useState('')
-    const [status, setStatus] = useState<ArticleStatus>('DRAFT')
-    const [scheduledAt, setScheduledAt] = useState('')
-    const [selectedTags, setSelectedTags] = useState<ArticleTag[]>([])
+  const [title, setTitle] = useState('')
+  const [subtitle, setSubtitle] = useState('')
+  const [content, setContent] = useState('')
+  const [status, setStatus] = useState<ArticleStatus>('DRAFT')
+  const [scheduledAt, setScheduledAt] = useState('')
+  const [selectedTags, setSelectedTags] = useState<ArticleTag[]>([])
 
-    const toggleTag = (tag: ArticleTag) => {
-        setSelectedTags(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag])
+  const toggleTag = (tag: ArticleTag) => {
+    setSelectedTags(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag])
+  }
+
+  const handleSubmit = async () => {
+    if (!title.trim()) return alert('Title is required')
+    if (!content.trim()) return alert('Content is required')
+    if (selectedTags.length === 0) return alert('Select at least one tag')
+    if (status === 'SCHEDULED' && !scheduledAt) {
+      return toast.error(VALIDATION_ERRORS.required('Schedule date'))
     }
 
-    const handleSubmit = () => {
-        if(!title.trim()) return alert('Title is required')
-        if(!content.trim()) return alert('Content is required')
-        if(selectedTags.length === 0) return alert('Select at least one tag')
-        if(status === 'SCHEDULED' && !scheduledAt) return alert('Schedule date is required')
-        
-        create({
-        title,
-        subtitle: subtitle || undefined,
-        content,
-        status,
-        scheduleAt: scheduledAt || undefined,
-        tags: selectedTags
-    }, {
-        onSuccess: () => navigate('/writer'),   
-        onError: (err) => alert(err.message)
-    })
-
+    await toast.promise(createAsync({
+      title,
+      subtitle: subtitle || undefined,
+      content,
+      status,
+      scheduleAt: scheduledAt || undefined,
+      tags: selectedTags
+    }), {
+      loading: 'Creating article...',
+      success: UI_MESSAGES.success('created', 'Article'),
+      error: (err: Error) => err.message
     }
+    )
 
-    
+    navigate('/writer')
+  }
+
+
   return (
     <div>
-         <h1>Create Article</h1>
+      <h1>Create Article</h1>
       <button onClick={() => navigate('/writer')}>← Back</button>
 
       <br /><br />

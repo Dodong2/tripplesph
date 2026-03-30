@@ -2,30 +2,23 @@ import { useAuth } from "../../hooks/useAuth"
 import { signOut } from "../../services/auth.service"
 import { useGetArticles } from "../../hooks/article/queries/useGetArticles"
 import { useGetMyArticles } from "../../hooks/article/queries/useGetMyArticles"
-import { useDeleteArticle } from "../../hooks/article/mutations/useDeleteArticles"
 import { useNavigate } from "react-router-dom"
-import type { Article, ArticleTag } from "../../types/index.types"
-import { useState } from "react"
-
-const TAGS: ArticleTag[] = [
-    "FACT", "FAD", "FAITH", "FAMILY", "FASHION",
-    "FILM", "FLORA_AND_FAUNA", "FOOD_FORTUNE",
-    "FUN", "FUTURE", "NEWS", "UNCATEGORIZED"
-]
-
-const STATUS_OPTIONS = ["DRAFT", "PUBLISHED", "SCHEDULED"]
+import type { Article } from "../../types/index.types"
+import { useWriterDashboard } from "../../hooks/article/ui/useWriterDashboard"
 
 const WriterDashboard = () => {
     const { user } = useAuth()
     const navigate = useNavigate()
-
-    // ── My Articles filters ───────────────────────────
-    const [searchInput, setSearchInput] = useState('')
-    const [activeSearch, setActiveSearch] = useState('')
-    const [statusFilter, setStatusFilter] = useState('')
-
-    // ── All Articles tag filter ───────────────────────
-    const [tagFilter, setTagFilter] = useState('')
+    const { 
+        TAGS, STATUS_OPTIONS,
+        searchInput, setSearchInput,
+        activeSearch,
+        statusFilter, setStatusFilter,
+        tagFilter, setTagFilter,
+        handleDelete, isDeleting,
+        handleSearch,
+        handleClear,
+     } = useWriterDashboard()
 
     const {
         data: myData,
@@ -43,23 +36,6 @@ const WriterDashboard = () => {
         fetchNextPage: fetchMoreAll,
         hasNextPage: hasMoreAll
     } = useGetArticles({ tag: tagFilter || undefined })
-
-    const { mutate: remove, isPending: isDeleting } = useDeleteArticle()
-
-    const handleDelete = (id: string) => {
-        if (!confirm('Delete this article?')) return
-        remove(id, {
-            onError: (err) => alert(err.message)
-        })
-    }
-
-    const handleSearch = () => setActiveSearch(searchInput)
-
-    const handleClear = () => {
-        setSearchInput('')
-        setActiveSearch('')
-        setTagFilter('')
-    }
 
     return (
         <div>
@@ -127,7 +103,7 @@ const WriterDashboard = () => {
                                     ? new Date(article.publishedAt).toLocaleDateString()
                                     : '—'}
                                 </td>
-                                <td>{article.tags.map(t => t.tag).join(', ')}</td>
+                                <td>{article.tags?.map(t => t.tag).join(', ') ?? '—'}</td>
                                 <td>
                                     <button onClick={() => navigate(`/writer/edit/${article.id}`)}>
                                         view
@@ -189,7 +165,7 @@ const WriterDashboard = () => {
                                 ? new Date(article.publishedAt).toLocaleDateString()
                                 : '—'}
                             </td>
-                            <td>{article.tags.map(t => t.tag).join(', ')}</td>
+                            <td>{article.tags?.map(t => t.tag).join(', ') ?? '—'}</td>
                         </tr>
                     ))}
                 </tbody>

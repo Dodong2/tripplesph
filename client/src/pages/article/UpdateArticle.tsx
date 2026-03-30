@@ -4,12 +4,9 @@ import { useGetArticle } from "../../hooks/article/queries/useGetArticle"
 import { useUpdateArticle } from "../../hooks/article/mutations/useUpdateArticles"
 import { useAuth } from "../../hooks/useAuth"
 import type { ArticleStatus, ArticleTag } from "../../types/article.types"
-
-const TAGS: ArticleTag[] = [
-  "FACT", "FAD", "FAITH", "FAMILY", "FASHION",
-  "FILM", "FLORA_AND_FAUNA", "FOOD_FORTUNE",
-  "FUN", "FUTURE", "NEWS", "UNCATEGORIZED"
-]
+import toast from 'react-hot-toast'
+import { UI_MESSAGES, VALIDATION_ERRORS } from "../../errors/message"
+import { TAGS } from "../../constants/article.constants"
 
 const UpdateArticle = () => {
   const { id } = useParams<{ id: string }>()
@@ -17,7 +14,7 @@ const UpdateArticle = () => {
   const { user } = useAuth()
 
   const { data: article, isLoading, error } = useGetArticle(id!)
-  const { mutate: update, isPending } = useUpdateArticle()
+  const { mutateAsync: updateAsync, isPending } = useUpdateArticle()
 
   const [title, setTitle] = useState('')
   const [subtitle, setSubtitle] = useState('')
@@ -71,13 +68,15 @@ const UpdateArticle = () => {
   )
 
   // ── Submit ────────────────────────────────────────
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     if (!title.trim()) return alert('Title is required')
     if (!content.trim()) return alert('Content is required')
     if (selectedTags.length === 0) return alert('Select at least one tag')
-    if (status === 'SCHEDULED' && !scheduledAt) return alert('Schedule date is required')
+    if (status === 'SCHEDULED' && !scheduledAt) {
+      return toast.error(VALIDATION_ERRORS.required('Schedule date'))
+    }
 
-    update({
+    await toast.promise(updateAsync({
       id: id!,
       input: {
         title,
@@ -87,12 +86,12 @@ const UpdateArticle = () => {
         scheduleAt: scheduledAt || undefined,
         tags: selectedTags
       }
-    },
-      {
-        onSuccess: () => navigate('/writer'),
-        onError: (err) => alert(err.message)
-      }
-    )
+    }), {
+      loading: 'Saving changes...',
+      success: UI_MESSAGES.success('updated', 'Article'),
+      error: (err: Error) => err.message
+    })
+    navigate('/writer')
   }
 
   if (isLoading) return <p>Loading article...</p>
