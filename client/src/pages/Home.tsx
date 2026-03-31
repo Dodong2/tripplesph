@@ -1,31 +1,30 @@
 import Login from "./Login"
+import { useNavigate } from "react-router-dom"
 import { useGetArticles } from "../hooks/article/queries/useGetArticles"
 import type { Article } from "../types/article.types"
-import { useNavigate } from "react-router-dom"
 
 const Home = () => {
     const navigate = useNavigate()
-
-    const 
-    { 
+    const { 
         data: allArticles,
         isLoading: allLoading,
         fetchNextPage: fetchMoreAll,
         hasNextPage: hasMoreAll
-    } = useGetArticles()
+     } = useGetArticles()
 
     return (
         <div>
             <h1>TripplesPH</h1>
             <p>Welcome to TripplesPH</p>
             <a href="/blogs">Read Articles</a>
-            <Login/>
+            <Login/>     
 
-            {allLoading && <p>Loading</p>}
+            {allLoading && <p>Loading article...</p>}
             {allArticles?.pages.flatMap(p => p.data).map((article: Article) => (
                 <div key={article.id}>
-                    <p style={{ cursor: 'pointer', color: 'blue' }}
-                        onClick={() => navigate(`articles/${article.id}`)}
+                    <p
+                        style={{ cursor: 'pointer', color: 'blue' }}
+                        onClick={() => navigate(`/articles/${article.id}`)}
                     >{article.title}</p>
                 </div>
             ))}

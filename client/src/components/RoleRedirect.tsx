@@ -4,7 +4,8 @@ import { useAuth } from "../hooks/useAuth";
 const ROLE_DIRECT: Record<string, string> = {
     super_admin: '/admin',
     admin: '/admin',
-    writer: '/writer'
+    writer: '/writer',
+    user: '/user'
 }
 
 const RoleDirect = () => {

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addReaction } from "../../../services/engagement.service";
+import { addReaction, removeReaction } from "../../../services/engagement.service";
 
 export const useReaction = (articleId: string) => {
     const queryClient = useQueryClient()
@@ -14,7 +14,7 @@ export const useReaction = (articleId: string) => {
     })
 
     const { mutate: unreact, isPending: isUnReacting } = useMutation({
-        mutationFn: () => addReaction(articleId)
+        mutationFn: () => removeReaction(articleId)
     })
 
     return { react, isReacting, unreact, isUnReacting }

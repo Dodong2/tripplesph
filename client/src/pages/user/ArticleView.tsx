@@ -51,7 +51,7 @@ const ArticleView = () => {
 
         <div>
             <span>❤️ {counts?.reactions ?? 0}</span>
-            <span style={{ marginLeft: '10px' }}>🔗 {counts?.share ?? 0}</span>
+            <span style={{ marginLeft: '10px' }}>🔗 {counts?.shares ?? 0}</span>
             <span style={{ marginLeft: '10px' }}>👁️ {counts?.views ?? 0}</span>
         </div>
 

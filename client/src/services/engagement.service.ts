@@ -12,7 +12,7 @@ export const removeReaction = async(articleId: string) => {
 } 
 
 export const addShare = async (articleId: string) => {
-    const { data } = await apiClient.post(`/api/aricles/${articleId}/share`)
+    const { data } = await apiClient.post(`/api/articles/${articleId}/share`)
     return data
 }
 

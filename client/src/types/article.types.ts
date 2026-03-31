@@ -45,6 +45,6 @@ export interface UpdateArticleInput extends Partial<CreateArticleInput> {}
 
 export interface ArticleEngagementCounts {
     reactions: number
-     share: number 
+     shares: number 
      views: number
 }

@@ -8,6 +8,7 @@ import Unauthorized from "./pages/Unauthorized"
 import CreateArticle from "./pages/article/CreateArticle"
 import UpdateArticle from "./pages/article/UpdateArticle"
 import ArticleView from "./pages/user/ArticleView"
+import UserDashboard from "./pages/user/UserDashboard"
 
 function App() {
   return (
@@ -20,7 +21,13 @@ function App() {
 
         {/* ── AUTO REDIRECT after login ─────────── */}
         <Route path='/redirect' element={<RoleDirect />} />
-
+        {/* ── WRITER ONLY ──────────────────────────────── */}
+        <Route path='/user' element={
+          <ProtectedRoute allowedRoles={["user"]}>
+          <UserDashboard/>
+          </ProtectedRoute>
+          }/>
+        
         {/* ── WRITER ONLY ──────────────────────────────── */}
         <Route path="/writer" element={
           <ProtectedRoute allowedRoles={["writer"]}>
