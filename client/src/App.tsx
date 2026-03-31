@@ -7,6 +7,7 @@ import WriterDashboard from "./pages/writer/WriterDashboard"
 import Unauthorized from "./pages/Unauthorized"
 import CreateArticle from "./pages/article/CreateArticle"
 import UpdateArticle from "./pages/article/UpdateArticle"
+import ArticleView from "./pages/user/ArticleView"
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         {/* ── PUBLIC ───────────────────────────────── */}
         <Route path="/" element={<Home />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/articles/:id" element={<ArticleView/>}/>
 
         {/* ── AUTO REDIRECT after login ─────────── */}
         <Route path='/redirect' element={<RoleDirect />} />
