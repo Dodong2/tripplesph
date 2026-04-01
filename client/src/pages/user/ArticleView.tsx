@@ -1,7 +1,8 @@
-import { useEffect } from "react"
+import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { useGetArticle } from "../../hooks/article/queries/useGetArticle"
 import { useArticleCounts } from "../../hooks/engagement/queries/useArticleCounts"
+import { useReactionStatus } from "../../hooks/engagement/queries/useReactionStatus"
 import { useReaction } from "../../hooks/engagement/mutations/useReaction"
 import { useShare } from "../../hooks/engagement/mutations/useShare"
 import { useView } from "../../hooks/engagement/mutations/useView"
@@ -14,6 +15,7 @@ const ArticleView = () => {
 
     const { data: article, isLoading, error } = useGetArticle(id!)
     const { data: counts } = useArticleCounts(id!)
+    const { data: reactionStatus } = useReactionStatus(id!)
     const { react, unreact, isReacting, isUnReacting } = useReaction(id!)
     const { mutate: share, isPending: isSharing } = useShare(id!)
     const { mutate: view } = useView(id!, !!id)
@@ -29,6 +31,7 @@ const ArticleView = () => {
     if(!article) return <p>Article not found</p>
 
     const isUser = user?.role === 'user'
+    const hasReacted = reactionStatus?.reacted ?? false
 
   return (
     <div>
@@ -58,18 +61,16 @@ const ArticleView = () => {
         {isUser && (
             <div style={{ marginTop: '10px', cursor: 'pointer' }}>
                 <button
-                    onClick={() => react()}
-                    disabled={isReacting}
-                >
-                    {isReacting ? '...' : '❤️ React'}
-                </button>
+                    onClick={() => hasReacted ? unreact() : react()}
 
-                <button
-                    onClick={() => unreact()}
-                    disabled={isUnReacting}
-                    style={{ marginLeft: '5px' }}
+                    disabled={isReacting || isUnReacting}
                 >
-                    {isUnReacting ? '...' : '💔 Remove React'}
+                    {isReacting || isUnReacting 
+                    ? '...' 
+                    : hasReacted
+                    ? "💔 Unreact"
+                    : '❤️ React'
+                    }
                 </button>
 
 

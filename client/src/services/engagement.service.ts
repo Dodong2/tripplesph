@@ -25,3 +25,8 @@ export const getArticleCounts = async (articleId: string): Promise<ArticleEngage
     const { data } = await apiClient.get(`/api/articles/${articleId}/counts`)
     return data 
 }
+
+export const getReactionStatus = async (articleId: string): Promise<{ reacted: boolean }> => {
+    const { data } = await apiClient.get(`/api/articles/${articleId}/reaction-status`)
+    return data
+}

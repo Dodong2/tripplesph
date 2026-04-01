@@ -6,6 +6,7 @@ export const useReaction = (articleId: string) => {
 
     const invalidate = () => {
         queryClient.invalidateQueries({ queryKey: ['counts', articleId] })
+        queryClient.invalidateQueries({ queryKey: ['reaction-status', articleId] })
     }
 
     const { mutate: react, isPending: isReacting } = useMutation({
@@ -14,7 +15,8 @@ export const useReaction = (articleId: string) => {
     })
 
     const { mutate: unreact, isPending: isUnReacting } = useMutation({
-        mutationFn: () => removeReaction(articleId)
+        mutationFn: () => removeReaction(articleId),
+        onSuccess: invalidate
     })
 
     return { react, isReacting, unreact, isUnReacting }

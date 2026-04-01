@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { requireRole } from "../middleware/auth.middleware.js";
-import { cacheMiddleware } from "../middleware/cache.middleware.js";
-import { addReaction, removeReactions, addShare, addView } from "../controllers/engagement.controller.js";
+import { addReaction, removeReactions, addShare, addView, getReactionStatus } from "../controllers/engagement.controller.js";
 
 const router = Router({ mergeParams: true })
 
@@ -9,5 +8,6 @@ router.post("/react", requireRole(['user']), addReaction)
 router.delete("/react", requireRole(['user']), removeReactions)
 router.post("/share", requireRole(['user']), addShare)
 router.post("/view", requireRole(['user']), addView)
+router.get("/reaction-status", requireRole(['user']), getReactionStatus)
 
 export default router

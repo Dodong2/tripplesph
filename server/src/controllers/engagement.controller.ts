@@ -166,3 +166,22 @@ export const addView = async(req: Request<IParams>, res: Response, next: NextFun
         next(err)
     }
 }
+
+export const getReactionStatus = async (req: Request<IParams>, res: Response, next: NextFunction) => {
+    try {
+        isUserOnly(req.user!.role as string)
+
+        const existing = await prisma.reaction.findUnique({
+            where: {
+                articleId_userId: {
+                    articleId: req.params.id,
+                    userId: req.user!.id
+                }
+            }
+        })
+
+        res.status(200).json({ reacted: !!existing })
+    } catch(err) {
+        next(err)
+    }
+}
