@@ -4,6 +4,7 @@ import cors from 'cors'
 import { globalErrorHandler } from './middleware/error.middleware.js'
 import articleRouter from './routes/article.route.js'
 import userRouter from "./routes/user.route.js"
+import engagementRouter from "./routes/engagement.route.js"
 
 dotenv.config()
 
@@ -28,6 +29,7 @@ app.use(cors({
 app.use('/api/auth', authRouter)
 app.use('/api/articles', articleRouter)
 app.use('/api/users', userRouter)
+app.use('/api/articles/:id', engagementRouter)
 
 app.get('/', (_req, res) => {
   res.json({ message: 'TriPPLesPH API running' })

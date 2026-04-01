@@ -64,6 +64,29 @@ export const useUserTable = () => {
         })
     }
 
+    const canEditRole = (targetUser: { id: string, role: Role }) => {
+        if (!currentUser) return false
+        // Hindi pwedeng i-edit ang sarili
+        if (targetUser.id === currentUser?.id) return false
+        // Hindi pwedeng i-edit ang super_admin
+        if (targetUser.role === 'super_admin') return false
+        // Admin — pwede lang mag-edit ng user at writer
+        if (currentUser?.role === 'admin' &&
+            (targetUser.role === 'admin' || targetUser.role as Role === 'super_admin')) return false
+        return true
+    }
+
+    const canDelete = (targetUser: { id: string, role: Role }) => {
+        if(!currentUser) return false
+        // Hindi pwedeng i-delete ang sarili
+        if (targetUser.id === currentUser?.id) return false
+        // Hindi pwedeng i-delete ang super_admin
+        if (targetUser.role === 'super_admin') return false
+        // Admin — hindi pwedeng i-delete ang kapwa admin
+        if (currentUser?.role === 'admin' && targetUser.role === 'admin') return false
+        return true
+    }
+
     return {
         // pagination
         page, setPage,
@@ -77,6 +100,7 @@ export const useUserTable = () => {
         handleUpdate, handleDelete,
         roleOptions,
         // loading states
-        isUpdating, isDeleting
+        isUpdating, isDeleting,
+        canEditRole, canDelete
     }
 }

@@ -6,7 +6,7 @@ import type { User, Role } from "../../types/index.types"
 
 const Dashboard = () => {
     const { user: currentUser } = useAuth()
-    const { 
+    const {
         page, setPage,
         search, handleSearchChange,
         roleFilter, handleRoleFilterChange,
@@ -14,11 +14,12 @@ const Dashboard = () => {
         startEdit, cancelEdit,
         handleUpdate, handleDelete,
         roleOptions,
-        isUpdating, isDeleting
-     } = useUserTable()
+        isUpdating, isDeleting,
+        canEditRole, canDelete
+    } = useUserTable()
 
     const { data, isLoading, error } = useGetUsers({ page, search, role: roleFilter || undefined })
-    
+
 
     return (
         <div>
@@ -101,17 +102,22 @@ const Dashboard = () => {
                                                     </>
                                                 ) : (
                                                     <>
-                                                        <button onClick={() => {
-                                                            startEdit(user.id, user.role)
-                                                        }}>
-                                                            Edit Role
-                                                        </button>
-                                                        <button
-                                                            onClick={() => handleDelete(user.id, user.name)}
-                                                            disabled={isDeleting}
-                                                        >
-                                                            {isDeleting ? 'Deleting...' : 'Delete'}
-                                                        </button>
+                                                        {canEditRole({ id: user.id, role: user.role }) && (
+                                                            <button onClick={() => {
+                                                                startEdit(user.id, user.role)
+                                                            }}
+                                                            >
+                                                                Edit Role
+                                                            </button>
+                                                        )}
+                                                        {canDelete({ id: user.id, role: user.role }) && (
+                                                            <button
+                                                                onClick={() => handleDelete(user.id, user.name)}
+                                                                disabled={isDeleting}
+                                                            >
+                                                                {isDeleting ? 'Deleting...' : 'Delete'}
+                                                            </button>
+                                                        )}
                                                     </>
                                                 )}
                                             </td>
