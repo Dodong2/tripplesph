@@ -3,6 +3,7 @@ import { ParamsDictionary } from 'express-serve-static-core'
 import { ForbiddenError, NotFoundError, UnauthorizedError } from '../errors/HttpErrors.js'
 import prisma from '../db/prisma.js'
 import { Role } from '../types/index.js'
+import { sendRoleAssignmentEmail } from '../config/brevo.js'
 
 interface IParams extends ParamsDictionary {
     id: string
@@ -101,6 +102,14 @@ export const updateUser = async (req:Request<IParams>, res: Response, next: Next
                     banned: true,
                 }
             })
+
+            if(role && role !== user.role) {
+                await sendRoleAssignmentEmail(
+                    user.email,
+                    user.name ?? 'User',
+                    role
+                )
+            }
 
             res.status(200).json(updated)
     } catch(err) {

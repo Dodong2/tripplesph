@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { useGetArticle } from "../../hooks/article/queries/useGetArticle"
 import { useArticleCounts } from "../../hooks/engagement/queries/useArticleCounts"
