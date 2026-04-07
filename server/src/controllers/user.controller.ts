@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from 'express'
 import { ParamsDictionary } from 'express-serve-static-core'
-import { ForbiddenError, NotFoundError, UnauthorizedError } from '../errors/HttpErrors.js'
+import { ForbiddenError, NotFoundError } from '../errors/HttpErrors.js'
 import prisma from '../db/prisma.js'
 import { Role } from '../types/index.js'
 import { sendRoleAssignmentEmail } from '../config/brevo.js'
+import { logActivity } from '../config/ActivityLogger.js'
 
 interface IParams extends ParamsDictionary {
     id: string
@@ -102,6 +103,14 @@ export const updateUser = async (req:Request<IParams>, res: Response, next: Next
                     banned: true,
                 }
             })
+
+            if (role && role !== user.role) {
+                await logActivity('USER_ROLE_CHANGED', `${user.email} role changed to ${role}`, {
+                    userId: user.id,
+                    userName: user.name ?? user.email,
+                    metadata: { from: user.role, to: role }
+                })
+            }
 
             if(role && role !== user.role) {
                 await sendRoleAssignmentEmail(

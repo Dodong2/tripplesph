@@ -3,9 +3,11 @@ import { useUserTable } from "../../hooks/user/ui/useUserTable"
 import { useAuth } from "../../hooks/useAuth"
 import { signOut } from "../../services/auth.service"
 import type { User, Role } from "../../types/index.types"
+import { useNavigate } from "react-router-dom"
 
 const Dashboard = () => {
     const { user: currentUser } = useAuth()
+    const navigate = useNavigate()
     const {
         page, setPage,
         search, handleSearchChange,
@@ -27,6 +29,11 @@ const Dashboard = () => {
             <p>Welcome, {currentUser?.name}</p>
             <p>Role: {currentUser?.role}</p>
             <button onClick={signOut}>Sign out</button><br />
+            {currentUser?.role === 'super_admin' && (
+                <button onClick={() => navigate('/admin/monitoring')}>
+                    Monitoring Dashboard
+                </button>
+            )}
 
             <input type="text" placeholder="Search users" value={search} onChange={(e) => {
                 handleSearchChange(e.target.value)

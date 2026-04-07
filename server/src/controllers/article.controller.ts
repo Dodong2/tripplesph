@@ -6,6 +6,7 @@ import { clearCache } from '../middleware/cache.middleware.js'
 import { ArticleStatus, Tag } from '../generated/prisma/enums.js'
 import { auth } from '../lib/auth.js'
 import { fromNodeHeaders } from 'better-auth/node'
+import { logActivity } from '../config/ActivityLogger.js'
 
 interface IParams extends ParamsDictionary {
     id: string
@@ -133,6 +134,12 @@ export const createArticle = async (req: Request, res: Response, next: NextFunct
             }
         })
 
+        await logActivity('ARTICLE_CREATED', `New article created:: "${article.title}"`, {
+            userId: req.user!.id,
+            articleId: article.id,
+            articleTitle: article.title
+        })
+
         await clearCache('articles')
         await clearCache('search')
         await clearCache('related')
@@ -191,6 +198,12 @@ export const updateArticle = async (req: Request<IParams>, res: Response, next: 
             }
         })
 
+        await logActivity('ARTICLE_UPDATED', `Article updated: "${updated.title}"`, {
+            userId: req.user!.id,
+            articleId: updated.id,
+            articleTitle: updated.title
+        })
+
         await clearCache('articles')
         await clearCache('search')
         await clearCache('related')
@@ -213,6 +226,11 @@ export const deleteArticle = async(req: Request<IParams>, res: Response, next: N
     if(!article) throw new NotFoundError('Article not found')
 
     await prisma.article.delete({ where: { id } })
+
+    await logActivity('ARTICLE_DELETED', `Article deleted ${id}`, {
+        userId: req.user!.id,
+        articleId: id
+    })
 
     await clearCache('articles')
     await clearCache('search')

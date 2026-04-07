@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { ParamsDictionary } from "express-serve-static-core";
 import  prisma  from '../db/prisma.js'
 import { NotFoundError, ForbiddenError, BadrequestError } from "../errors/HttpErrors.js";
+import { logActivity } from "../config/ActivityLogger.js";
 
 interface IParams extends ParamsDictionary {
     id: string
@@ -44,6 +45,11 @@ export const addReaction = async (req: Request<IParams>, res: Response, next: Ne
                     articleId: req.params.id,
                     userId: req.user!.id
                 }
+            })
+
+            await logActivity('REACTION_ADDED', `Reaction added to article`, {
+                userId: req.user!.id,
+                articleId: req.params.id
             })
 
             const count = await prisma.reaction.count({

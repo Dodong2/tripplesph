@@ -9,6 +9,7 @@ import CreateArticle from "./pages/article/CreateArticle"
 import UpdateArticle from "./pages/article/UpdateArticle"
 import ArticleView from "./pages/user/ArticleView"
 import UserDashboard from "./pages/user/UserDashboard"
+import Monitoring from "./pages/admin/Monitoring"
 
 function App() {
   return (
@@ -53,6 +54,12 @@ function App() {
             <Dashboard />
           </ProtectedRoute>
         } />
+
+        <Route path="/admin/monitoring" element={
+          <ProtectedRoute allowedRoles={["super_admin"]}>
+            <Monitoring/>
+          </ProtectedRoute>
+        }/>
 
       </Routes>
     </BrowserRouter>
