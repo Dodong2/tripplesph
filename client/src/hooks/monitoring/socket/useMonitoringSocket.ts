@@ -9,7 +9,7 @@ export const useMonitoringSocket = () => {
 
    useEffect(() => {
     socket.connect()
-    socket.emit('join-monitring')
+    socket.emit('join-monitoring')
 
     socket.on('connect', () => setIsConnected(true))
     socket.on('disconnect', () => setIsConnected(false))

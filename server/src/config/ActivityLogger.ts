@@ -8,7 +8,7 @@ const MAX_LOGS = 100
 export const logActivity = async (
     type: ActivityType,
     message: string,
-    meta?: Partial<Omit<ActivityLog, 'id' | 'type' | 'type' | 'message' | 'createdAt'>>
+    meta?: Partial<Omit<ActivityLog, 'id' | 'type' | 'message' | 'createdAt'>>
 ) => {
    const log = await prisma.activityLog.create({
     data: {
@@ -21,6 +21,9 @@ export const logActivity = async (
         metadata: meta?.metadata
     }
    })
+
+   recentLogs.unshift(log as unknown as ActivityLog)
+   if(recentLogs.length > MAX_LOGS) recentLogs.pop()
 
    try {
     const io = getIO()

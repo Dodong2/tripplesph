@@ -12,8 +12,6 @@ const Monitoring = () => {
     const { data: stats } = useGetStats()
     const { isConnected } = useMonitoringSocket()
 
-    useMonitoringSocket()
-
   return (
     <div>
         <h1>Super Admin Monitoring</h1>
