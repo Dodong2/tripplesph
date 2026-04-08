@@ -136,6 +136,7 @@ export const createArticle = async (req: Request, res: Response, next: NextFunct
 
         await logActivity('ARTICLE_CREATED', `New article created:: "${article.title}"`, {
             userId: req.user!.id,
+            userName: req.user!.name ?? req.user!.email,
             articleId: article.id,
             articleTitle: article.title
         })
@@ -200,6 +201,7 @@ export const updateArticle = async (req: Request<IParams>, res: Response, next: 
 
         await logActivity('ARTICLE_UPDATED', `Article updated: "${updated.title}"`, {
             userId: req.user!.id,
+            userName: req.user!.name ?? req.user!.email,
             articleId: updated.id,
             articleTitle: updated.title
         })

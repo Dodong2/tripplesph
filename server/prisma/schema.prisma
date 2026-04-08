@@ -156,3 +156,15 @@ model View {
 
   @@unique([articleId, userId])
 }
+
+model ActivityLog {
+  id String @id @default(cuid())
+  type String
+  message String
+  userId String?
+  userName String?
+  articleId String?
+  articleTitle String?
+  metadata Json?
+  createdAt DateTime @default(now())
+}

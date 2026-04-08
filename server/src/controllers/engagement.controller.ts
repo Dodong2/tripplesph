@@ -49,6 +49,7 @@ export const addReaction = async (req: Request<IParams>, res: Response, next: Ne
 
             await logActivity('REACTION_ADDED', `Reaction added to article`, {
                 userId: req.user!.id,
+                userName: req.user!.name ?? req.user!.email,
                 articleId: req.params.id
             })
 

@@ -1,4 +1,9 @@
+import { Prisma } from "../generated/prisma/client.js"
+
+export type JsonValue = Prisma.InputJsonValue
+
 export type Role = "user" | "writer" | "admin" | "super_admin"
+
 
 // activity logs
 export type ActivityType =
@@ -19,6 +24,7 @@ export type ActivityType =
     userName?: string
     articleId?: string
     articleTitle?: string
-    metadata?: Record<string, unknown>
+    metadata?: JsonValue
     createdAt?: Date
   }
+

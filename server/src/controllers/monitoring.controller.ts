@@ -2,10 +2,30 @@ import { Request, Response, NextFunction } from "express";
 import { getRecentLogs } from "../config/ActivityLogger.js";
 import prisma from '../db/prisma.js'
 
-export const getLogs = (req: Request, res: Response) => {
-    res.status(200).json(getRecentLogs())
+// GET /api/monitoring/logs
+// Super admin only — last 100 logs, 30 days retention
+export const getLogs = async(req: Request, res: Response, next: NextFunction) => {
+   try {
+        const thirdyDaysAgo = new Date()
+        thirdyDaysAgo.setDate(thirdyDaysAgo.getDate() - 30)
+
+        const logs = await prisma.activityLog.findMany({
+            where: {
+                createdAt: { gte: thirdyDaysAgo }
+            },
+            orderBy: { createdAt: 'desc' },
+            take: 100
+        })
+
+        res.status(200).json(logs)
+   } catch (err) {
+    next(err)
+   }
 }
 
+
+// GET /api/monitoring/stats
+// Super admin only — overall stats
 export const getStats = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const [
