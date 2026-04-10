@@ -55,3 +55,23 @@ export const searchArticles = async (params: CursorBasedParams & { q: string }):
     const { data } = await apiClient.get(`/api/articles/search?${query.toString()}`)
     return data 
 }
+
+export const submitForApproval = async (id: string): Promise<Article> => {
+    const { data } = await apiClient.post(`/api/articles/${id}/submit`)
+    return data
+}
+
+export const approveArticle = async (id: string): Promise<Article> => {
+    const { data } = await apiClient.patch(`/api/articles/${id}/approve`)
+    return data
+}
+
+export const rejectArticle = async (id: string, reason: string): Promise<Article> => {
+    const { data } = await apiClient.patch(`/api/articles/${id}/reject`, { reason } )
+    return data
+}
+
+export const getPendingArticles = async (): Promise<Article[]> => {
+    const { data } = await apiClient.get('/api/articles/pending')
+    return data
+}

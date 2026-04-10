@@ -32,6 +32,8 @@ model User {
   article Article[]
   shares Share[]
   views View[]
+
+  approvedArticles Article[] @relation("ArticleApprover")
 }
 
 model Session {
@@ -90,9 +92,14 @@ model Article {
   reactions Reaction[]
   shares Share[]
   views View[]
+  approvalStatus ApprovalStatus @default(NONE)
+  rejectionReason String?
+  approvedBy String?
+  approvedAt DateTime?
+  approver User? @relation("ArticleApprover", fields: [approvedBy], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
 }
 
 enum ArticleStatus {
@@ -167,4 +174,11 @@ model ActivityLog {
   articleTitle String?
   metadata Json?
   createdAt DateTime @default(now())
+}
+
+enum ApprovalStatus {
+  NONE
+  PENDING
+  APPROVED
+  REJECTED
 }

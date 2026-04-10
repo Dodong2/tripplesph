@@ -7,6 +7,9 @@ export type ArticleTag =
     | "FILM" | "FLORA_AND_FAUNA" | "FOOD_FORTUNE"
     | "FUN" | "FUTURE" | "NEWS" | "UNCATEGORIZED"
 
+export type approvalStatus = "NONE" | "PENDING" | "APPROVED" | "REJECTED"
+
+
 export interface Article {
     id: string
     title: string
@@ -26,6 +29,11 @@ export interface Article {
         shares: number
         views: number
     }
+    approvalStatus: approvalStatus
+    rejectReason?: string | null
+    approvedBy?: string | null
+    approvedAt?: string | null
+    
     createdAt: string
     updatedAt: string
 }

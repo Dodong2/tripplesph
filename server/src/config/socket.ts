@@ -20,6 +20,11 @@ export const initSocket = (httpServer: HttpServer) => {
             console.log(`${socket.id} joined monitoring room`)
         })
 
+        socket.on('join-user', (userId: string) => {
+            socket.join(`user-${userId}`)
+            console.log(`${socket.id} joined user room: user-${userId}`)
+        })
+
         socket.on('disconnect', () => {
             console.log(`Socket disconnected: ${socket.id}`)
         })

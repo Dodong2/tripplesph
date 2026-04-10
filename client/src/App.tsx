@@ -10,6 +10,7 @@ import UpdateArticle from "./pages/article/UpdateArticle"
 import ArticleView from "./pages/user/ArticleView"
 import UserDashboard from "./pages/user/UserDashboard"
 import Monitoring from "./pages/admin/Monitoring"
+import ArticleApproval from "./pages/admin/ArticleApproval"
 
 function App() {
   return (
@@ -58,6 +59,12 @@ function App() {
         <Route path="/admin/monitoring" element={
           <ProtectedRoute allowedRoles={["super_admin"]}>
             <Monitoring/>
+          </ProtectedRoute>
+        }/>
+
+        <Route path="/admin/approvals" element={
+          <ProtectedRoute allowedRoles={["admin", "super_admin"]}>
+            <ArticleApproval/>
           </ProtectedRoute>
         }/>
 

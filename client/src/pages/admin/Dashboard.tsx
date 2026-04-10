@@ -35,6 +35,12 @@ const Dashboard = () => {
                 </button>
             )}
 
+            <br />
+
+            <button onClick={() => navigate('/admin/approvals')}>
+                📋 Article Approvals
+            </button>
+
             <input type="text" placeholder="Search users" value={search} onChange={(e) => {
                 handleSearchChange(e.target.value)
                 setPage(1)

@@ -7,6 +7,7 @@ import { ArticleStatus, Tag } from '../generated/prisma/enums.js'
 import { auth } from '../lib/auth.js'
 import { fromNodeHeaders } from 'better-auth/node'
 import { logActivity } from '../config/ActivityLogger.js'
+import { getIO } from '../config/socket.js'
 
 interface IParams extends ParamsDictionary {
     id: string
@@ -25,7 +26,7 @@ export const getArticles = async (req: Request, res: Response, next: NextFunctio
 
         const articles = await prisma.article.findMany({
             where: { 
-                status: "PUBLISHED",
+                approvalStatus: "APPROVED",
                 ...(validTag && {
                     tags: { some: { tag: validTag } }
                 })
@@ -103,27 +104,26 @@ export const getArticle = async (req: Request<IParams>, res: Response, next: Nex
 export const createArticle = async (req: Request, res: Response, next: NextFunction) => {   
     try {
         const { title, subtitle, content, status, scheduledAt, tags } = req.body
+        const role = req.user!.role as string
 
-        if(!title?.trim()) {
-            throw new BadrequestError('Title is required')
-        }
+        if(!title?.trim()) throw new BadrequestError('Title is required')
 
-        if(!content?.trim()) {
-            throw new BadrequestError('Content is required')
-        }
+        if(!content?.trim()) throw new BadrequestError('Content is required')
 
-        if(!tags?.length) {
-            throw new BadrequestError('At least one tag is required')
-        }
+        if(!tags?.length) throw new BadrequestError('At least one tag is required')
 
+        const actualStatus = role === 'writer' && status === 'PUBLISHED'
+            ? 'DRAFT'
+            : status ?? 'DRAFT'
+            
         const article = await prisma.article.create({
             data: {
                 title,
                 subtitle,
                 content,    
-                status: status ?? "DRAFT",
+                status: actualStatus,
                 scheduledAt: scheduledAt ? new Date(scheduledAt) : null,
-                publishedAt: status === "PUBLISHED" ? new Date() : null,
+                publishedAt: null,
                 authorId: req.user!.id,
                 tags: {
                     create: tags?.map((tag: string) => ({ tag })) ?? []
@@ -430,6 +430,160 @@ export const getArticleCounts = async (req: Request<IParams>, res: Response, nex
             if(!counts) throw new NotFoundError('Article not found')
 
             res.status(200).json(counts._count)
+    } catch(err) {
+        next(err)
+    }
+}
+
+// POST /api/articles/:id/submit
+// Writer only — submit for approval (PUBLISHED status lang)
+export const submitForApproval = async (req: Request<IParams>, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params
+        const role = req.user!.role as string
+
+        if (role !== 'writer') throw new ForbiddenError('Only writers can submit for approval')
+        
+        const article = await prisma.article.findUnique({ where: { id } })
+        if (!article) throw new NotFoundError('Article not found')
+        if (article.authorId !== req.user!.id) throw new ForbiddenError('You can only submit your own articles')
+        if (article.status !== 'PUBLISHED') throw new BadrequestError('Only PUBLISHED articles can be submitted for approval')
+        if (article.approvalStatus === 'PENDING') throw new BadrequestError('Article is already pending approval')
+
+        const updated = await prisma.article.update({
+            where: { id },
+            data: {
+                approvalStatus: 'PENDING',
+                publishedAt: null
+            }
+        })
+
+        await logActivity('ARTICLE_CREATED', `Article submitted for approval: ${article.title}`, {
+            userId: req.user!.id,
+            userName: req.user!.name ?? req.user!.email,
+            articleId: id,
+            articleTitle: article.title
+        })
+
+        try {
+             const io = getIO()
+             io.to('monitoring').emit('approval-request', {
+                articleId: id,
+                articleTitle: article.title,
+                authorName: req.user!.name ?? req.user!.email
+             })
+        } catch {}
+
+        res.status(200).json(updated)
+    } catch(err) {
+        next(err)
+    }
+}
+
+// PATCH /api/articles/:id/approve
+// Admin/super_admin only
+export const approvalArticle = async (req: Request<IParams>, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params
+
+        const article = await prisma.article.findUnique({ where: { id } })
+        if (!article) throw new NotFoundError('Article not found')
+        if (article.approvalStatus !== 'PENDING') throw new BadrequestError('Article is not pending approval')
+        
+        const updated = await prisma.article.update({
+            where: { id },
+            data: {
+                approvalStatus: 'APPROVED',
+                approvedBy: req.user!.id,
+                approvedAt: new Date(),
+                publishedAt: new Date()
+            }
+        })
+
+        await logActivity('ARTICLE_UPDATED', `Article approved: ${article.title}`, {
+            userId: req.user!.id,
+            userName: req.user!.name ?? req.user!.email,
+            articleId: id,
+            articleTitle: article.title
+        })
+
+        try {
+            const io = getIO()
+            io.to(`user-${article.authorId}`).emit('article-approved', {
+                articleId: id,
+                articleTitle: article.title
+            })
+        } catch {}
+
+        await clearCache('articles')
+        await clearCache('search')
+        await clearCache('related')
+
+        res.status(200).json(updated)
+    } catch(err) {
+        next(err)
+    }
+}
+
+// PATCH /api/articles/:id/reject
+// Admin/super_admin only
+export const rejectArticle = async (req: Request<IParams>, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params
+        const { reason } = req.body
+        
+        if (!reason?.trim()) throw new BadrequestError('Rejection reason is required')
+
+        const article = await prisma.article.findUnique({ where: { id } })
+        if (!article) throw new NotFoundError('Article not found')
+        if (article.approvalStatus !== 'PENDING') throw new BadrequestError('rticle is not pending approval')
+
+        const updated = await prisma.article.update({
+            where: { id },
+            data: {
+                approvalStatus: 'REJECTED',
+                rejectionReason: reason,
+                status: 'DRAFT'
+            }
+        })
+        
+        await logActivity('ARTICLE_UPDATED', `Article rejected: "${article.title}`, {
+            userId: req.user!.id,
+            userName: req.user!.name ?? req.user!.email,
+            articleId: id,
+            articleTitle: article.title,
+            metadata: { reason }
+        })
+
+        try {
+            const io = getIO()
+            io.to(`user-${article.authorId}`).emit('article-rejected', {
+                article: id,
+                articleTitle: article.title,
+                reason
+            })
+        } catch {}
+
+        res.status(200).json(updated)
+    } catch(err) {
+        next(err)
+    }
+}
+
+// GET /api/articles/pending
+// Admin/super_admin only — list ng pending articles
+export const getPendingArticles = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const articles = await prisma.article.findMany({
+            where: { approvalStatus: 'PENDING' },
+            include: {
+                author: { select: { name: true, email: true, image: true } },
+                tags: { select: { tag: true } }
+            },
+            orderBy: { createdAt: 'asc' }
+        })
+
+        res.status(200).json(articles)
     } catch(err) {
         next(err)
     }
