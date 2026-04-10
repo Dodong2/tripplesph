@@ -16,7 +16,10 @@ const UpdateArticle = () => {
     selectedTags,
     initialized,
     hasChanges, toggleTag,
-    canEdit, handleSubmit
+    canEdit, handleSubmit,
+    isSubmitting,
+    handleSubmitForApproval,
+    article
   } = useUpdateArticleForm()
 
   if (isLoading) return <p>Loading article...</p>
@@ -27,6 +30,33 @@ const UpdateArticle = () => {
     <div>
       <h1>Edit Article</h1>
       <button onClick={() => navigate('/writer')}>← Back</button>
+
+      {/* ── Approval Status Banner ─────────────────── */}
+      {article?.approvalStatus === 'PENDING' && (
+        <div style={{ background: '#fff3cd', padding: '10px', margin: '10px 0' }}>
+          ⏳ This article is pending approval.
+        </div>
+      )}
+
+      {article?.approvalStatus === 'APPROVED' && (
+        <div style={{ background: '#d4edda', padding: '10px', margin: '10px 0' }}>
+          ✓ This article has been approved and published.
+        </div>
+      )}
+
+      {article?.approvalStatus === 'REJECTED' && (
+        <div style={{ background: '#f8d7da', padding: '10px', margin: '10px 0' }}>
+          <strong>✗ Rejected</strong>
+          {article.rejectReason && (
+            <p style={{ margin: '5px 0 0' }}>
+              <strong>Reason:</strong> {article.rejectReason}
+            </p>
+          )}
+          <p style={{ fontSize: '12px', color: 'gray', margin: '5px 0 0' }}>
+            Update your article and resubmit for approval.
+          </p>
+        </div>
+      )}
 
       <br /><br />
 
@@ -108,6 +138,26 @@ const UpdateArticle = () => {
         <p style={{ color: 'gray', fontSize: '12px' }}>
           No changes yet
         </p>
+      )}
+
+
+      {/* ── Send for Approval — PUBLISHED + NONE/REJECTED ── */}
+      {status === 'PUBLISHED' && 
+        (article?.approvalStatus === 'NONE' ||
+          article?.approvalStatus === 'REJECTED') &&
+          !hasChanges && (
+            <button
+              onClick={handleSubmitForApproval}
+              disabled={isSubmitting}
+              style={{ marginLeft: '10px' }}
+            >
+              {isSubmitting ? 'Sending...' : '📤 Send for Approval'}
+            </button>
+          )
+      }
+
+      {!hasChanges && initialized && (
+        <p style={{ color: 'gray', fontSize: '12px' }}>No changes yet</p>
       )}
 
     </div>

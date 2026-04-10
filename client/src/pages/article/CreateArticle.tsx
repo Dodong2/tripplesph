@@ -15,8 +15,34 @@ const CreateArticle = () => {
     selectedTags,
     isPending, error,
     toggleTag,
-    handleSubmit
+    handleCreate,
+    createdArticle,
+    handleSubmitForApproval,
+    isSubmitting
   } = useCreateArticleForm()
+
+
+  if(createdArticle) {
+    return (
+      <div>
+        <h2>Article Created!</h2>
+        <p><strong>{createdArticle.title}</strong></p>
+        <p>Your article is ready. Send it for admin approval to publish it.</p>
+
+        <button
+          onClick={handleSubmitForApproval}
+          disabled={isSubmitting}
+          style={{ marginRight: '10px' }}
+        >
+          {isSubmitting ? 'Sending...' : '📤 Send for Approval'}
+        </button>
+
+        <button onClick={() => navigate('/writer')}>
+          Save & Review Later
+        </button>
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -116,11 +142,12 @@ const CreateArticle = () => {
       {error && <p style={{ color: 'red' }}>{error.message}</p>}
 
       {/* ── Submit ────────────────────────────────── */}
-      <button
-        onClick={handleSubmit}
-        disabled={isPending}
-      >
-        {isPending ? 'Creating...' : 'Create Article'}
+      <button onClick={handleCreate} disabled={isPending}>
+        {isPending ? 'Creating...' : (
+          status === 'DRAFT' ? '💾 Save as Draft' :
+          status === 'SCHEDULED' ? '📅 Save as Scheduled' :
+          '📝 Create Article'
+        )}
       </button>
     </div>
   )

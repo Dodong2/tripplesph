@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom"
 import { useState, useEffect, } from "react"
 import { useGetArticle } from "../queries/useGetArticle"
 import { useUpdateArticle } from "../mutations/useUpdateArticles"
+import { useSubmitForApproval } from "../mutations/useSubmitForApproval"
 import type { ArticleStatus, ArticleTag } from "../../../types/index.types"
 import { UI_MESSAGES, VALIDATION_ERRORS } from "../../../errors/message"
 import toast from 'react-hot-toast'
@@ -14,6 +15,7 @@ export const useUpdateArticleForm = () => {
     const navigate = useNavigate()
     const { data: article, isLoading, error } = useGetArticle(id!)
     const { mutateAsync: updateAsync, isPending } = useUpdateArticle()
+    const { mutateAsync: submitAsync, isPending: isSubmitting } = useSubmitForApproval()
 
     const [title, setTitle] = useState('')
     const [subtitle, setSubtitle] = useState('')
@@ -93,7 +95,17 @@ export const useUpdateArticleForm = () => {
         navigate('/writer')
     }
 
-
+    const handleSubmitForApproval = async () => {
+        await toast.promise(
+            submitAsync(id!),
+            {
+                loading: 'Sending for approval...',
+                success: UI_MESSAGES.success('Article', 'approval'),
+                error: (err: Error) => err.message
+            }
+        )
+        navigate('/writer')
+    }
 
     return {
         isLoading, error,
@@ -106,7 +118,10 @@ export const useUpdateArticleForm = () => {
         selectedTags,
         initialized,
         hasChanges, toggleTag,
-        canEdit, handleSubmit
+        canEdit, handleSubmit,
+        isSubmitting,
+        handleSubmitForApproval,
+        article
     }
 
 }

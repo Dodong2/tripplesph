@@ -1,13 +1,15 @@
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
 import { useCreateArticle } from "../mutations/useCreateArticles"
+import { useSubmitForApproval } from "../mutations/useSubmitForApproval"
 import { UI_MESSAGES, VALIDATION_ERRORS } from "../../../errors/message"
-import type { ArticleStatus, ArticleTag } from "../../../types/index.types"
+import type { ArticleStatus, ArticleTag, Article } from "../../../types/index.types"
 import toast from "react-hot-toast"
 
 export const useCreateArticleForm = () => {
     const navigate = useNavigate()
     const { mutateAsync: createAsync, isPending, error } = useCreateArticle()
+    const { mutateAsync: submitAsync, isPending: isSubmitting } = useSubmitForApproval()
 
     const [title, setTitle] = useState('')
     const [subtitle, setSubtitle] = useState('')
@@ -16,19 +18,21 @@ export const useCreateArticleForm = () => {
     const [scheduledAt, setScheduledAt] = useState('')
     const [selectedTags, setSelectedTags] = useState<ArticleTag[]>([])
 
+    const [createdArticle, setCreatedArticle] = useState<Article | null>(null)
+
     const toggleTag = (tag: ArticleTag) => {
         setSelectedTags(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag])
     }
 
-    const handleSubmit = async () => {
+    const handleCreate = async () => {
         if (!title.trim()) return alert('Title is required')
         if (!content.trim()) return alert('Content is required')
         if (selectedTags.length === 0) return alert('Select at least one tag')
         if (status === 'SCHEDULED' && !scheduledAt) {
-            return toast.error(VALIDATION_ERRORS.required('Schedule date'))
+            return toast.error(VALIDATION_ERRORS.required('Schedule date is required'))
         }
 
-        await toast.promise(createAsync({
+        const article = await toast.promise(createAsync({
             title,
             subtitle: subtitle || undefined,
             content,
@@ -40,6 +44,25 @@ export const useCreateArticleForm = () => {
             success: UI_MESSAGES.success('created', 'Article'),
             error: (err: Error) => err.message
         }
+        )
+
+        if (status === 'PUBLISHED') {
+            setCreatedArticle(article)
+        } else {
+            navigate('/writer')
+        }
+    }
+
+    const handleSubmitForApproval = async () => {
+        if(!createdArticle) return
+
+        await toast.promise(
+            submitAsync(createdArticle.id),
+            {
+                loading: 'Sending for approval...',
+                success: UI_MESSAGES.success('Article approval', 'send'),
+                error: (err: Error) => err.message
+            }
         )
 
         navigate('/writer')
@@ -54,7 +77,10 @@ export const useCreateArticleForm = () => {
         selectedTags,
         isPending, error,
         toggleTag,
-        handleSubmit
+        handleCreate,
+        createdArticle,
+        handleSubmitForApproval,
+        isSubmitting
     }
 }
 
