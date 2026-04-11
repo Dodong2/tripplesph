@@ -19,7 +19,8 @@ const UpdateArticle = () => {
     canEdit, handleSubmit,
     isSubmitting,
     handleSubmitForApproval,
-    article
+    article,
+    isApproved
   } = useUpdateArticleForm()
 
   if (isLoading) return <p>Loading article...</p>
@@ -107,12 +108,22 @@ const UpdateArticle = () => {
           onChange={(e) => setStatus(e.target.value as ArticleStatus)}
         >
           <option value="DRAFT">Draft</option>
-          <option value="PUBLISHED">Publish Now</option>
           <option value="SCHEDULED">Schedule</option>
+
+          {isApproved && (
+            <option value="PUBLISHED">✓ Publish Now</option>
+
+          )}
         </select>
       </div>
 
       <br />
+
+      {isApproved && status === 'PUBLISHED' && hasChanges && (
+        <button onClick={handleSubmit} disabled={isPending}>
+          {isPending ? 'Publishing...' : '🚀 Publish Now'}
+        </button>
+      )}
 
       {status === 'SCHEDULED' && (
         <div>
@@ -142,18 +153,18 @@ const UpdateArticle = () => {
 
 
       {/* ── Send for Approval — PUBLISHED + NONE/REJECTED ── */}
-      {status === 'PUBLISHED' && 
+      {status === 'PUBLISHED' &&
         (article?.approvalStatus === 'NONE' ||
           article?.approvalStatus === 'REJECTED') &&
-          !hasChanges && (
-            <button
-              onClick={handleSubmitForApproval}
-              disabled={isSubmitting}
-              style={{ marginLeft: '10px' }}
-            >
-              {isSubmitting ? 'Sending...' : '📤 Send for Approval'}
-            </button>
-          )
+        !hasChanges && (
+          <button
+            onClick={handleSubmitForApproval}
+            disabled={isSubmitting}
+            style={{ marginLeft: '10px' }}
+          >
+            {isSubmitting ? 'Sending...' : '📤 Send for Approval'}
+          </button>
+        )
       }
 
       {!hasChanges && initialized && (

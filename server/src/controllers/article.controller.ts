@@ -112,9 +112,8 @@ export const createArticle = async (req: Request, res: Response, next: NextFunct
 
         if(!tags?.length) throw new BadrequestError('At least one tag is required')
 
-        const actualStatus = role === 'writer' && status === 'PUBLISHED'
-            ? 'DRAFT'
-            : status ?? 'DRAFT'
+        const validStatuses = role === 'writer' ? ['DRAFT', 'SCHEDULED'] : ['DRAFT', 'SCHEDULED', 'PUBLISHED']
+        const actualStatus = validStatuses.includes(status) ? status : 'DRAFT'
             
         const article = await prisma.article.create({
             data: {
@@ -163,11 +162,15 @@ export const updateArticle = async (req: Request<IParams>, res: Response, next: 
             where: { id }
         })
 
-        if(!article) throw new NotFoundError('Article not found')
+        if (!article) throw new NotFoundError('Article not found')
 
         // Writer — pwede lang i-edit ang sariling article
-        if(role === 'writer' && article.authorId !== req.user!.id) {
+        if (role === 'writer' && article.authorId !== req.user!.id) {
             throw new ForbiddenError('You can only edit your own articles')
+        }
+
+        if (role === 'writer' && status === 'PUBLISHED' && article.approvalStatus !== 'APPROVED') {
+            throw new ForbiddenError('Article must be approved before publishing')
         }
 
         const updated = await prisma.article.update({
@@ -447,7 +450,11 @@ export const submitForApproval = async (req: Request<IParams>, res: Response, ne
         const article = await prisma.article.findUnique({ where: { id } })
         if (!article) throw new NotFoundError('Article not found')
         if (article.authorId !== req.user!.id) throw new ForbiddenError('You can only submit your own articles')
-        if (article.status !== 'PUBLISHED') throw new BadrequestError('Only PUBLISHED articles can be submitted for approval')
+
+        if (!['DRAFT', 'SCHEDULED'].includes(article.status)) {
+            throw new BadrequestError('Only DRAFT or SCHEDULED articles can be submitted for approval')
+        }
+
         if (article.approvalStatus === 'PENDING') throw new BadrequestError('Article is already pending approval')
 
         const updated = await prisma.article.update({
@@ -496,7 +503,6 @@ export const approvalArticle = async (req: Request<IParams>, res: Response, next
                 approvalStatus: 'APPROVED',
                 approvedBy: req.user!.id,
                 approvedAt: new Date(),
-                publishedAt: new Date()
             }
         })
 

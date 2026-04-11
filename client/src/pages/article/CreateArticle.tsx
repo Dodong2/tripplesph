@@ -27,7 +27,7 @@ const CreateArticle = () => {
       <div>
         <h2>Article Created!</h2>
         <p><strong>{createdArticle.title}</strong></p>
-        <p>Your article is ready. Send it for admin approval to publish it.</p>
+        <p>Send it for admin approval to get it published.</p>
 
         <button
           onClick={handleSubmitForApproval}
@@ -38,7 +38,7 @@ const CreateArticle = () => {
         </button>
 
         <button onClick={() => navigate('/writer')}>
-          Save & Review Later
+          Save & Submit Later
         </button>
       </div>
     )
@@ -118,7 +118,6 @@ const CreateArticle = () => {
           onChange={(e) => setStatus(e.target.value as ArticleStatus)}
         >
           <option value="DRAFT">Draft</option>
-          <option value="PUBLISHED">Publish Now</option>
           <option value="SCHEDULED">Schedule</option>
         </select>
       </div>
@@ -144,9 +143,7 @@ const CreateArticle = () => {
       {/* ── Submit ────────────────────────────────── */}
       <button onClick={handleCreate} disabled={isPending}>
         {isPending ? 'Creating...' : (
-          status === 'DRAFT' ? '💾 Save as Draft' :
-          status === 'SCHEDULED' ? '📅 Save as Scheduled' :
-          '📝 Create Article'
+          status === 'DRAFT' ? '💾 Save as Draft' : '📅 Save as Scheduled'
         )}
       </button>
     </div>

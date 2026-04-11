@@ -107,6 +107,8 @@ export const useUpdateArticleForm = () => {
         navigate('/writer')
     }
 
+    const isApproved = article?.approvalStatus === 'APPROVED'
+
     return {
         isLoading, error,
         isPending,
@@ -121,7 +123,8 @@ export const useUpdateArticleForm = () => {
         canEdit, handleSubmit,
         isSubmitting,
         handleSubmitForApproval,
-        article
+        article,
+        isApproved
     }
 
 }
