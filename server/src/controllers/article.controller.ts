@@ -492,6 +492,7 @@ export const submitForApproval = async (req: Request<IParams>, res: Response, ne
 export const approvalArticle = async (req: Request<IParams>, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params
+        const { publishNow = false } = req.body
 
         const article = await prisma.article.findUnique({ where: { id } })
         if (!article) throw new NotFoundError('Article not found')
@@ -503,6 +504,10 @@ export const approvalArticle = async (req: Request<IParams>, res: Response, next
                 approvalStatus: 'APPROVED',
                 approvedBy: req.user!.id,
                 approvedAt: new Date(),
+                ...(publishNow && {
+                    status: 'PUBLISHED',
+                    publishedAt: new Date()
+                })
             }
         })
 

@@ -61,8 +61,8 @@ export const submitForApproval = async (id: string): Promise<Article> => {
     return data
 }
 
-export const approveArticle = async (id: string): Promise<Article> => {
-    const { data } = await apiClient.patch(`/api/articles/${id}/approve`)
+export const approveArticle = async (id: string, publishNow: boolean): Promise<Article> => {
+    const { data } = await apiClient.patch(`/api/articles/${id}/approve`, { publishNow })
     return data
 }
 

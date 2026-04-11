@@ -8,7 +8,7 @@ import { UI_MESSAGES } from "../../errors/message"
 
 const ArticleApproval = () => {
     const { data: articles = [], isLoading } = useGetPendingArticles()
-    const { mutate: approve, isPending: isApproving } = useApproveArticle()
+    const { approve, isApproving, approveAndPublish, isApprovingAndPublishing } = useApproveArticle()
     const { mutateAsync: rejectMutate, isPending: isRejecting } = useRejectArticle()
 
     const [rejectingId, setRejectingId] = useState<string | null>(null)
@@ -77,6 +77,13 @@ const ArticleApproval = () => {
                                 style={{ marginRight: '10px', color: 'green' }}
                             >
                                 {isApproving ? '...' : '✓ Approve'}
+                            </button>
+
+                            <button onClick={() => toast.promise(
+                                new Promise((res, rej) => approveAndPublish(article.id, { onSuccess: res, onError: rej })),
+                                { loading: 'Approving & Publishing...', success: 'Article approved and published!', error: (e: Error) => e.message }
+                            )}  style={{ marginLeft: '5px', color: 'green' }}>
+                                🚀 Approve & Publish Now
                             </button>
 
                             {/* Reject */}
