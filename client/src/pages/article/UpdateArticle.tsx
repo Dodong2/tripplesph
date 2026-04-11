@@ -19,156 +19,149 @@ const UpdateArticle = () => {
     canEdit, handleSubmit,
     isSubmitting,
     handleSubmitForApproval,
-    article,
-    isApproved
+    isCancelling,
+    handleCancelSubmission,
+    article, isApproved, user
   } = useUpdateArticleForm()
 
   if (isLoading) return <p>Loading article...</p>
   if (error) return <p style={{ color: 'red' }}>{error.message}</p>
   if (!canEdit) return <p>You don't have permission to edit this article.</p>
 
+  const isWriter = user?.role === 'writer'
+  const isPending_ = article?.approvalStatus === 'PENDING'
+  const isRejected = article?.approvalStatus === 'REJECTED'
+  const isNone = article?.approvalStatus === 'NONE'
+  const isPublished = article?.status === 'PUBLISHED'
+
+  const isLocked = isWriter && (isPending_ || isPublished)
+
   return (
     <div>
       <h1>Edit Article</h1>
       <button onClick={() => navigate('/writer')}>← Back</button>
 
-      {/* ── Approval Status Banner ─────────────────── */}
-      {article?.approvalStatus === 'PENDING' && (
+      {/* ── Status Banner ─────────────────────────── */}
+      {isPending_ && (
         <div style={{ background: '#fff3cd', padding: '10px', margin: '10px 0' }}>
-          ⏳ This article is pending approval.
+          ⏳ Pending approval — article is locked for editing.
+          <button
+            onClick={handleCancelSubmission}
+            disabled={isCancelling}
+            style={{ marginLeft: '10px' }}>
+            {isCancelling ? 'Cancelling...' : 'Cancel Submission'}
+          </button>
         </div>
       )}
 
-      {article?.approvalStatus === 'APPROVED' && (
+      {isApproved && isPublished && (
         <div style={{ background: '#d4edda', padding: '10px', margin: '10px 0' }}>
-          ✓ This article has been approved and published.
+          ✓ Published
         </div>
       )}
 
-      {article?.approvalStatus === 'REJECTED' && (
+      {isRejected && (
         <div style={{ background: '#f8d7da', padding: '10px', margin: '10px 0' }}>
           <strong>✗ Rejected</strong>
-          {article.rejectReason && (
+          {article?.rejectReason && (
             <p style={{ margin: '5px 0 0' }}>
               <strong>Reason:</strong> {article.rejectReason}
             </p>
           )}
-          <p style={{ fontSize: '12px', color: 'gray', margin: '5px 0 0' }}>
-            Update your article and resubmit for approval.
-          </p>
+          <p style={{ margin: '5px 0 0' }}></p>
         </div>
       )}
 
-      <br /><br />
+      <br />
 
+      {/* ── Form fields — disabled kapag locked ───── */}
       <div>
         <label>Title *</label><br />
-        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)}
+        <input type="text" value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          disabled={isLocked}
           style={{ width: '400px' }}
         />
       </div>
-
       <br />
 
       <div>
         <label>Subtitle</label><br />
-        <input type="text" value={subtitle} onChange={(e) => setSubtitle(e.target.value)}
+        <input type="text" value={subtitle}
+          onChange={(e) => setSubtitle(e.target.value)}
+          disabled={isLocked}
           style={{ width: '400px' }}
         />
       </div>
-
       <br />
 
       <div>
-        <label>Content *</label><br />
-        <textarea value={content} onChange={(e) => setContent(e.target.value)} rows={10}
+        <label>Content *</label>
+        <textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          disabled={isLocked}
           style={{ width: '400px' }}
         />
       </div>
-
       <br />
 
       <div>
-        <label>Tags *</label> <br />
-        {TAGS.map(tag => (
+        {TAGS.map(tag =>
           <label key={tag} style={{ marginRight: '10px' }}>
-            <input type="checkbox" checked={selectedTags.includes(tag)}
-              onChange={() => toggleTag(tag)} />
+            <input type="checkbox"
+              checked={selectedTags.includes(tag)}
+              onChange={() => toggleTag(tag)}
+              disabled={isLocked}
+            />
             {tag}
           </label>
-        ))}
+        )}
       </div>
-
       <br />
 
       <div>
-        <label>Status *</label><br />
-        <select
-          value={status}
+        <label>Status *</label>
+        <select value={status}
           onChange={(e) => setStatus(e.target.value as ArticleStatus)}
+          disabled={isLocked}
         >
           <option value="DRAFT">Draft</option>
           <option value="SCHEDULED">Schedule</option>
-
           {isApproved && (
             <option value="PUBLISHED">✓ Publish Now</option>
-
           )}
         </select>
       </div>
-
       <br />
 
-      {isApproved && status === 'PUBLISHED' && hasChanges && (
+      {/* ── ACTION BUTTONS — isa lang lalabas depende sa state ── */}
+      {/* Save Changes — lahat ng role, hindi locked, may changes */}
+      {!isLocked && hasChanges && (
         <button onClick={handleSubmit} disabled={isPending}>
-          {isPending ? 'Publishing...' : '🚀 Publish Now'}
+          {isPending ? 'Saving...' : 'Save Changes'}
         </button>
       )}
 
-      {status === 'SCHEDULED' && (
-        <div>
-          <label>Schedule Date *</label><br />
-          <input
-            type="date"
-            value={scheduledAt}
-            onChange={(e) => setScheduledAt(e.target.value)}
-          />
-        </div>
+      {/* Send for Approval — DRAFT/REJECTED lang, walang pending changes */}
+      {isWriter && (isNone || isRejected) && !hasChanges && !isPublished && (
+        <button
+          onClick={handleSubmitForApproval}
+          disabled={isSubmitting}
+          style={{ marginLeft: hasChanges ? '10px' : '0' }}
+        >
+          {isSubmitting ? 'Sending...' : '📤 Send for Approval'}
+        </button>
       )}
 
-      <br />
-
-      <button
-        onClick={handleSubmit}
-        disabled={!hasChanges || isPending}
-      >
-        {isPending ? 'Saving...' : 'Save Changes'}
-      </button>
-
-      {!hasChanges && initialized && (
-        <p style={{ color: 'gray', fontSize: '12px' }}>
-          No changes yet
-        </p>
-      )}
-
-
-      {/* ── Send for Approval — PUBLISHED + NONE/REJECTED ── */}
-      {status === 'PUBLISHED' &&
-        (article?.approvalStatus === 'NONE' ||
-          article?.approvalStatus === 'REJECTED') &&
-        !hasChanges && (
-          <button
-            onClick={handleSubmitForApproval}
-            disabled={isSubmitting}
-            style={{ marginLeft: '10px' }}
-          >
-            {isSubmitting ? 'Sending...' : '📤 Send for Approval'}
-          </button>
-        )
-      }
-
-      {!hasChanges && initialized && (
+      {!hasChanges && initialized && !isLocked && (
         <p style={{ color: 'gray', fontSize: '12px' }}>No changes yet</p>
+      )}
+
+      {isWriter && isPublished && (
+        <p style={{ color: 'gray', fontSize: '12px' }}>
+          Published articles cannot be edited.
+        </p>
       )}
 
     </div>

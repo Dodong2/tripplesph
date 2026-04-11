@@ -75,3 +75,8 @@ export const getPendingArticles = async (): Promise<Article[]> => {
     const { data } = await apiClient.get('/api/articles/pending')
     return data
 }
+
+export const cancelSubmission = async(id: string): Promise<Article> => {
+    const { data } = await apiClient.post(`/api/articles/${id}/cancel-submission`)
+    return data
+}

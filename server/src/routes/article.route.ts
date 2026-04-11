@@ -13,7 +13,8 @@ import {
     submitForApproval,
     approvalArticle,
     rejectArticle,
-    getPendingArticles
+    getPendingArticles,
+    cancelSubmission
  } from "../controllers/article.controller.js";
  import { cacheMiddleware } from "../middleware/cache.middleware.js";
 
@@ -58,6 +59,11 @@ router.post("/:id/submit",
     requireRole(["writer", "admin", "super_admin"]),
     updateArticle
  )
+
+router.post("/:id/cancel-submission", 
+   requireRole(["writer"]),
+   cancelSubmission
+)
 
  // ── ADMIN + ABOVE ONLY ────────────────────────────────
  router.delete("/:id",

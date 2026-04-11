@@ -26,7 +26,7 @@ export const getArticles = async (req: Request, res: Response, next: NextFunctio
 
         const articles = await prisma.article.findMany({
             where: { 
-                approvalStatus: "APPROVED",
+                status: "PUBLISHED",
                 ...(validTag && {
                     tags: { some: { tag: validTag } }
                 })
@@ -171,6 +171,14 @@ export const updateArticle = async (req: Request<IParams>, res: Response, next: 
 
         if (role === 'writer' && status === 'PUBLISHED' && article.approvalStatus !== 'APPROVED') {
             throw new ForbiddenError('Article must be approved before publishing')
+        }
+
+        if (role === 'writer' && article.approvalStatus === 'PENDING') {
+            throw new ForbiddenError('Cannot edit article while pending approval. Cancel submission first.')
+        }
+
+        if (role === 'writer' && article.status === 'PUBLISHED') {
+            throw new ForbiddenError('Published articles cannot be edited.')
         }
 
         const updated = await prisma.article.update({
@@ -596,6 +604,26 @@ export const getPendingArticles = async (req: Request, res: Response, next: Next
 
         res.status(200).json(articles)
     } catch(err) {
+        next(err)
+    }
+}
+
+export const cancelSubmission = async (req: Request<IParams>, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params
+
+        const article = await prisma.article.findUnique({ where: { id } })
+        if (!article) throw new NotFoundError('Article not found')
+        if (article.authorId !== req.user!.id) throw new ForbiddenError('Not your article')
+        if (article.approvalStatus !== 'PENDING') throw new BadrequestError('Article is not pending')
+
+        const updated = await prisma.article.update({
+            where: { id },
+            data: { approvalStatus: 'NONE' }
+        })
+
+        res.status(200).json(updated)
+    } catch (err) {
         next(err)
     }
 }
