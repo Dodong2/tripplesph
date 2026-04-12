@@ -30,7 +30,7 @@ export interface Article {
         views: number
     }
     approvalStatus: approvalStatus
-    rejectReason?: string | null
+    rejectionReason?: string | null
     approvedBy?: string | null
     approvedAt?: string | null
     

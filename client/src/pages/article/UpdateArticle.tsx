@@ -63,9 +63,9 @@ const UpdateArticle = () => {
       {isRejected && (
         <div style={{ background: '#f8d7da', padding: '10px', margin: '10px 0' }}>
           <strong>✗ Rejected</strong>
-          {article?.rejectReason && (
+          {article?.rejectionReason && (
             <p style={{ margin: '5px 0 0' }}>
-              <strong>Reason:</strong> {article.rejectReason}
+              <strong>Reason:</strong> {article.rejectionReason}
             </p>
           )}
           <p style={{ margin: '5px 0 0' }}></p>

@@ -2,11 +2,13 @@ import { useState } from "react"
 import { useGetPendingArticles } from "../../hooks/article/queries/useGetPendingArticles"
 import { useApproveArticle } from "../../hooks/article/mutations/useApproveArticle"
 import { useRejectArticle } from "../../hooks/article/mutations/useRejectArticle"
+import useApprovalSocket from "../../hooks/article/socket/useApprovalSocket"
 import type { Article } from "../../types/article.types"
 import toast from "react-hot-toast"
 import { UI_MESSAGES } from "../../errors/message"
 
 const ArticleApproval = () => {
+    useApprovalSocket()
     const { data: articles = [], isLoading } = useGetPendingArticles()
     const { approve, isApproving, approveAndPublish, isApprovingAndPublishing } = useApproveArticle()
     const { mutateAsync: rejectMutate, isPending: isRejecting } = useRejectArticle()

@@ -4,7 +4,6 @@ import { useAuth } from "../../hooks/useAuth"
 import { useGetArticles } from "../../hooks/article/queries/useGetArticles"
 import { useGetMyArticles } from "../../hooks/article/queries/useGetMyArticles"
 import { useWriterDashboard } from "../../hooks/article/ui/useWriterDashboard"
-import { useSubmitForApproval } from "../../hooks/article/mutations/useSubmitForApproval"
 import type { Article } from "../../types/index.types"
 
 
@@ -38,11 +37,6 @@ const WriterDashboard = () => {
         fetchNextPage: fetchMoreAll,
         hasNextPage: hasMoreAll
     } = useGetArticles({ tag: tagFilter || undefined })
-
-    const {
-        mutate: submit,
-        isPending: isSubmitting
-    } = useSubmitForApproval()
 
     return (
         <div>
@@ -116,17 +110,6 @@ const WriterDashboard = () => {
                                         view
                                     </button>
 
-                                    {article.status === 'PUBLISHED' &&
-                                        article.approvalStatus === 'NONE' && (
-                                            <button
-                                                onClick={() => submit(article.id)}
-                                                disabled={isSubmitting}
-                                            >
-                                                {isSubmitting ? '...' : 'Send for Approval'}
-                                            </button>
-                                        )
-                                    }
-
                                     {(user?.role === 'admin' || user?.role === 'super_admin') && (
                                         <button
                                             onClick={() => handleDelete(article.id)}
@@ -148,12 +131,6 @@ const WriterDashboard = () => {
 
                                     {article.approvalStatus === 'REJECTED' && (
                                         <span style={{ color: 'red' }}>✗ Rejected</span>
-                                    )}
-
-                                    {article.approvalStatus === 'REJECTED' && article.rejectReason && (
-                                        <p style={{ color: 'red', fontSize: '12px' }}>
-                                            Reason: {article.rejectReason}
-                                        </p>
                                     )}
 
                                     {article.status === 'DRAFT' && (

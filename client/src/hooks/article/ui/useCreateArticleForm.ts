@@ -46,11 +46,7 @@ export const useCreateArticleForm = () => {
         }
         )
 
-        if (status === 'PUBLISHED') {
-            setCreatedArticle(article)
-        } else {
-            navigate('/writer')
-        }
+        setCreatedArticle(article)        
     }
 
     const handleSubmitForApproval = async () => {

@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import { getRecentLogs } from "../config/ActivityLogger.js";
 import prisma from '../db/prisma.js'
 
 // GET /api/monitoring/logs
