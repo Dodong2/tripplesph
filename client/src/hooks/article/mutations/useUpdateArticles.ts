@@ -7,7 +7,8 @@ export const useUpdateArticle = () => {
     return useMutation({
         mutationFn: ({ id, input }: { id: string, input: UpdateArticleInput }) => 
             updateArticle(id, input),
-        onSuccess: () => {
+        onSuccess: (_,  { id }) => {
+            queryClient.invalidateQueries({ queryKey: ['articles', id] })
             queryClient.invalidateQueries({ queryKey: ['articles'] })
             queryClient.invalidateQueries({ queryKey: ['my-articles'] })
         }

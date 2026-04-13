@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { useQueryClient } from "@tanstack/react-query"
 import { socket } from "../../../lib/socket"
 
-const useApprovalSocket = () => {
+export const useApprovalSocket = () => {
     const queryClient = useQueryClient()
 
     useEffect(() => {
@@ -13,11 +13,15 @@ const useApprovalSocket = () => {
             queryClient.invalidateQueries({ queryKey: ['pending-articles'] })
         })
 
+        socket.on('approval-cancelled', () => {
+            queryClient.invalidateQueries({ queryKey: ['pending-articles'] })
+        })
+
         return () => {
             socket.off('approval-request')
+            socket.off('approval-cancelled')
             socket.disconnect()
         }
     }, [queryClient])
 }
 
-export default useApprovalSocket

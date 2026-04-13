@@ -5,7 +5,8 @@ export const useSubmitForApproval = () => {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: (id: string) => submitForApproval(id),
-        onSuccess: () => {
+        onSuccess: (_, id) => {
+            queryClient.invalidateQueries({ queryKey: ['article', id] })
             queryClient.invalidateQueries({ queryKey: ['my-articles'] })
         }
     })

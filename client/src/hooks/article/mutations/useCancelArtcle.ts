@@ -6,9 +6,9 @@ export const useCancelArtcle = () => {
 
   return useMutation({
     mutationFn: (id: string) => cancelSubmission(id),
-    onSuccess: () => {
+    onSuccess: (_, id) => {
+        queryClient.invalidateQueries({ queryKey: ['article', id] })
         queryClient.invalidateQueries({ queryKey: ['my-articles'] })
-        queryClient.invalidateQueries({ queryKey: ['article'] })
     }
   })
 }

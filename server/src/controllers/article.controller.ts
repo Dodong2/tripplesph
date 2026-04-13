@@ -622,6 +622,11 @@ export const cancelSubmission = async (req: Request<IParams>, res: Response, nex
             data: { approvalStatus: 'NONE' }
         })
 
+        try {
+            const io = getIO()
+            io.to('monitoring').emit('approval-cancelled', { articleId: id })
+        } catch {}
+
         res.status(200).json(updated)
     } catch (err) {
         next(err)
