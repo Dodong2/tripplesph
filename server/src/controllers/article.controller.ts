@@ -622,6 +622,10 @@ export const cancelSubmission = async (req: Request<IParams>, res: Response, nex
             data: { approvalStatus: 'NONE' }
         })
 
+        await clearCache('articles')
+        await clearCache('search')
+        await clearCache('related')
+
         try {
             const io = getIO()
             io.to('monitoring').emit('approval-cancelled', { articleId: id })

@@ -94,6 +94,8 @@ export const useUpdateArticleForm = () => {
             success: UI_MESSAGES.success('updated', 'Article'),
             error: (err: Error) => err.message
         })
+
+        setInitialized(false)
         navigate('/writer')
     }
 
@@ -106,6 +108,7 @@ export const useUpdateArticleForm = () => {
                 error: (err: Error) => err.message
             }
         )
+        setInitialized(false)
         navigate('/writer')
     }
 
@@ -120,6 +123,8 @@ export const useUpdateArticleForm = () => {
                 error: (err: Error) => err.message
             }
         )
+        setInitialized(false)
+        navigate('/writer')
     }
 
     return {

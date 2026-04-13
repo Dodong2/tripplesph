@@ -6,6 +6,7 @@ export const useGetArticle = (id: string) => {
     return useQuery({
         queryKey: ['article', id],
         queryFn: () => getArticle(id),
-        enabled: !!id
+        enabled: !!id,
+        staleTime: 0
     })
 }
