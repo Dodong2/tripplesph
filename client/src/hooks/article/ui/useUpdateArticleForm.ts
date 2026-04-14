@@ -5,7 +5,6 @@ import { useState, useEffect, } from "react"
 import { useGetArticle } from "../queries/useGetArticle"
 import { useUpdateArticle } from "../mutations/useUpdateArticles"
 import { useSubmitForApproval } from "../mutations/useSubmitForApproval"
-import { useCancelArtcle } from "../mutations/useCancelArtcle"
 import type { ArticleStatus, ArticleTag } from "../../../types/index.types"
 import { UI_MESSAGES, VALIDATION_ERRORS } from "../../../errors/message"
 import toast from 'react-hot-toast'
@@ -17,7 +16,6 @@ export const useUpdateArticleForm = () => {
     const { data: article, isLoading, error } = useGetArticle(id!)
     const { mutateAsync: updateAsync, isPending } = useUpdateArticle()
     const { mutateAsync: submitAsync, isPending: isSubmitting } = useSubmitForApproval()
-    const { mutateAsync: cancelAsync, isPending: isCancelling } = useCancelArtcle()
 
     const [title, setTitle] = useState('')
     const [subtitle, setSubtitle] = useState('')
@@ -96,7 +94,6 @@ export const useUpdateArticleForm = () => {
         })
 
         setInitialized(false)
-        navigate('/writer')
     }
 
     const handleSubmitForApproval = async () => {
@@ -114,19 +111,6 @@ export const useUpdateArticleForm = () => {
 
     const isApproved = article?.approvalStatus === 'APPROVED'
 
-    const handleCancelSubmission = async () => {
-        await toast.promise(
-            cancelAsync(id!),
-            {
-                loading: 'Cancelling submission...',
-                success: UI_MESSAGES.normal('Submission cancelled. You can edit now.'),
-                error: (err: Error) => err.message
-            }
-        )
-        setInitialized(false)
-        navigate('/writer')
-    }
-
     return {
         isLoading, error,
         isPending,
@@ -141,8 +125,6 @@ export const useUpdateArticleForm = () => {
         canEdit, handleSubmit,
         isSubmitting,
         handleSubmitForApproval,
-        isCancelling,
-        handleCancelSubmission,
         article, isApproved, user
     }
 

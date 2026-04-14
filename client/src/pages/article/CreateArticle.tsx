@@ -143,7 +143,7 @@ const CreateArticle = () => {
       {/* ── Submit ────────────────────────────────── */}
       <button onClick={handleCreate} disabled={isPending}>
         {isPending ? 'Creating...' : (
-          status === 'DRAFT' ? '💾 Save as Draft' : '📅 Save as Scheduled'
+          status === 'DRAFT' ? '💾 Done' : '📅 Save as Scheduled'
         )}
       </button>
     </div>

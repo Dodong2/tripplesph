@@ -6,7 +6,6 @@ import { useGetMyArticles } from "../../hooks/article/queries/useGetMyArticles"
 import { useWriterDashboard } from "../../hooks/article/ui/useWriterDashboard"
 import type { Article } from "../../types/index.types"
 
-
 const WriterDashboard = () => {
     const { user } = useAuth()
     const navigate = useNavigate()
@@ -19,6 +18,8 @@ const WriterDashboard = () => {
         handleDelete, isDeleting,
         handleSearch,
         handleClear,
+        handleCancelSubmission,
+        isCancelling
     } = useWriterDashboard()
 
     const {
@@ -37,6 +38,9 @@ const WriterDashboard = () => {
         fetchNextPage: fetchMoreAll,
         hasNextPage: hasMoreAll
     } = useGetArticles({ tag: tagFilter || undefined })
+
+    const admin = user?.role === 'admin'
+    const super_admin = user?.role === 'super_admin'
 
     return (
         <div>
@@ -87,6 +91,7 @@ const WriterDashboard = () => {
                     <tr>
                         <th>Title</th>
                         <th>Status</th>
+                        <th>Approval</th>
                         <th>Published</th>
                         <th>Tags</th>
                         <th>Actions</th>
@@ -96,21 +101,59 @@ const WriterDashboard = () => {
                     {myData?.pages.flatMap(p => p.data).length === 0 ? (
                         <tr><td colSpan={5}>No articles found</td></tr>
                     ) : (
-                        myData?.pages.flatMap(p => p.data).map((article: Article) => (
+                        myData?.pages.flatMap(p => p.data).map((article: Article) => {
+                            const isPending = article.approvalStatus === 'PENDING'
+                            const isApproved = article.approvalStatus === 'APPROVED'
+                            const isRejected = article.approvalStatus === 'REJECTED'
+                            // const isNone = article.approvalStatus === 'NONE'
+                            const isPublished = article.status === 'PUBLISHED'
+
+                            return (
                             <tr key={article.id}>
                                 <td>{article.title}</td>
                                 <td>{article.status}</td>
+
+                                {/* ── Approval status column ── */}
+                                <td>
+                                    {isPending && <span style={{ color: 'orange' }}>⏳ Pending</span>}
+                                    {isApproved && !isPublished && <span style={{ color: 'teal' }}>✓ Approved</span>}
+                                    {isApproved && isPublished && <span style={{ color: 'green' }}>✓ Published</span>}
+                                    {isRejected && (
+                                        <span style={{ color: 'red' }}>
+                                            ✗ Rejected
+                                            {article.rejectionReason && (
+                                                <span style={{ fontSize: '11px', display: 'block' }}>
+                                                    {article.rejectionReason}
+                                                </span>
+                                            )}
+                                        </span>
+                                    )}
+                                </td>
+
                                 <td>{article.publishedAt
                                     ? new Date(article.publishedAt).toLocaleDateString()
                                     : '—'}
                                 </td>
                                 <td>{article.tags?.map(t => t.tag).join(', ') ?? '—'}</td>
-                                <td>
-                                    <button onClick={() => navigate(`/writer/edit/${article.id}`)}>
-                                        view
-                                    </button>
 
-                                    {(user?.role === 'admin' || user?.role === 'super_admin') && (
+                                 {/* ── Actions column ── */}
+                                <td>
+                                    {isPending && (
+                                    <button
+                                        onClick={() => handleCancelSubmission(article.id)}
+                                        disabled={isCancelling}
+                                    >
+                                        {isCancelling ? '...' : 'Cancel Submission'}
+                                    </button>
+                                    )}
+                                    
+                                    {!isPending && (
+                                    <button onClick={() => navigate(`/writer/edit/${article.id}`)}>
+                                        View
+                                    </button>
+                                    )}
+
+                                    {admin && super_admin && (
                                         <button
                                             onClick={() => handleDelete(article.id)}
                                             disabled={isDeleting}
@@ -120,31 +163,12 @@ const WriterDashboard = () => {
 
                                     )}
 
-                                    {/* Status badges */}
-                                    {article.approvalStatus === 'PENDING' && (
-                                        <span style={{ color: 'orange' }}>⏳ Pending</span>
-                                    )}
-
-                                    {article.approvalStatus === 'APPROVED' && (
-                                        <span style={{ color: 'green' }}>✓ Approved</span>
-                                    )}
-
-                                    {article.approvalStatus === 'REJECTED' && (
-                                        <span style={{ color: 'red' }}>✗ Rejected</span>
-                                    )}
-
-                                    {article.status === 'DRAFT' && (
-                                        <span style={{ color: 'gray' }}>📝 Draft</span>
-                                    )}
-
-                                    {article.status === 'SCHEDULED' && (
-                                        <span style={{ color: 'blue' }}>📅 Scheduled</span>
-                                    )}
                                 </td>
                             </tr>
-                        )))}
+                        )}))}
                 </tbody>
             </table>
+
             {hasMoreMine && (
                 <button onClick={() => fetchMoreMine()}>Load More</button>
             )}
