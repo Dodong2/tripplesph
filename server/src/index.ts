@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import { createServer } from 'http'
+import cookieParser from 'cookie-parser'
 import { globalErrorHandler } from './middleware/error.middleware.js'
 import articleRouter from './routes/article.route.js'
 import userRouter from "./routes/user.route.js"
@@ -17,6 +18,7 @@ import authRouter from './routes/auth.route.js'
 
 const app = express()
 const httpServer = createServer(app)
+
 const PORT = process.env.PORT || 3001
 
 initSocket(httpServer)
@@ -30,6 +32,8 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }))
+
+app.use(cookieParser())
 
 // Routes
 app.use('/api/auth', authRouter)

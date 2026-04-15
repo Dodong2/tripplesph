@@ -17,14 +17,14 @@ const ArticleView = () => {
     const { data: counts } = useArticleCounts(id!)
     const { data: reactionStatus } = useReactionStatus(id!)
     const { react, unreact, isReacting, isUnReacting } = useReaction(id!)
-    const { mutate: share, isPending: isSharing } = useShare(id!)
-    const { mutate: view } = useView(id!, !!id)
+    const { mutate: share, isPending: isSharing, data: shareData } = useShare(id!)
+    const { mutate: view } = useView(id!)
 
     useEffect(() => {
-        if(id && isLoggedIn && user?.role === 'user') {
+        if(id) {
             view()
         }
-    }, [id, isLoggedIn, user?.role])
+    }, [id])
 
     if(isLoading) return <p>Loading article...</p>
     if(error) return <p style={{ color: 'red' }}>{error.message}</p>
@@ -73,8 +73,15 @@ const ArticleView = () => {
                     }
                 </button>
 
+            {!isLoggedIn && (
+                <p style={{ color: 'gray', fontSize: '12px' }}>
+                    Login to react this article.
+                </p>
+            )}
+            </div>
+        )}
 
-            <button
+        <button
                 onClick={() => share()}
                 disabled={isSharing}
                 style={{ marginLeft: '5px' }}
@@ -82,11 +89,17 @@ const ArticleView = () => {
                 {isSharing ? '...' : '🔗 Share'}
             </button>
 
-            {!isLoggedIn && (
-                <p style={{ color: 'gray', fontSize: '12px' }}>
-                    Login to react and share this article.
-                </p>
-            )}
+        {shareData?.shareUrl && (
+            <div style={{ marginTop: '10px' }}>
+                <input readOnly value={shareData.shareUrl}
+                    style={{ width: '300px' }}
+                    onClick={(e) => (e.target as HTMLInputElement).select()}
+                />
+                <button onClick={() => {
+                    navigator.clipboard.writeText(shareData.shareUrl)
+                }}>
+                    Copy Link
+                </button>
             </div>
         )}
 

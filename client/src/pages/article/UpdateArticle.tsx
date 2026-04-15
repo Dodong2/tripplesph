@@ -43,7 +43,7 @@ const UpdateArticle = () => {
         </div>
       )}
 
-      {isRejected && (
+      {/* {isRejected && (
         <div style={{ background: '#f8d7da', padding: '10px', margin: '10px 0' }}>
           <strong>✗ Rejected</strong>
           {article?.rejectionReason && (
@@ -53,7 +53,7 @@ const UpdateArticle = () => {
           )}
           <p style={{ margin: '5px 0 0' }}></p>
         </div>
-      )}
+      )} */}
 
       <br />
 

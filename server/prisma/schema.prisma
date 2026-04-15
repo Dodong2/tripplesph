@@ -145,9 +145,10 @@ model Reaction {
 model Share {
   id String @id @default(cuid())
   articleId String
-  userId String
+  userId String?
+  visitorId String?
   article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 
   @@unique([articleId, userId])
@@ -156,9 +157,10 @@ model Share {
 model View {
   id String @id @default(cuid())
   articleId String
-  userId String
+  userId String?
+  visitorId String?
   article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 
   @@unique([articleId, userId])

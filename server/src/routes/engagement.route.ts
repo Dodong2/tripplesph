@@ -6,8 +6,8 @@ const router = Router({ mergeParams: true })
 
 router.post("/react", requireRole(['user']), addReaction)
 router.delete("/react", requireRole(['user']), removeReactions)
-router.post("/share", requireRole(['user']), addShare)
-router.post("/view", requireRole(['user']), addView)
+router.post("/share", addShare)
+router.post("/view", addView)
 router.get("/reaction-status", requireRole(['user']), getReactionStatus)
 
 export default router
