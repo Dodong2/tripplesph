@@ -126,16 +126,13 @@ export const addShare = async (req: Request<IParams>, res: Response, next: NextF
 
         const visitorId = getVisitorId(req, res)
 
-        const trackingId = req.user?.id ?? `anon_${visitorId}`
-
-        const existingKey = `share_${req.params.id}_${trackingId}`
-
         const alreadyShared = await prisma.share.findFirst({
             where: {
                 articleId: req.params.id,
-                ...(req.user?.id
-                    ? { userId: req.user.id }
-                    : { visitorId: visitorId })
+                OR: [
+                    ...(req.user?.id ? [{ userId: req.user.id }] : []),
+                    { visitorId: visitorId }
+                ]
             }
         })
 
@@ -143,9 +140,8 @@ export const addShare = async (req: Request<IParams>, res: Response, next: NextF
             await prisma.share.create({
                 data: {
                     articleId: req.params.id,
-                    ...(req.user?.id
-                        ? { userId: req.user.id }
-                        : { visitorId: visitorId })
+                    userId: req.user?.id ?? null,
+                    visitorId: visitorId
                 }
             })
         }
@@ -154,6 +150,7 @@ export const addShare = async (req: Request<IParams>, res: Response, next: NextF
             where: { articleId: req.params.id }
         })
 
+        
         const shareUrl = `${process.env.CLIENT_URL}/articles/${req.params.id}`
 
         res.status(201).json({ shared: true, count, shareUrl })
@@ -173,9 +170,10 @@ export const addView = async (req: Request<IParams>, res: Response, next: NextFu
         const existing = await prisma.view.findFirst({
             where: {
                 articleId: req.params.id,
-                ...(req.user?.id
-                    ? { userId: req.user.id }
-                    : { visitorId: visitorId })
+                OR: [
+                    ...(req.user?.id ? [{ userId: req.user.id }] : []),
+                    { visitorId: visitorId }
+                ]
             }
         })
 
@@ -183,9 +181,8 @@ export const addView = async (req: Request<IParams>, res: Response, next: NextFu
             await prisma.view.create({
                 data: {
                     articleId: req.params.id,
-                    ...(req.user?.id
-                        ? { userId: req.user.id }
-                        : { visitorId: visitorId })
+                    userId: req.user?.id ?? null,
+                    visitorId: visitorId
                 }
             })
         }

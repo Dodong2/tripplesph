@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { useGetArticle } from "../../hooks/article/queries/useGetArticle"
 import { useArticleCounts } from "../../hooks/engagement/queries/useArticleCounts"
@@ -19,9 +19,11 @@ const ArticleView = () => {
     const { react, unreact, isReacting, isUnReacting } = useReaction(id!)
     const { mutate: share, isPending: isSharing, data: shareData } = useShare(id!)
     const { mutate: view } = useView(id!)
+    const hasViewed = useRef(false)
 
     useEffect(() => {
-        if(id) {
+        if(id && !hasViewed.current) {
+            hasViewed.current = true
             view()
         }
     }, [id])
