@@ -80,3 +80,8 @@ export const cancelSubmission = async(id: string): Promise<Article> => {
     const { data } = await apiClient.post(`/api/articles/${id}/cancel-submission`)
     return data
 }
+
+export const getRelatedArticles = async(id: string): Promise<ArticleResponse> => {
+    const { data } = await apiClient.get(`/api/articles/${id}/related`)
+    return data
+}

@@ -1,12 +1,14 @@
 import { useEffect, useRef } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { useGetArticle } from "../../hooks/article/queries/useGetArticle"
+import { useGetRelatedArticles } from "../../hooks/article/queries/useGetRelatedArticles"
 import { useArticleCounts } from "../../hooks/engagement/queries/useArticleCounts"
 import { useReactionStatus } from "../../hooks/engagement/queries/useReactionStatus"
 import { useReaction } from "../../hooks/engagement/mutations/useReaction"
 import { useShare } from "../../hooks/engagement/mutations/useShare"
 import { useView } from "../../hooks/engagement/mutations/useView"
 import { useAuth } from "../../hooks/useAuth"
+import type { Article } from "../../types/index.types"
 
 const ArticleView = () => {
     const { id } = useParams<{ id: string }>()
@@ -14,6 +16,7 @@ const ArticleView = () => {
     const { user, isLoggedIn } = useAuth()
 
     const { data: article, isLoading, error } = useGetArticle(id!)
+    const { data: related, isLoading: relatedLoading } = useGetRelatedArticles(id!)
     const { data: counts } = useArticleCounts(id!)
     const { data: reactionStatus } = useReactionStatus(id!)
     const { react, unreact, isReacting, isUnReacting } = useReaction(id!)
@@ -105,6 +108,30 @@ const ArticleView = () => {
             </div>
         )}
 
+
+     {related?.data  && related.data.length > 0 && (
+        <div style={{ marginTop: '20px' }}>
+            <h3>Related Articles</h3>
+            {related.data.map((r: Article) => (
+                <div key={r.id} style={{ marginBottom: '10px' }}>
+                    <p  style={{ cursor: 'pointer', color: 'blue', margin: 0 }}
+                        onClick={() => navigate(`/articles/${r.id}`)}
+                        >
+                            {r.title}
+                    </p>
+                    {r.subtitle && (
+                        <p style={{ fontSize: '12px', margin: 0 }}>{r.subtitle}</p>
+                    )}
+                    <p style={{ fontSize: '12px', color: 'gray', margin: 0 }}>
+                        {r.publishedAt
+                            ? new Date(r.publishedAt).toLocaleDateString()
+                            : '-'
+                        }
+                    </p>
+                </div>
+            ))}
+        </div>
+     )}
 
     </div>
   )
