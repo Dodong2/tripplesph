@@ -1,0 +1,20 @@
+.article-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  margin: 10px 0;
+  display: block;
+}
+
+.article-content p { margin: 0 0 12px; line-height: 1.7; }
+.article-content h2 { font-size: 22px; font-weight: bold; margin: 20px 0 10px; }
+.article-content h3 { font-size: 18px; font-weight: bold; margin: 16px 0 8px; }
+.article-content ul { padding-left: 24px; margin: 0 0 12px; list-style: disc; }
+.article-content ol { padding-left: 24px; margin: 0 0 12px; list-style: decimal; }
+.article-content blockquote {
+  border-left: 3px solid #ccc;
+  padding-left: 16px;
+  color: #666;
+  margin: 0 0 12px;
+  font-style: italic;
+}

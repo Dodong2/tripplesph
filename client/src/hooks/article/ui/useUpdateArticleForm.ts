@@ -27,7 +27,7 @@ export const useUpdateArticleForm = () => {
 
     // ── Populate form once article is fetched ─────────
     useEffect(() => {
-        if (article && !initialized) {
+        if (article) {
             setTitle(article.title)
             setSubtitle(article.subtitle ?? '')
             setContent(article.content)
@@ -39,7 +39,7 @@ export const useUpdateArticleForm = () => {
             setSelectedTags(article.tags?.map(t => t.tag) ?? [])
             setInitialized(true)
         }
-    }, [article, initialized])
+    }, [article?.id, article?.updatedAt, article?.approvalStatus])
 
     // ── Change detection ──────────────────────────────
     const hasChanges = article && initialized && (

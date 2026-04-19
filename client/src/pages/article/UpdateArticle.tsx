@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { TAGS } from "../../constants/article.constants"
 import { useUpdateArticleForm } from "../../hooks/article/ui/useUpdateArticleForm"
 import type { ArticleStatus } from "../../types/index.types"
+import { TiptapEditor } from "../../lib/tiptap-editor"
 
 const UpdateArticle = () => {
   const navigate = useNavigate()
@@ -80,12 +81,12 @@ const UpdateArticle = () => {
 
       <div>
         <label>Content *</label><br/>
-        <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
+        <TiptapEditor
+          key={article?.id}
+          content={content}
+          onChange={setContent}
           disabled={isWriter && isPublished}
-          style={{ width: '400px' }}
-        />
+       />
       </div>
       <br />
 

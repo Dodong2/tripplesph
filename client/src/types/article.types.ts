@@ -47,6 +47,7 @@ export interface CreateArticleInput {
     status: ArticleStatus
     scheduleAt?: string
     tags: ArticleTag[]
+    coverImage?: string
 }
 
 export interface UpdateArticleInput extends Partial<CreateArticleInput> {}

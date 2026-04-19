@@ -45,7 +45,10 @@ const ArticleView = () => {
         <h1>{article.title}</h1>
         {article.subtitle && <h2>{article.subtitle}</h2>}
         
-        <h1 style={{ border: '2px solid red' }}>{article.content}</h1>
+        <div dangerouslySetInnerHTML={{ __html: article.content }}
+                style={{ lineHeight: '1.6', marginBottom: '20px' }}
+                className="article-content"
+            ></div>
 
         <p>
             By {article.author.name ?? '—'} | {' '}

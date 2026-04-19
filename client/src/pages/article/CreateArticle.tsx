@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { useCreateArticleForm } from "../../hooks/article/ui/useCreateArticleForm"
 import { TAGS } from "../../constants/article.constants"
 import type { ArticleStatus } from "../../types/index.types"
+import { TiptapEditor } from "../../lib/tiptap-editor"
 
 const CreateArticle = () => {
   const navigate = useNavigate()
@@ -82,13 +83,11 @@ const CreateArticle = () => {
       {/* ── Content ───────────────────────────────── */}
       <div>
         <label>Content *</label><br />
-        <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
+        <TiptapEditor 
+          content={content}
+          onChange={setContent}
           placeholder="Write your article here..."
-          rows={10}
-          style={{ width: '400px' }}
-        />
+          />
       </div>
 
       <br />

@@ -8,6 +8,7 @@ import articleRouter from './routes/article.route.js'
 import userRouter from "./routes/user.route.js"
 import engagementRouter from "./routes/engagement.route.js"
 import monitoringRouter from './routes/monitoring.route.js'
+import uploadRouter from './routes/upload.route.js'
 import { initSocket } from './config/socket.js'
 
 dotenv.config()
@@ -41,6 +42,7 @@ app.use('/api/articles', articleRouter)
 app.use('/api/users', userRouter)
 app.use('/api/articles/:id', engagementRouter)
 app.use('/api/monitoring', monitoringRouter)
+app.use('/api/upload', uploadRouter)
 
 app.get('/', (_req, res) => {
   res.json({ message: 'TriPPLesPH API running' })

@@ -83,6 +83,7 @@ model Article {
   title String
   subtitle String?
   content String
+  coverImage String?
   status  ArticleStatus @default(DRAFT)
   scheduledAt DateTime?
   publishedAt DateTime?

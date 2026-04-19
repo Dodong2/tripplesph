@@ -1,3 +1,4 @@
+import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import ProtectedRoute from "./components/ProtectedRoute"
 import RoleDirect from "./components/RoleRedirect"
