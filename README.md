@@ -4,7 +4,7 @@
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Project Structure](#-project-structure)
 - [Naming Conventions](#-naming-conventions)
@@ -14,27 +14,6 @@
 - [Other Prisma Commands](#-other-useful-prisma-commands)
 
 ---
-
-## 📁 Project Structure
-
-```
-src/
-├── index.ts              # Entry point — app setup, middleware, routes, bootstrap
-├── config/
-│   ├── redis.ts          # Redis client instance and connection
-│   └── postgres.ts       # Postgres connection via Prisma
-├── db/
-│   └── prisma.ts         # Prisma client singleton
-├── lib/
-│   └── auth.ts           # BetterAuth configuration
-├── routes/               # Express route definitions
-├── controllers/          # Request / response handling
-├── services/             # Business logic and Prisma queries
-├── middleware/           # Express middleware (auth guards, validators, etc.)
-│   └── auth.middleware.ts
-└── types/
-    └── express.d.ts      # Global TypeScript type declarations
-```
 
 ### Feature Pattern
 
@@ -48,7 +27,7 @@ services/user.service.ts        → Business logic + Prisma queries
 
 ---
 
-## ✏️ Naming Conventions
+## Naming Conventions
 
 | Type | Convention | Example |
 |---|---|---|
@@ -59,7 +38,7 @@ services/user.service.ts        → Business logic + Prisma queries
 
 ---
 
-## 🐳 Docker Setup (Linux Mint)
+## Docker Setup (Linux Mint)
 
 ### Service Management
 
@@ -84,7 +63,7 @@ docker compose down
 
 ---
 
-## 🔷 Prisma 7 Setup (ESM)
+## Prisma 7 Setup (ESM)
 
 ### Installation
 
@@ -120,7 +99,7 @@ npx prisma studio
 
 ---
 
-## ➕ Adding a New Model
+## Adding a New Model
 
 After editing `prisma/schema.prisma`, run in this order:
 
@@ -138,7 +117,7 @@ npx prisma generate
 
 ---
 
-## 🛠️ Other Useful Prisma Commands
+## Other Useful Prisma Commands
 
 ```bash
 # Open Prisma Studio (database GUI at http://localhost:5555)

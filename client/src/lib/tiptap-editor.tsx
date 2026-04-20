@@ -2,7 +2,7 @@ import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Image from '@tiptap/extension-image'
 import Placeholder from '@tiptap/extension-placeholder'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { apiClient } from '../services/api-client'
 
 interface TiptapEditorProps {
@@ -18,7 +18,6 @@ export const TiptapEditor = ({
     onChange,
     disabled = false,
     placeholder = 'Write your article here...',
-    editorKey
 }: TiptapEditorProps) => {
     const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -71,6 +70,12 @@ export const TiptapEditor = ({
             {label}
         </button>
     )
+
+    useEffect(() => {
+      if(editor && content && editor.getHTML() !== content) {
+        editor.commands.setContent(content)
+      }
+    }, [content, editor])
 
     return (
          <div style={{

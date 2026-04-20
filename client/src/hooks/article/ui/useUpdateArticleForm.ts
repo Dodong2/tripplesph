@@ -24,6 +24,7 @@ export const useUpdateArticleForm = () => {
     const [scheduledAt, setScheduledAt] = useState('')
     const [selectedTags, setSelectedTags] = useState<ArticleTag[]>([])
     const [initialized, setInitialized] = useState(false)
+    const [contentReady, setContentReady] = useState(false)
 
     // ── Populate form once article is fetched ─────────
     useEffect(() => {
@@ -37,6 +38,12 @@ export const useUpdateArticleForm = () => {
                     : ''
             )
             setSelectedTags(article.tags?.map(t => t.tag) ?? [])
+
+            if(!initialized) {
+                setContent(article.content)
+                setContentReady(true)
+            }
+
             setInitialized(true)
         }
     }, [article?.id, article?.updatedAt, article?.approvalStatus])
@@ -94,6 +101,7 @@ export const useUpdateArticleForm = () => {
         })
 
         setInitialized(false)
+        setContentReady(false)
     }
 
     const handleSubmitForApproval = async () => {
@@ -106,6 +114,7 @@ export const useUpdateArticleForm = () => {
             }
         )
         setInitialized(false)
+        setContentReady(false)
         navigate('/writer')
     }
 
@@ -125,7 +134,8 @@ export const useUpdateArticleForm = () => {
         canEdit, handleSubmit,
         isSubmitting,
         handleSubmitForApproval,
-        article, isApproved, user
+        article, isApproved, user,
+        contentReady
     }
 
 }

@@ -20,7 +20,8 @@ const UpdateArticle = () => {
     canEdit, handleSubmit,
     isSubmitting,
     handleSubmitForApproval,
-    article, isApproved, user
+    article, isApproved, user,
+    contentReady
   } = useUpdateArticleForm()
 
   if (isLoading) return <p>Loading article...</p>
@@ -81,12 +82,17 @@ const UpdateArticle = () => {
 
       <div>
         <label>Content *</label><br/>
-        <TiptapEditor
+        {contentReady ? (
+          <TiptapEditor
           key={article?.id}
           content={content}
           onChange={setContent}
           disabled={isWriter && isPublished}
        />
+        ) : (
+          <p style={{ color: 'gray' }}>Loading content...</p>
+        )}
+        
       </div>
       <br />
 
