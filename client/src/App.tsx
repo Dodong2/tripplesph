@@ -1,7 +1,7 @@
 import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import ProtectedRoute from "./components/ProtectedRoute"
-import RoleDirect from "./components/RoleRedirect"
+import ProtectedRoute from "./routes/ProtectedRoute"
+import RoleDirect from "./routes/RoleRedirect"
 import Home from "./pages/Home"
 import Dashboard from "./pages/admin/Dashboard"
 import WriterDashboard from "./pages/writer/WriterDashboard"

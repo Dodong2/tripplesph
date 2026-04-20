@@ -1,8 +1,9 @@
 import { useGetUsers } from "../../hooks/user/queries/useGetUsers"
 import { useUserTable } from "../../hooks/user/ui/useUserTable"
 import { useAuth } from "../../hooks/useAuth"
+import { useGetStats } from "../../hooks/monitoring/queries/useGetStats"
 import { signOut } from "../../services/auth.service"
-import type { User, Role } from "../../types/index.types"
+import type { User, Role, RoleCount } from "../../types/index.types"
 import { useNavigate } from "react-router-dom"
 
 const Dashboard = () => {
@@ -20,6 +21,8 @@ const Dashboard = () => {
         canEditRole, canDelete
     } = useUserTable()
 
+    const { data: stats } = useGetStats()
+
     const { data, isLoading, error } = useGetUsers({ page, search, role: roleFilter || undefined })
 
 
@@ -28,18 +31,47 @@ const Dashboard = () => {
             <h1>Dashboard</h1>
             <p>Welcome, {currentUser?.name}</p>
             <p>Role: {currentUser?.role}</p>
-            <button onClick={signOut}>Sign out</button><br />
+            <button onClick={signOut}>Sign out</button><br /><br />
             {currentUser?.role === 'super_admin' && (
                 <button onClick={() => navigate('/admin/monitoring')}>
                     Monitoring Dashboard
                 </button>
             )}
 
-            <br />
-
             <button onClick={() => navigate('/admin/approvals')}>
                 📋 Article Approvals
-            </button>
+            </button><br />
+
+            <br />
+
+            {/* ── Stats ───────────────────────────────── */}
+            {stats && (
+                <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
+                    <div style={{ border: '1px solid #ccc', padding: '10px' }}>
+                        <h3>Users</h3>
+                        <p>Total: {stats.users.total}</p>
+                        {stats.users.byRole.map((r: RoleCount) => (
+                            <p key={r.role}>{r.role}: {r._count.role}</p>
+                        ))}
+                    </div>
+
+                    <div style={{ border: '1px solid #ccc', padding: '10px' }}>
+                        <h3>Articles</h3>
+                        {/* <p>Total: {stats.articles.total}</p> */}
+                        <p>Published: {stats.articles.published}</p>
+                    </div>
+
+                    <div style={{ border: '1px solid #ccc', padding: '10px' }}>
+                        <h3>Engagement (summary)</h3>
+                        <p>❤️ Reactions: {stats.engagement.reactions}</p>
+                        <p>🔗 Shares: {stats.engagement.shares}</p>
+                        <p>👁️ Views: {stats.engagement.views}</p>
+                    </div>
+                </div>
+            )}
+
+            <br />
+
 
             <input type="text" placeholder="Search users" value={search} onChange={(e) => {
                 handleSearchChange(e.target.value)

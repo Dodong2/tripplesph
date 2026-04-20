@@ -57,7 +57,11 @@ const ArticleApproval = () => {
                         {article.subtitle && <p><em>{article.subtitle}</em></p>}
                         <p>By: {article.author?.name ?? '—'}</p>
                         <p>Tags: {article.tags.map(t => t.tag).join(', ')}</p>
-                        <p>Content preview: {article.content.substring(0, 200)}...</p>
+
+                        <div dangerouslySetInnerHTML={{ __html: article.content }}
+                            style={{ lineHeight: '1.6', marginBottom: '20px' }}
+                            className="article-content"
+                        ></div>
 
                         <div style={{ marginTop: '10px' }}>
                             {/* Approve */}
@@ -84,7 +88,7 @@ const ArticleApproval = () => {
                             <button onClick={() => toast.promise(
                                 new Promise((res, rej) => approveAndPublish(article.id, { onSuccess: res, onError: rej })),
                                 { loading: 'Approving & Publishing...', success: 'Article approved and published!', error: (e: Error) => e.message }
-                            )}  style={{ marginLeft: '5px', color: 'green' }}>
+                            )} style={{ marginLeft: '5px', color: 'green' }}>
                                 🚀 Approve & Publish Now
                             </button>
 

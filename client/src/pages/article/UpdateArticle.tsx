@@ -3,6 +3,8 @@ import { TAGS } from "../../constants/article.constants"
 import { useUpdateArticleForm } from "../../hooks/article/ui/useUpdateArticleForm"
 import type { ArticleStatus } from "../../types/index.types"
 import { TiptapEditor } from "../../lib/tiptap-editor"
+// components
+import { Button } from "../../components/ui/Button"
 
 const UpdateArticle = () => {
   const navigate = useNavigate()
@@ -37,7 +39,7 @@ const UpdateArticle = () => {
   return (
     <div>
       <h1>Edit Article</h1>
-      <button onClick={() => navigate('/writer')}>← Back</button>
+      <Button onClick={() => navigate('/writer')} variant="secondary">← Back</Button>
 
       {isApproved && isPublished && (
         <div style={{ background: '#d4edda', padding: '10px', margin: '10px 0' }}>

@@ -1,15 +1,15 @@
+import { useNavigate } from "react-router-dom"
 import { useAuth } from "../../hooks/useAuth"
 import { signOut } from "../../services/auth.service"
-import type { ActivityLog, RoleCount } from "../../types/index.types"
+import type { ActivityLog } from "../../types/index.types"
 import { useGetLogs } from "../../hooks/monitoring/queries/useGetLogs"
-import { useGetStats } from "../../hooks/monitoring/queries/useGetStats"
 import { useMonitoringSocket } from "../../hooks/monitoring/socket/useMonitoringSocket"
 import { TYPE_COLORS } from "../../constants/monitoring.contants"
 
 const Monitoring = () => {
+    const navigate = useNavigate()
     const { user } = useAuth()
     const { data: logs = [] } = useGetLogs()
-    const { data: stats } = useGetStats()
     const { isConnected } = useMonitoringSocket()
 
   return (
@@ -25,32 +25,6 @@ const Monitoring = () => {
           {isConnected ? '● Live' : '○ Disconnected'}
         </span>
       </p>
-
-       {/* ── Stats ───────────────────────────────── */}
-      {stats && (
-        <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
-          <div style={{ border: '1px solid #ccc', padding: '10px' }}>
-            <h3>Users</h3>
-            <p>Total: {stats.users.total}</p>
-            {stats.users.byRole.map((r: RoleCount) => (
-              <p key={r.role}>{r.role}: {r._count.role}</p>
-            ))}
-          </div>
-
-          <div style={{ border: '1px solid #ccc', padding: '10px' }}>
-            <h3>Articles</h3>
-            <p>Total: {stats.articles.total}</p>
-            <p>Published: {stats.articles.published}</p>
-          </div>
-
-          <div style={{ border: '1px solid #ccc', padding: '10px' }}>
-            <h3>Engagement</h3>
-            <p>❤️ Reactions: {stats.engagement.reactions}</p>
-            <p>🔗 Shares: {stats.engagement.shares}</p>
-            <p>👁️ Views: {stats.engagement.views}</p>
-          </div>
-        </div>
-      )}
 
       {/* ── Activity Logs ────────────────────────── */}
       <h2>Activity Logs (Live)</h2>

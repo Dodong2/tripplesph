@@ -5,6 +5,8 @@ import { useGetArticles } from "../../hooks/article/queries/useGetArticles"
 import { useGetMyArticles } from "../../hooks/article/queries/useGetMyArticles"
 import { useWriterDashboard } from "../../hooks/article/ui/useWriterDashboard"
 import type { Article } from "../../types/index.types"
+// components
+import { Button } from "../../components/ui/Button"
 
 const WriterDashboard = () => {
     const { user } = useAuth()
@@ -47,8 +49,8 @@ const WriterDashboard = () => {
             <h1>Writer Dashboard</h1>
             <p>Welcome, {user?.name}</p>
             <p>Role: {user?.role}</p>
-            <button onClick={signOut}>Sign out</button>
-            <button onClick={() => navigate('/writer/create')}>+ Create Article</button>
+            <Button onClick={signOut} variant="primary">Sign out</Button>
+            <Button onClick={() => navigate('/writer/create')} variant="secondary">+ Create Article</Button>
 
             <h2>My Articles</h2>
 
@@ -139,27 +141,27 @@ const WriterDashboard = () => {
                                  {/* ── Actions column ── */}
                                 <td>
                                     {isPending && (
-                                    <button
+                                    <Button
                                         onClick={() => handleCancelSubmission(article.id)}
-                                        disabled={isCancelling}
+                                        disabled={isCancelling} variant="primary"
                                     >
                                         {isCancelling ? '...' : 'Cancel Submission'}
-                                    </button>
+                                    </Button>
                                     )}
                                     
                                     {!isPending && (
-                                    <button onClick={() => navigate(`/writer/edit/${article.id}`)}>
+                                    <Button onClick={() => navigate(`/writer/edit/${article.id}`)} variant="primary">
                                         View
-                                    </button>
+                                    </Button>
                                     )}
 
                                     {admin && super_admin && (
-                                        <button
+                                        <Button
                                             onClick={() => handleDelete(article.id)}
-                                            disabled={isDeleting}
+                                            disabled={isDeleting} variant="primary"
                                         >
                                             Delete
-                                        </button>
+                                        </Button>
 
                                     )}
 

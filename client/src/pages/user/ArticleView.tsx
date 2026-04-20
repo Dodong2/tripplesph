@@ -1,42 +1,27 @@
-import { useEffect, useRef } from "react"
-import { useParams, useNavigate } from "react-router-dom"
-import { useGetArticle } from "../../hooks/article/queries/useGetArticle"
-import { useGetRelatedArticles } from "../../hooks/article/queries/useGetRelatedArticles"
-import { useArticleCounts } from "../../hooks/engagement/queries/useArticleCounts"
-import { useReactionStatus } from "../../hooks/engagement/queries/useReactionStatus"
-import { useReaction } from "../../hooks/engagement/mutations/useReaction"
-import { useShare } from "../../hooks/engagement/mutations/useShare"
-import { useView } from "../../hooks/engagement/mutations/useView"
+import { useNavigate } from "react-router-dom"
+import { useEngagement } from "../../hooks/engagement/ui/useEngagement"
 import { useAuth } from "../../hooks/useAuth"
 import type { Article } from "../../types/index.types"
 
 const ArticleView = () => {
-    const { id } = useParams<{ id: string }>()
     const navigate = useNavigate()
     const { user, isLoggedIn } = useAuth()
+    
+    const { 
+        article, isLoading, error,
+        related,
+        counts,
+        react, unreact, isReacting, isUnReacting,
+        share, isSharing, shareData,
+        hasReacted 
+    } = useEngagement()
 
-    const { data: article, isLoading, error } = useGetArticle(id!)
-    const { data: related, isLoading: relatedLoading } = useGetRelatedArticles(id!)
-    const { data: counts } = useArticleCounts(id!)
-    const { data: reactionStatus } = useReactionStatus(id!)
-    const { react, unreact, isReacting, isUnReacting } = useReaction(id!)
-    const { mutate: share, isPending: isSharing, data: shareData } = useShare(id!)
-    const { mutate: view } = useView(id!)
-    const hasViewed = useRef(false)
-
-    useEffect(() => {
-        if(id && !hasViewed.current) {
-            hasViewed.current = true
-            view()
-        }
-    }, [id])
 
     if(isLoading) return <p>Loading article...</p>
     if(error) return <p style={{ color: 'red' }}>{error.message}</p>
     if(!article) return <p>Article not found</p>
 
     const isUser = user?.role === 'user'
-    const hasReacted = reactionStatus?.reacted ?? false
 
   return (
     <div>

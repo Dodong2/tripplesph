@@ -3,6 +3,9 @@ import { useCreateArticleForm } from "../../hooks/article/ui/useCreateArticleFor
 import { TAGS } from "../../constants/article.constants"
 import type { ArticleStatus } from "../../types/index.types"
 import { TiptapEditor } from "../../lib/tiptap-editor"
+// components
+import { Button } from "../../components/ui/Button"
+import { BackButton } from "../../components/common/BackButton"
 
 const CreateArticle = () => {
   const navigate = useNavigate()
@@ -38,9 +41,9 @@ const CreateArticle = () => {
           {isSubmitting ? 'Sending...' : '📤 Send for Approval'}
         </button>
 
-        <button onClick={() => navigate('/writer')}>
+        <Button  onClick={() => navigate('/writer')} variant="primary">
           Save & Submit Later
-        </button>
+        </Button>
       </div>
     )
   }
@@ -48,7 +51,7 @@ const CreateArticle = () => {
   return (
     <div>
       <h1>Create Article</h1>
-      <button onClick={() => navigate('/writer')}>← Back</button>
+      <BackButton fallbackPath="/writer"/>
 
       <br /><br />
 
@@ -140,11 +143,11 @@ const CreateArticle = () => {
       {error && <p style={{ color: 'red' }}>{error.message}</p>}
 
       {/* ── Submit ────────────────────────────────── */}
-      <button onClick={handleCreate} disabled={isPending}>
+      <Button onClick={handleCreate} disabled={isPending} variant="primary">
         {isPending ? 'Creating...' : (
           status === 'DRAFT' ? '💾 Done' : '📅 Save as Scheduled'
         )}
-      </button>
+      </Button>
     </div>
   )
 }
