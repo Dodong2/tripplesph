@@ -15,6 +15,9 @@ export type ActivityType =
   | 'API_ERROR'
   | 'REACTION_ADDED'
   | 'SHARE_ADDED'
+  | 'REQUEST_FOR_APPROVAL'
+  | 'REJECT_ARTICLE'
+  | 'APPROVED_ARTICLE'
 
   export interface ActivityLog {
     id: string

@@ -7,5 +7,7 @@ export const TYPE_COLORS: Record<string, string> = {
   USER_LOGIN: 'purple',
   REACTION_ADDED: 'pink',
   SHARE_ADDED: 'teal',
+  REJECT_ARTICLE: 'red',
+  APPROVED_ARTICLE: 'yellow',
   API_ERROR: 'red',
 }

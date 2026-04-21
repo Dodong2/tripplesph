@@ -8,6 +8,7 @@ import { auth } from '../lib/auth.js'
 import { fromNodeHeaders } from 'better-auth/node'
 import { logActivity } from '../config/ActivityLogger.js'
 import { getIO } from '../config/socket.js'
+import { sendArticleRejectedEmail, sendArticleApprovedEmail, sendArticleApprovedAndPublishedEmail } from '../config/brevo.js'
 
 interface IParams extends ParamsDictionary {
     id: string
@@ -502,7 +503,10 @@ export const approvalArticle = async (req: Request<IParams>, res: Response, next
         const { id } = req.params
         const { publishNow = false } = req.body
 
-        const article = await prisma.article.findUnique({ where: { id } })
+        const article = await prisma.article.findUnique({ 
+            where: { id }, 
+            include: { author: { select: { email: true, name: true } } }
+        })
         if (!article) throw new NotFoundError('Article not found')
         if (article.approvalStatus !== 'PENDING') throw new BadrequestError('Article is not pending approval')
         
@@ -519,18 +523,34 @@ export const approvalArticle = async (req: Request<IParams>, res: Response, next
             }
         })
 
-        await logActivity('ARTICLE_UPDATED', `Article approved: ${article.title}`, {
+        await logActivity('APPROVED_ARTICLE', `Article approved: ${article.title}`, {
             userId: req.user!.id,
             userName: req.user!.name ?? req.user!.email,
             articleId: id,
             articleTitle: article.title
         })
 
+        if (publishNow) {
+            await sendArticleApprovedAndPublishedEmail(
+                article.author.email,
+                article.author.name ?? 'Writer',
+                article.title,
+                id
+            )
+        } else {
+            await sendArticleApprovedEmail(
+                article.author.email,
+                article.author.name ?? 'Writer',
+                article.title
+            )
+        }
+
         try {
             const io = getIO()
             io.to(`user-${article.authorId}`).emit('article-approved', {
                 articleId: id,
-                articleTitle: article.title
+                articleTitle: article.title,
+                publishNow
             })
         } catch {}
 
@@ -553,7 +573,10 @@ export const rejectArticle = async (req: Request<IParams>, res: Response, next: 
         
         if (!reason?.trim()) throw new BadrequestError('Rejection reason is required')
 
-        const article = await prisma.article.findUnique({ where: { id } })
+        const article = await prisma.article.findUnique({ 
+            where: { id },
+            include: { author: { select: { email: true, name: true } } }
+        })
         if (!article) throw new NotFoundError('Article not found')
         if (article.approvalStatus !== 'PENDING') throw new BadrequestError('rticle is not pending approval')
 
@@ -566,13 +589,20 @@ export const rejectArticle = async (req: Request<IParams>, res: Response, next: 
             }
         })
         
-        await logActivity('ARTICLE_UPDATED', `Article rejected: "${article.title}`, {
+        await logActivity('REJECT_ARTICLE', `Article rejected: "${article.title}`, {
             userId: req.user!.id,
             userName: req.user!.name ?? req.user!.email,
             articleId: id,
             articleTitle: article.title,
             metadata: { reason }
         })
+
+        await sendArticleRejectedEmail(
+            article.author.email,
+            article.author.name ?? 'Writer',
+            article.title,
+            reason
+        )
 
         try {
             const io = getIO()

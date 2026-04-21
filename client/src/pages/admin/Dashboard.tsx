@@ -2,6 +2,8 @@ import { useGetUsers } from "../../hooks/user/queries/useGetUsers"
 import { useUserTable } from "../../hooks/user/ui/useUserTable"
 import { useAuth } from "../../hooks/useAuth"
 import { useGetStats } from "../../hooks/monitoring/queries/useGetStats"
+import { useApprovalSocket } from "../../hooks/article/socket/useApprovalSocket"
+import { useGetPendingArticles } from "../../hooks/article/queries/useGetPendingArticles"
 import { signOut } from "../../services/auth.service"
 import type { User, Role, RoleCount } from "../../types/index.types"
 import { useNavigate } from "react-router-dom"
@@ -20,6 +22,10 @@ const Dashboard = () => {
         isUpdating, isDeleting,
         canEditRole, canDelete
     } = useUserTable()
+     useApprovalSocket()
+    const { data: articles = [] } = useGetPendingArticles()
+
+    const totalPending = articles.length
 
     const { data: stats } = useGetStats()
 
@@ -38,8 +44,25 @@ const Dashboard = () => {
                 </button>
             )}
 
-            <button onClick={() => navigate('/admin/approvals')}>
-                📋 Article Approvals
+            <button onClick={() => navigate('/admin/approvals')}
+                style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+            >
+                Article Approvals {totalPending > 0 && (
+                    <span style={{
+                        background: 'red',
+                        color: 'white',
+                        borderRadius: '50%',
+                        width: '20px',
+                        height: '20px',
+                        fontSize: '11px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontWeight: 'bold'
+                    }}>
+                        {totalPending}
+                    </span>
+                )}
             </button><br />
 
             <br />
