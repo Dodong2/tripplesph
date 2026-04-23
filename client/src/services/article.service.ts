@@ -85,3 +85,26 @@ export const getRelatedArticles = async(id: string): Promise<ArticleResponse> =>
     const { data } = await apiClient.get(`/api/articles/${id}/related`)
     return data
 }
+
+export const archiveArticle = async (id: string): Promise<Article> => {
+    const { data } = await apiClient.patch(`/api/articles/${id}/archive`)
+    return data
+}
+
+export const getArchivedArticles = async (): Promise<Article[]> => {
+    const { data } = await apiClient.get('/api/articles/trash')
+    return data
+}
+
+export const recoverArticle = async (id: string): Promise<Article> => {
+    const { data } = await apiClient.patch(`/api/articles/${id}/recover`)
+    return data
+}
+
+export const permanentDeleteArticle = async (id: string): Promise<void> => {
+    await apiClient.delete(`/api/articles/${id}/permanent`)
+}
+
+export const permanentDeleteAll = async (): Promise<void> => {
+    await apiClient.delete('/api/articles/trash/all')
+}

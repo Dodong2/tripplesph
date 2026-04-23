@@ -12,6 +12,7 @@ import ArticleView from "./pages/user/ArticleView"
 import UserDashboard from "./pages/user/UserDashboard"
 import Monitoring from "./pages/admin/Monitoring"
 import ArticleApproval from "./pages/admin/ArticleApproval"
+import TrashBin from './pages/admin/TrashBin'
 
 function App() {
   return (
@@ -66,6 +67,12 @@ function App() {
         <Route path="/admin/approvals" element={
           <ProtectedRoute allowedRoles={["admin", "super_admin"]}>
             <ArticleApproval/>
+          </ProtectedRoute>
+        }/>
+
+        <Route path="/admin/trash" element={
+          <ProtectedRoute allowedRoles={["admin", "super_admin"]}>
+            <TrashBin/>
           </ProtectedRoute>
         }/>
 

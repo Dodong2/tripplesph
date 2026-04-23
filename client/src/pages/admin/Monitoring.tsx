@@ -1,19 +1,20 @@
-import { useNavigate } from "react-router-dom"
 import { useAuth } from "../../hooks/useAuth"
 import { signOut } from "../../services/auth.service"
 import type { ActivityLog } from "../../types/index.types"
 import { useGetLogs } from "../../hooks/monitoring/queries/useGetLogs"
 import { useMonitoringSocket } from "../../hooks/monitoring/socket/useMonitoringSocket"
 import { TYPE_COLORS } from "../../constants/monitoring.contants"
+// components
+import { BackButton } from "../../components/common/BackButton"
 
 const Monitoring = () => {
-    const navigate = useNavigate()
     const { user } = useAuth()
     const { data: logs = [] } = useGetLogs()
     const { isConnected } = useMonitoringSocket()
 
   return (
     <div>
+      <BackButton fallbackPath="/admin"/>
         <h1>Super Admin Monitoring</h1>
         <p>Welcome, {user?.name}</p>
         <button onClick={signOut}>Sign out</button>

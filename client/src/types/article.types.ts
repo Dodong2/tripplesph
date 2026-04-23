@@ -36,6 +36,11 @@ export interface Article {
     
     createdAt: string
     updatedAt: string
+
+    isArchived: boolean
+    archivedAt?: string | null
+    archivedBy?: string | null
+    archiver?: { name: string | null; email: string } | null
 }
 
 export type ArticleResponse = CursorBasedResponse<Article>

@@ -14,9 +14,15 @@ import {
     approvalArticle,
     rejectArticle,
     getPendingArticles,
-    cancelSubmission
+    cancelSubmission,
+    archiveArticle,
+    getArchivedArticles,
+    recoverArticle,
+    permanentDeleteArticle,
+    permanentDeleteAll
  } from "../controllers/article.controller.js";
  import { cacheMiddleware } from "../middleware/cache.middleware.js";
+import { arch } from "node:os";
 
  const router = Router()
 
@@ -34,6 +40,11 @@ import {
 router.get("/pending", 
    requireRole(["admin", "super_admin"]),
    getPendingArticles
+)
+
+router.get("/trash", 
+   requireRole(["admin", "super_admin"]),
+   getArchivedArticles
 )
 
 
@@ -66,11 +77,27 @@ router.post("/:id/cancel-submission",
 )
 
  // ── ADMIN + ABOVE ONLY ────────────────────────────────
- router.delete("/:id",
-   requireRole(["admin", "super_admin"]),
-   deleteArticle
- )
 
+
+router.delete("/trash/all",
+   requireRole(["super_admin"]),
+   permanentDeleteAll
+)
+
+router.patch("/:id/archive",
+   requireRole(["admin", "super_admin"]),
+   archiveArticle
+)
+
+router.patch("/:id/recover", 
+   requireRole(["admin", "super_admin"]),
+   recoverArticle
+)
+
+router.delete("/:id/permanent",
+   requireRole(["super_admin"]),
+   permanentDeleteArticle
+)
 
 
 // ── APPROVE / REJECT — admin/super_admin ─────────────

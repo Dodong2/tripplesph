@@ -6,6 +6,8 @@ import { useApprovalSocket } from "../../hooks/article/socket/useApprovalSocket"
 import type { Article } from "../../types/article.types"
 import toast from "react-hot-toast"
 import { UI_MESSAGES } from "../../errors/message"
+// components
+import { BackButton } from "../../components/common/BackButton"
 
 const ArticleApproval = () => {
     useApprovalSocket()
@@ -45,6 +47,7 @@ const ArticleApproval = () => {
 
     return (
         <div>
+            <BackButton fallbackPath="/admin"/>
             <h1>Article Approval Queue</h1>
             <p>Pending: {articles.length}</p>
 

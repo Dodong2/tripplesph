@@ -1,14 +1,20 @@
+import { useState } from "react"
 import { useGetUsers } from "../../hooks/user/queries/useGetUsers"
 import { useUserTable } from "../../hooks/user/ui/useUserTable"
 import { useAuth } from "../../hooks/useAuth"
 import { useGetStats } from "../../hooks/monitoring/queries/useGetStats"
 import { useApprovalSocket } from "../../hooks/article/socket/useApprovalSocket"
 import { useGetPendingArticles } from "../../hooks/article/queries/useGetPendingArticles"
+import { useGetArticles } from "../../hooks/article/queries/useGetArticles"
+import { useArchiveArticle } from "../../hooks/article/mutations/useArchiveArticle"
 import { signOut } from "../../services/auth.service"
-import type { User, Role, RoleCount } from "../../types/index.types"
+import type { User, Role, RoleCount, Article } from "../../types/index.types"
 import { useNavigate } from "react-router-dom"
+import { TAGS } from "../../constants/article.constants"
+import { toast } from "react-hot-toast"
 
 const Dashboard = () => {
+    const [tagFilter, setTagFilter] = useState('')
     const { user: currentUser } = useAuth()
     const navigate = useNavigate()
     const {
@@ -22,7 +28,7 @@ const Dashboard = () => {
         isUpdating, isDeleting,
         canEditRole, canDelete
     } = useUserTable()
-     useApprovalSocket()
+    useApprovalSocket()
     const { data: articles = [] } = useGetPendingArticles()
 
     const totalPending = articles.length
@@ -30,6 +36,15 @@ const Dashboard = () => {
     const { data: stats } = useGetStats()
 
     const { data, isLoading, error } = useGetUsers({ page, search, role: roleFilter || undefined })
+
+    const {
+        data: allData,
+        isLoading: allLoading,
+        fetchNextPage: fetchMoreAll,
+        hasNextPage: hasMoreAll
+    } = useGetArticles({ tag: tagFilter || undefined })
+
+    const { mutate: archive, isPending: isArchiving } = useArchiveArticle()
 
 
     return (
@@ -43,6 +58,14 @@ const Dashboard = () => {
                     Monitoring Dashboard
                 </button>
             )}
+
+            <br /><br />
+            <button onClick={() => navigate('/admin/trash')}>
+                Trash Bin
+            </button>
+
+            <br /><br />
+
 
             <button onClick={() => navigate('/admin/approvals')}
                 style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
@@ -207,6 +230,76 @@ const Dashboard = () => {
                     </button>
                 </div>
             </div>
+
+            <h2>All Published Articles</h2>
+
+            <div>
+                <button
+                    onClick={() => setTagFilter('')}
+                    style={{ fontWeight: !tagFilter ? 'bold' : 'normal' }}
+                >
+                    All Tags
+                </button>
+                {TAGS.map(tag => (
+                    <button key={tag} onClick={() => setTagFilter(tag)}
+                        style={{ fontWeight: tagFilter === tag ? 'bold' : 'normal' }}>
+                        {tag}
+                    </button>
+                ))}
+            </div>
+
+            {allLoading && <p>Loading...</p>}
+
+            <table border={1} cellPadding={8} cellSpacing={0}>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Published</th>
+                        <th>Tags</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {allData?.pages.flatMap(p => p.data).map((article: Article) => (
+                        <tr key={article.id}>
+                            <td>{article.title}</td>
+                            <td>{article.author.name ?? '—'}</td>
+                            <td>{article.publishedAt
+                                ? new Date(article.publishedAt).toLocaleDateString()
+                                : '—'}
+                            </td>
+                            <td>{article.tags?.map(t => t.tag).join(', ') ?? '—'}</td>
+                            <td>
+                                <button
+                                    onClick={() => {
+                                        if (confirm(`Archive "${article.title}"?`)) {
+                                            toast.promise(
+                                                new Promise((resolve, reject) =>
+                                                    archive(article.id, { onSuccess: resolve, onError: reject })
+                                                ),
+                                                {
+                                                    loading: 'Archiving...',
+                                                    success: 'Article archived!',
+                                                    error: (err: Error) => err.message
+                                                }
+                                            )
+                                        }
+                                    }}
+                                    disabled={isArchiving}
+                                    style={{ color: 'orange' }}
+                                >
+                                    🗃️ Archive
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            {hasMoreAll && (
+                <button onClick={() => fetchMoreAll()}>Load More</button>
+            )}
+
         </div>
     )
 }

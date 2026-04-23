@@ -28,6 +28,7 @@ export const getArticles = async (req: Request, res: Response, next: NextFunctio
         const articles = await prisma.article.findMany({
             where: { 
                 status: "PUBLISHED",
+                isArchived: false,
                 ...(validTag && {
                     tags: { some: { tag: validTag } }
                 })
@@ -256,6 +257,148 @@ export const deleteArticle = async(req: Request<IParams>, res: Response, next: N
    } 
 }
 
+// PATCH /api/articles/:id — archive (admin/super_admin)
+export const archiveArticle = async (req: Request<IParams>, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params
+
+        const article = await prisma.article.findUnique({ where: { id } })
+        if (!article) throw new NotFoundError('Article not Found')
+        if (article.archivedAt) throw new BadrequestError('Article is already archived')
+        if (article.status !== 'PUBLISHED') throw new BadrequestError('Only PUBLISHED articles can be archived')
+
+        const archived = await prisma.article.update({
+            where: { id },
+            data: {
+                isArchived: true,
+                archivedAt: new Date(),
+                archivedBy: req.user!.id
+            }
+        })
+
+        await logActivity('ARTICLE_DELETED', `Article archived: "${article.title}"`, {
+            userId: req.user!.id,
+            userName: req.user!.name ?? req.user!.email,
+            articleId: id,
+            articleTitle: article.title
+        })
+
+        await clearCache('articles')
+        await clearCache('search')
+        await clearCache('related')
+
+        res.status(200).json(archived)
+    } catch(err) {
+        next(err)
+    }
+}
+
+// GET /api/articles/trash — admin/super_admin only
+export const getArchivedArticles = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const articles = await prisma.article.findMany({
+            where: { isArchived: true },
+            include: {
+                author: { select: { name: true, email: true, image: true } },
+                tags: { select: { tag: true } },
+                archiver: { select: { name: true, email: true } }
+            },
+            orderBy: { archivedAt: 'desc' }
+        })
+
+        res.status(200).json(articles)
+    } catch(err) {
+        next(err)
+    }
+}
+
+// PATCH /api/articles/:id/recover — admin/super_admin
+export const recoverArticle = async (req: Request<IParams>, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params
+
+        const article = await prisma.article.findUnique({ where: { id } })
+        if (!article) throw new NotFoundError('Article not found')
+        if (!article.isArchived) throw new BadrequestError('Article is not archived')
+
+        const recovered = await prisma.article.update({
+            where: { id },
+            data: {
+                isArchived: false,
+                archivedAt: null,
+                archivedBy: null,
+                status: 'PUBLISHED'
+            }
+        })
+
+        await logActivity('ARTICLE_UPDATED', `Article recovered: "${article.title}"`, {
+            userId: req.user!.id,
+            userName: req.user!.name ?? req.user!.email,
+            articleId: id,
+            articleTitle: article.title
+        })
+
+        await clearCache('articles')
+        await clearCache('search')
+        await clearCache('related')
+
+        res.status(200).json(recovered)
+    } catch (err) {
+        next(err)
+    }
+}
+
+
+// DELETE /api/articles/:id/permanent — super_admin only
+export const permanentDeleteArticle = async (req: Request<IParams>, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params
+
+        const article = await prisma.article.findUnique({ where: { id } })
+        if (!article) throw new NotFoundError('Article not found')
+        if (!article.isArchived) throw new BadrequestError('Article must be archived before permanent delete')
+
+        await prisma.article.delete({ where: { id } })
+
+        await logActivity('ARTICLE_DELETED', `Article permanently deleted: "${article.title}"`, {
+            userId: req.user!.id,
+            userName: req.user!.name ?? req.user!.email,
+            articleId: id,
+            articleTitle: article.title
+        })
+
+        await clearCache('articles')
+        await clearCache('search')
+        await clearCache('related')
+
+        res.status(200).json({ message: 'Article permanently deleted' })
+    } catch (err) {
+
+    }
+}
+
+// DELETE /api/articles/trash/all — super_admin only
+export const permanentDeleteAll = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const result = await prisma.article.deleteMany({
+            where: { isArchived: true }
+        })
+
+        await logActivity('ARTICLE_DELETED', `All archived articles permanently deleted (${result.count})`, {
+            userId: req.user!.id,
+            userName: req.user!.name ?? req.user!.email
+        })
+
+        await clearCache('articles')
+        await clearCache('search')
+        await clearCache('related')
+
+        res.status(200).json({ message: `${result.count} articles permanently deleted` })
+    } catch (err) {
+        next(err)
+    }
+}
+
 // GET /api/articles/me
 // Writer dashboard — sariling articles lang
 export const getMyArticles = async (req: Request, res: Response, next: NextFunction) => {
@@ -474,7 +617,7 @@ export const submitForApproval = async (req: Request<IParams>, res: Response, ne
             }
         })
 
-        await logActivity('ARTICLE_CREATED', `Article submitted for approval: ${article.title}`, {
+        await logActivity('REQUEST_FOR_APPROVAL', `Article submitted for approval: ${article.title}`, {
             userId: req.user!.id,
             userName: req.user!.name ?? req.user!.email,
             articleId: id,
@@ -666,3 +809,4 @@ export const cancelSubmission = async (req: Request<IParams>, res: Response, nex
         next(err)
     }
 }
+
