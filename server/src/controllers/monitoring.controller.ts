@@ -31,6 +31,8 @@ export const getStats = async(req: Request, res: Response, next: NextFunction) =
             totalUsers,
             totalArticles,
             publishedArticles,
+            draftArticles,
+            scheduledArticles,
             totalReactions,
             totalShares,
             totalViews,
@@ -39,6 +41,8 @@ export const getStats = async(req: Request, res: Response, next: NextFunction) =
             prisma.user.count(),
             prisma.article.count(),
             prisma.article.count({ where: { status: 'PUBLISHED' } }),
+            prisma.article.count({ where:{ status: 'DRAFT' }  }),
+            prisma.article.count({ where: { status: 'SCHEDULED' } }),
             prisma.reaction.count(),
             prisma.share.count(),
             prisma.view.count(),
@@ -50,7 +54,7 @@ export const getStats = async(req: Request, res: Response, next: NextFunction) =
 
         res.status(200).json({
             users: { total: totalUsers, byRole: usersByRole },
-            articles: { total: totalArticles, published: publishedArticles },
+            articles: { total: totalArticles, published: publishedArticles, draft: draftArticles, scheduled: scheduledArticles },
             engagement: {
                 reactions: totalReactions,
                 shares: totalShares,

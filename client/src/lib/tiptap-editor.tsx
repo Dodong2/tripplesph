@@ -4,6 +4,8 @@ import Image from '@tiptap/extension-image'
 import Placeholder from '@tiptap/extension-placeholder'
 import { useEffect, useRef } from 'react'
 import { apiClient } from '../services/api-client'
+import { toast } from 'react-hot-toast'
+import { UI_MESSAGES } from '../errors/message'
 
 interface TiptapEditorProps {
     content: string
@@ -40,14 +42,18 @@ export const TiptapEditor = ({
         const formData = new FormData()
         formData.append('image', file)
 
+        const toastId = toast.loading('Uploading image')
+
         try {
             const { data } = await apiClient.post('/api/upload/image', formData, {
                 headers: { 'Content-Type': "multipart/form-data" }
             })
 
             editor.chain().focus().setImage({ src: data.url, alt: file.name }).run()
+            toast.success(UI_MESSAGES.success('Image', 'uploaded!'), {id: toastId})
         } catch (err) {
-            console.error('Image upload failed:', err)
+          toast.error(UI_MESSAGES.error('Image', 'upload'), { id:  toastId})
+          console.error('Image upload failed:', err)
         }
     }
 

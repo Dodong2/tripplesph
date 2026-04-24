@@ -103,8 +103,10 @@ const Dashboard = () => {
 
                     <div style={{ border: '1px solid #ccc', padding: '10px' }}>
                         <h3>Articles</h3>
-                        {/* <p>Total: {stats.articles.total}</p> */}
+                        <p>Total: {stats.articles.total}</p>
                         <p>Published: {stats.articles.published}</p>
+                        <p>Scheduled: {stats.articles.scheduled}</p>
+                        <p>Draft: {stats.articles.draft}</p>
                     </div>
 
                     <div style={{ border: '1px solid #ccc', padding: '10px' }}>

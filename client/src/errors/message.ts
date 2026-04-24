@@ -1,4 +1,3 @@
-
 export const API_ERRORS = {
     Unauthorized: 'You are not logged in.',
     forbidden: 'You do not have permission to do this.',
@@ -20,5 +19,6 @@ export const UI_MESSAGES = {
     noData: (entity: string) => `No ${entity} found.`,
     deleteConfirm: (entity: string) => `Are you sure you want to delete this ${entity}?`,
     success: (action: string, entity: string) => `${entity} ${action} successfully.`,
-    normal: (message: string) => `${message}`
+    normal: (message: string) => `${message}`,
+    error: (action: string, entity: string) => `${entity} ${action} failed` 
 }
