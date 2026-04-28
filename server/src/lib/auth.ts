@@ -11,7 +11,7 @@ export const auth = betterAuth({
         provider: "postgresql",
     }),
     account: {
-        storeStateStrategy: "cookie",
+        storeStateStrategy: "database",
     },
     advanced: {
     crossSubdomainCookies: {
