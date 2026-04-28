@@ -12,7 +12,7 @@ import { BackButton } from "../../components/common/BackButton"
 const ArticleApproval = () => {
     useApprovalSocket()
     const { data: articles = [], isLoading } = useGetPendingArticles()
-    const { approve, isApproving, approveAndPublish, isApprovingAndPublishing } = useApproveArticle()
+    const { approve, isApproving, approveAndPublish } = useApproveArticle()
     const { mutateAsync: rejectMutate, isPending: isRejecting } = useRejectArticle()
 
     const [rejectingId, setRejectingId] = useState<string | null>(null)

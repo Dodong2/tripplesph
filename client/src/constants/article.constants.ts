@@ -1,4 +1,4 @@
-import type { ArticleTag, ArticleStatus } from "../types/index.types";
+import type { ArticleTag } from "../types/index.types";
 
 export const TAGS: ArticleTag[] = [
   "FACT", "FAD", "FAITH", "FAMILY", "FASHION",

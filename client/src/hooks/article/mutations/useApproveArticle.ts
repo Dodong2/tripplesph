@@ -22,6 +22,5 @@ export const useApproveArticle = () => {
         approve: approve.mutate,
         isApproving: approve.isPending,
         approveAndPublish: approveAndPublish.mutate,
-        isApprovingAndPublishing: approveAndPublish.isPending
     }
 }
