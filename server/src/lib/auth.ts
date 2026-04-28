@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "@better-auth/prisma-adapter";
-import { admin, oAuthProxy } from "better-auth/plugins";
+import { admin } from "better-auth/plugins";
 import prisma from "../db/prisma.js";
 
 
@@ -10,18 +10,12 @@ export const auth = betterAuth({
     database: prismaAdapter(prisma, {
         provider: "postgresql",
     }),
-    plugins: [
-    admin(),
-    oAuthProxy({
-      productionURL: "https://tripplesph-2-0.onrender.com",  // ← backend URL
-    }),
-  ],
     advanced: {
     crossSubdomainCookies: {
       enabled: false,
     },
     defaultCookieAttributes: {
-      sameSite: "none",
+      sameSite: "lax",
       secure: true,
       httpOnly: true,
     }
@@ -33,7 +27,16 @@ export const auth = betterAuth({
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
         }
     },
+    cookies: {
+        state: {
+            attributes: {
+                sameSite: "none",
+                secure: true
+            }
+        }
+    },
     
+    plugins: [admin()],
     databaseHooks: {
         user: {
             create: {
