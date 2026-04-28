@@ -47,5 +47,5 @@ export const auth = betterAuth({
     },
 
 
-    trustedOrigins: [process.env.CLIENT_URL!],
+    trustedOrigins: [process.env.CLIENT_URL!, 'http://localhost:5173'],
 })
