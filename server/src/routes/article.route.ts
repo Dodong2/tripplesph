@@ -22,7 +22,6 @@ import {
     permanentDeleteAll
  } from "../controllers/article.controller.js";
  import { cacheMiddleware } from "../middleware/cache.middleware.js";
-import { arch } from "node:os";
 
  const router = Router()
 
