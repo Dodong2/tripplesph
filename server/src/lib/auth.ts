@@ -11,13 +11,12 @@ export const auth = betterAuth({
         provider: "postgresql",
     }),
     advanced: {
-        useSecureCookies: true,
+    useSecureCookies: true,
     crossSubdomainCookies: {
       enabled: false,
-      domain: ".onrender.com"
     },
     defaultCookieAttributes: {
-      sameSite: "none",
+      sameSite: "lax",
       secure: true,
       httpOnly: true,
     }
@@ -49,5 +48,5 @@ export const auth = betterAuth({
     },
 
 
-    trustedOrigins: [process.env.CLIENT_URL!, 'http://localhost:5173', 'https://tripplesph-2-0-client.onrender.com'],
+    trustedOrigins: [process.env.CLIENT_URL!, 'http://localhost:5173', 'https://tripplesph.netlify.app'],
 })
