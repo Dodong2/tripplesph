@@ -11,8 +11,10 @@ export const auth = betterAuth({
         provider: "postgresql",
     }),
     advanced: {
+    useSecureCookies: true,
     crossSubdomainCookies: {
-      enabled: false,
+      enabled: true,
+      domain: ".render.com"
     },
     defaultCookieAttributes: {
       sameSite: "none",
