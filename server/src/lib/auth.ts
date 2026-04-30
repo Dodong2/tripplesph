@@ -30,7 +30,6 @@ export const auth = betterAuth({
         }
     },
     
-    plugins: [admin()],
     databaseHooks: {
         user: {
             create: {
@@ -49,5 +48,6 @@ export const auth = betterAuth({
     },
 
 
-    trustedOrigins: [process.env.CLIENT_URL!, 'http://localhost:5173'],
+    trustedOrigins: [process.env.CLIENT_URL!, 'http://localhost:5173', 'http://localhost:3001'],
+        plugins: [admin()],
 })
