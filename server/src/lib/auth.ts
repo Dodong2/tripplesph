@@ -18,9 +18,7 @@ export const auth = betterAuth({
       sameSite: "none",
       secure: true,
       httpOnly: true,
-      partitioned: false
-    },
-    useSecureCookies: true
+    }
   },
     socialProviders: {
         google: {
@@ -30,6 +28,7 @@ export const auth = betterAuth({
         }
     },
     
+    plugins: [admin()],
     databaseHooks: {
         user: {
             create: {
@@ -48,6 +47,5 @@ export const auth = betterAuth({
     },
 
 
-    trustedOrigins: [process.env.CLIENT_URL!, 'http://localhost:5173', 'http://localhost:3001'],
-        plugins: [admin()],
+    trustedOrigins: [process.env.CLIENT_URL!, 'http://localhost:5173'],
 })
