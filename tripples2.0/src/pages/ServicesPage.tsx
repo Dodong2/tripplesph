@@ -2,39 +2,6 @@ import CTABanner from "../components/CTABanner";
 import { SERVICE_BLOCKS, ADDITIONAL_SERVICES,} from "../data/service";
 import { CircleCheckBig } from "lucide-react";
 
-// ── Target icon (SVG) ────────────────────────────────────────────────────────
-function TargetIcon() {
-  return (
-    <svg viewBox="0 0 69 69" fill="none" className="w-16 h-16">
-      <circle cx="34.5" cy="34.5" r="29" stroke="#197996" strokeWidth="3" />
-      <circle cx="34.5" cy="34.5" r="19" stroke="#197996" strokeWidth="3" />
-      <circle cx="34.5" cy="34.5" r="9"  stroke="#197996" strokeWidth="3" />
-    </svg>
-  );
-}
-
-function EditIcon() {
-  return (
-    <svg viewBox="0 0 70 72" fill="none" className="w-16 h-16">
-      <path d="M50 14L60 24L28 56H18V46L50 14Z" stroke="#197996" strokeWidth="3" strokeLinejoin="round" />
-      <line x1="9" y1="66" x2="61" y2="66" stroke="#197996" strokeWidth="3" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function ChartIcon() {
-  return (
-    <svg viewBox="0 0 64 64" fill="none" className="w-16 h-16">
-      <rect x="8" y="32" width="10" height="22" rx="2" fill="#197996" />
-      <rect x="23" y="20" width="10" height="34" rx="2" fill="#197996" />
-      <rect x="38" y="10" width="10" height="44" rx="2" fill="#197996" />
-      <rect x="53" y="24" width="10" height="30" rx="2" fill="#197996" />
-    </svg>
-  );
-}
-
-const ICONS = [<TargetIcon />, <EditIcon />, <ChartIcon />];
-
 // ── Service Hero ──────────────────────────────────────────────────────────────
 function ServiceHero() {
   return (

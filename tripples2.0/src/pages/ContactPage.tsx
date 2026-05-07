@@ -172,7 +172,7 @@ function ContactInfoCards() {
   return (
     <section className="bg-white py-14 px-6">
       <div className="max-w-[1100px] mx-auto flex flex-wrap justify-center gap-6">
-        {CONTACT_INFO.map((info, idx) => {
+        {CONTACT_INFO.map((info) => {
           const Icon = info.icon
           return (
           <div
