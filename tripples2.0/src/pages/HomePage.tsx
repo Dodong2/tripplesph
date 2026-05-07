@@ -18,7 +18,7 @@ function Hero() {
   return (
     <RippleBackgroundWhite rippleOriginY={85} rippleCount={5} animationDuration={5} className="my-section">
       <section className="min-h-[400px] flex items-center justify-center text-center overflow-hidden">
-        <div className="py-20 max-w-5xl w-full">
+        <div className=" max-w-5xl w-full">
           <h1 className="font-['Poppins'] font-bold text-3xl sm:text-4xl md:text-[56px] lg:text-[70px] text-white leading-tight mb-7">
             Philippines' Digital Marketing Company that Creates Positive RIPPLE Effects.
           </h1>

@@ -5,10 +5,6 @@ interface RippleBackgroundProps {
   className?: string;
   rippleCount?: number;
   animationDuration?: number;
-  /**
-   * Vertical origin of the ripple center as a percentage of the wrapper height.
-   * 50 = true center, 62 = slightly below center (default), 100 = very bottom.
-   */
   rippleOriginY?: number;
 }
 
@@ -20,11 +16,8 @@ export const RippleBackgroundWhite: React.FC<RippleBackgroundProps> = ({
   rippleOriginY = 62,
 }) => {
   const ripples = Array.from({ length: rippleCount }, (_, i) => i);
-
-  // Total cycle duration = one full loop across all rings
-  // Each ring is evenly spaced within the total cycle
   const totalCycle = animationDuration * rippleCount;
-  const interval = animationDuration; // seconds between each ring
+  const interval = animationDuration;
 
   const styles = `
     .ripple-wrapper {
@@ -44,6 +37,8 @@ export const RippleBackgroundWhite: React.FC<RippleBackgroundProps> = ({
       top: ${rippleOriginY}%;
       left: 50%;
       transform: translate(-50%, -50%);
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
       border: none;
       background-color: #c8e8f0;
@@ -51,13 +46,11 @@ export const RippleBackgroundWhite: React.FC<RippleBackgroundProps> = ({
         inset 10px 10px 20px rgba(255, 255, 255, 0.45),
         inset -10px -10px 20px rgba(60, 140, 160, 0.3);
       /*
-        KEY FIX: animation duration = totalCycle (not animationDuration).
-        Each ring runs the FULL cycle so they tile perfectly with no gap.
-        Negative delays offset each ring so they're already mid-animation
-        on first render — no waiting period = no white flash.
+        totalCycle duration = seamless loop (no gap between rings).
+        animation-fill-mode: backwards = hides each ring BEFORE its delay
+        starts, so no white flash while waiting.
       */
-      animation: ripple-expand ${totalCycle}s ease-out infinite;
-      opacity: 0;
+      animation: ripple-expand ${totalCycle}s linear infinite backwards;
       pointer-events: none;
       will-change: width, height, opacity;
     }
@@ -66,7 +59,9 @@ export const RippleBackgroundWhite: React.FC<RippleBackgroundProps> = ({
       .map(
         (i) => `
       .ripple-ring:nth-child(${i + 1}) {
-        animation-delay: -${totalCycle - i * interval}s;
+        /* Positive delay = startup stagger effect (ring appears one by one) */
+        /* After first cycle, loops seamlessly due to totalCycle duration */
+        animation-delay: ${i * interval}s;
       }
     `
       )
