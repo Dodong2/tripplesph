@@ -7,7 +7,7 @@ interface RippleBackgroundProps {
   animationDuration?: number;
   /**
    * Vertical origin of the ripple center as a percentage of the wrapper height.
-   * 50 = true center, 60 = slightly below center (default), 100 = very bottom.
+   * 50 = true center, 62 = slightly below center (default), 100 = very bottom.
    */
   rippleOriginY?: number;
 }
@@ -20,6 +20,11 @@ export const RippleBackgroundWhite: React.FC<RippleBackgroundProps> = ({
   rippleOriginY = 62,
 }) => {
   const ripples = Array.from({ length: rippleCount }, (_, i) => i);
+
+  // Total cycle duration = one full loop across all rings
+  // Each ring is evenly spaced within the total cycle
+  const totalCycle = animationDuration * rippleCount;
+  const interval = animationDuration; // seconds between each ring
 
   const styles = `
     .ripple-wrapper {
@@ -45,16 +50,23 @@ export const RippleBackgroundWhite: React.FC<RippleBackgroundProps> = ({
       box-shadow:
         inset 10px 10px 20px rgba(255, 255, 255, 0.45),
         inset -10px -10px 20px rgba(60, 140, 160, 0.3);
-      animation: ripple-expand ${animationDuration}s infinite;
+      /*
+        KEY FIX: animation duration = totalCycle (not animationDuration).
+        Each ring runs the FULL cycle so they tile perfectly with no gap.
+        Negative delays offset each ring so they're already mid-animation
+        on first render — no waiting period = no white flash.
+      */
+      animation: ripple-expand ${totalCycle}s ease-out infinite;
       opacity: 0;
       pointer-events: none;
+      will-change: width, height, opacity;
     }
 
     ${ripples
       .map(
         (i) => `
       .ripple-ring:nth-child(${i + 1}) {
-        animation-delay: ${(i + 1) * 500}ms;
+        animation-delay: -${totalCycle - i * interval}s;
       }
     `
       )
@@ -67,9 +79,8 @@ export const RippleBackgroundWhite: React.FC<RippleBackgroundProps> = ({
         opacity: 1;
       }
       100% {
-        /* Oval shape preserved (wider than tall), just much bigger */
-        width: min(3000px, 280vw);
-        height: min(1800px, 200vh);
+        width: min(1400px, 160vw);
+        height: min(700px, 90vw);
         opacity: 0;
       }
     }
@@ -82,8 +93,8 @@ export const RippleBackgroundWhite: React.FC<RippleBackgroundProps> = ({
           opacity: 1;
         }
         100% {
-          width: 260vw;
-          height: 180vh;
+          width: min(900px, 150vw);
+          height: min(450px, 80vw);
           opacity: 0;
         }
       }
@@ -97,8 +108,8 @@ export const RippleBackgroundWhite: React.FC<RippleBackgroundProps> = ({
           opacity: 1;
         }
         100% {
-          width: 240vw;
-          height: 160vh;
+          width: 140vw;
+          height: 80vw;
           opacity: 0;
         }
       }
