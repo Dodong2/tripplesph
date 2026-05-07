@@ -1,43 +1,6 @@
 import { useState } from "react";
 import { CONTACT_FAQS, CONTACT_INFO } from "../data/contact";
 
-// ── Icon components ───────────────────────────────────────────────────────────
-function EmailIcon() {
-  return (
-    <svg viewBox="0 0 40 40" fill="none" className="w-8 h-8" aria-hidden="true">
-      <rect x="4" y="10" width="32" height="22" rx="3" stroke="#197996" strokeWidth="2" />
-      <polyline points="4,10 20,24 36,10" stroke="#197996" strokeWidth="2" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function PhoneIcon() {
-  return (
-    <svg viewBox="0 0 40 40" fill="none" className="w-8 h-8" aria-hidden="true">
-      <path
-        d="M8 6h7l3 8-4 2.5a18 18 0 0 0 9.5 9.5L26 22l8 3v7a2 2 0 0 1-2 2C12 34 6 18 6 8a2 2 0 0 1 2-2z"
-        stroke="#197996"
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function OfficeIcon() {
-  return (
-    <svg viewBox="0 0 40 40" fill="none" className="w-8 h-8" aria-hidden="true">
-      <path
-        d="M20 4C14.477 4 10 8.477 10 14c0 8.25 10 22 10 22s10-13.75 10-22c0-5.523-4.477-10-10-10z"
-        stroke="#197996"
-        strokeWidth="2"
-      />
-      <circle cx="20" cy="14" r="3.5" stroke="#197996" strokeWidth="2" />
-    </svg>
-  );
-}
-
-const INFO_ICONS = [<EmailIcon />, <PhoneIcon />, <OfficeIcon />];
 
 // ── Contact Hero ──────────────────────────────────────────────────────────────
 function ContactHero() {
@@ -209,15 +172,17 @@ function ContactInfoCards() {
   return (
     <section className="bg-white py-14 px-6">
       <div className="max-w-[1100px] mx-auto flex flex-wrap justify-center gap-6">
-        {CONTACT_INFO.map((info, idx) => (
+        {CONTACT_INFO.map((info, idx) => {
+          const Icon = info.icon
+          return (
           <div
             key={info.id}
             className="bg-white rounded-xl shadow-[0px_4px_10px_2px_rgba(0,0,0,0.25)] flex-1 min-w-[260px] max-w-[333px] flex flex-col items-center text-center p-8 gap-3"
           >
             {/* Icon circle */}
-            <div className="w-[73px] h-[73px] rounded-full bg-gradient-to-br from-[#06b6d4] to-[#197996] flex items-center justify-center mb-1">
-              <div className="text-white [&_svg_rect]:stroke-white [&_svg_path]:stroke-white [&_svg_polyline]:stroke-white [&_svg_line]:stroke-white [&_svg_circle]:stroke-white">
-                {INFO_ICONS[idx]}
+            <div className="w-[53px] h-[53px] rounded-full bg-[#CEFAFE] flex items-center justify-center mb-1">
+              <div className="">
+                <Icon className="text-[#0092B8]" size={30}/>
               </div>
             </div>
             <h3 className="font-['Poppins'] font-semibold text-lg text-black">
@@ -229,7 +194,7 @@ function ContactInfoCards() {
               ))}
             </div>
           </div>
-        ))}
+        )})}
       </div>
     </section>
   );

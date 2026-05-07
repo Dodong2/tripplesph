@@ -2,7 +2,7 @@ import { FOOTER_COLUMNS } from "../data";
 
 export default function Footer() {
   return (
-    <footer className="bg-white pt-14 pb-9">
+    <footer className="bg-white p-3">
       <div className="max-w-[1400px] mx-auto px-6 md:px-10">
         <div className="flex flex-wrap gap-12 md:gap-16 mb-11">
           {FOOTER_COLUMNS.map((col) => (

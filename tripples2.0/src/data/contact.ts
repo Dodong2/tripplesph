@@ -1,14 +1,6 @@
-export interface ContactFaqItem {
-  id: string;
-  question: string;
-  answer: string;
-}
+import { Mail, MapPin, Phone } from "lucide-react";
+import type { ContactFaqItem, ContactInfoItem } from "../types/index";
 
-export interface ContactInfoItem {
-  id: string;
-  label: string;
-  lines: string[];
-}
 
 export const CONTACT_FAQS: ContactFaqItem[] = [
   {
@@ -46,16 +38,19 @@ export const CONTACT_FAQS: ContactFaqItem[] = [
 export const CONTACT_INFO: ContactInfoItem[] = [
   {
     id: "ci1",
+    icon: Mail,
     label: "Email",
     lines: ["info@tripplsph.com", "support@tripplesph.com"],
   },
   {
     id: "ci2",
+    icon: Phone,
     label: "Phone",
     lines: ["+63 (2) 1234-5678 (General)", "+63 (2) 9876-5432 (Sales)"],
   },
   {
     id: "ci3",
+    icon: MapPin,
     label: "Office",
     lines: ["123 Ripple Avenue", "Calamba, Laguna, Philippines"],
   },

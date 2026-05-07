@@ -10,7 +10,19 @@ import type {
     TestimonialItem, 
     WhyUsCard 
 } from "../types";
-import { CircleStar, Users, SquarePen, Target, TrendingUp, Zap, Eye, Clock4 } from "lucide-react";
+import { 
+  CircleStar, 
+  Users, 
+  SquarePen, 
+  Target, 
+  TrendingUp, 
+  Zap, 
+  Eye, 
+  Clock4,
+  ChartNoAxesColumnIncreasing,
+  ChartColumnIncreasing,
+  
+} from "lucide-react";
 
 
 
@@ -38,39 +50,57 @@ export const WHY_US_CARDS: WhyUsCard[] = [
 ];
 
 export const PROCESS_STEPS: ProcessStep[] = [
-  { id: "ps1", number: "01", title: "Audit & Strategy", description: "Deep-dive analysis of your current digital presence and competitive landscape." },
-  { id: "ps2", number: "02", title: "Campaign Setup", description: "Build precision-targeted campaigns with compelling creatives and copy." },
-  { id: "ps3", number: "03", title: "Optimization", description: "Continuous A/B testing and data-driven refinements for peak performance." },
-  { id: "ps4", number: "04", title: "Scale & Report", description: "Amplify what works, cut what doesn't, and deliver transparent reporting." },
+  { id: "ps1", number: "01", icon: ChartNoAxesColumnIncreasing, title: "Audit & Strategy", description: "Deep-dive analysis of your current digital presence and competitive landscape." },
+  { id: "ps2", number: "02", icon: Zap, title: "Campaign Setup", description: "Build precision-targeted campaigns with compelling creatives and copy." },
+  { id: "ps3", number: "03", icon: TrendingUp, title: "Optimization", description: "Continuous A/B testing and data-driven refinements for peak performance." },
+  { id: "ps4", number: "04", icon: CircleStar, title: "Scale & Report", description: "Amplify what works, cut what doesn't, and deliver transparent reporting." },
 ];
 
 export const SERVICE_SNIPPETS: ServiceSnippet[] = [
-  { id: "ss1", icon: "🎯", title: "CPC Advertising", description: "Get maximum ROI with data-driven CPC campaigns.", tags: ["Google Ads", "Facebook Ads", "Retargeting"], color: "#0891b2" },
-  { id: "ss2", icon: "📝", title: "Content Management", description: "From strategy to execution — content that converts.", tags: ["Social Media", "Editorial Calendar", "SEO Content"], color: "#0d9488" },
-  { id: "ss3", icon: "📈", title: "Digital Marketing", description: "Establish authority through professional digital publishing.", tags: ["Content Strategy", "Brand Voice", "Analytics"], color: "#197996" },
+  { id: "ss1", icon: Target, title: "CPC Advertising", description: "Get maximum ROI with our data-driven CPC campaigns. We optimize every click to turn visitors into customers.", tags: ["Google Ads", "Facebook Ads", "Display ads", "Retargeting"], color: "#0891b2" },
+  { id: "ss2", icon: SquarePen, title: "Content Management", description: "From strategy to execution, we create and manage content that drives engagement and converts your audience.", tags: ["Social Media", "Content Strategy", "Community Managemen"], color: "#0d9488" },
+  { id: "ss3", icon: ChartColumnIncreasing, title: "Digital Magazine & Publishing", description: "Professional digital magazine publishing with articles and blogs that establish your brand as an industry authority.", tags: ["Content Strategy", "Brand Voice", "Analytics"], color: "#197996" },
 ];
 
 export const TESTIMONIALS: TestimonialItem[] = [
-  { id: "tm1", avatarUrl: ASSETS.t1, organization: "NRCP", intro: "We would like to notify that TRipplesPH Corporation has a", highlight: "final rating of (E) Excellent in our Supplier Performance Rating Sheet", detail: "for all the transactions delivered in 2023.", source: "– National Research Council of the Philippines" },
-  { id: "tm2", avatarUrl: ASSETS.t2, organization: "PCO", intro: "We hereby certify that, to the best of our knowledge and belief,", highlight: "TRipplesPH Corporation has satisfactorily supplied the goods and/or services", detail: "for the DOE-EPOWER MO! Campaign.", source: "– Presidential Communication Office" },
-  { id: "tm3", avatarUrl: ASSETS.t3, organization: "PHREB", intro: "This is to certify that TRipples PH Corporation has satisfactorily", highlight: "completed the Audio-Visual Presentation Production Services", detail: "for the Philippine Health Research Ethics Board.", source: "– Philippine Health Research Ethics Board" },
-  { id: "tm4", avatarUrl: ASSETS.t4, organization: "PRC", intro: "The Committee is happy and proud of seeing the PRC community appreciating the AVPs.", highlight: "Your AVPs made PRC's Golden Anniversary celebration much more memorable!", detail: "On behalf of the Committee, thanks!", source: "– Professional Regulation Commission" },
+  { id: "tm1", avatarUrl: ASSETS.c1, organization: "NRCP", intro: "We would like to notify that TRipplesPH Corporation has a", highlight: "final rating of (E) Excellent in our Supplier Performance Rating Sheet", detail: "for all the transactions delivered in 2023.", source: "– National Research Council of the Philippines" },
+  { id: "tm2", avatarUrl: ASSETS.c2, organization: "PCO", intro: "We hereby certify that, to the best of our knowledge and belief,", highlight: "TRipplesPH Corporation has satisfactorily supplied the goods and/or services", detail: "for the DOE-EPOWER MO! Campaign.", source: "– Presidential Communication Office" },
+  { id: "tm3", avatarUrl: ASSETS.c3, organization: "PHREB", intro: "This is to certify that TRipples PH Corporation has satisfactorily", highlight: "completed the Audio-Visual Presentation Production Services", detail: "for the Philippine Health Research Ethics Board.", source: "– Philippine Health Research Ethics Board" },
+  { id: "tm4", avatarUrl: ASSETS.c4, organization: "PRC", intro: "The Committee is happy and proud of seeing the PRC community appreciating the AVPs.", highlight: "Your AVPs made PRC's Golden Anniversary celebration much more memorable!", detail: "On behalf of the Committee, thanks!", source: "– Professional Regulation Commission" },
 ];
 
 export const CLIENT_LOGOS: ClientLogo[] = [
-  { id: "cl1", label: "Client 1", color: "#e53e3e" },
-  { id: "cl2", label: "Client 2", color: "#3182ce" },
-  { id: "cl3", label: "Client 3", color: "#38a169" },
-  { id: "cl4", label: "Client 4", color: "#d69e2e" },
-  { id: "cl5", label: "Client 5", color: "#805ad5" },
-  { id: "cl6", label: "Client 6", color: "#1a202c" },
-  { id: "cl7", label: "Client 7", color: "#e53e3e" },
-  { id: "cl8", label: "Client 8", color: "#3182ce" },
-  { id: "cl9", label: "Client 9", color: "#38a169" },
-  { id: "cl10", label: "Client 10", color: "#d69e2e" },
-  { id: "cl11", label: "Client 11", color: "#805ad5" },
-  { id: "cl12", label: "Client 12", color: "#1a202c" },
-];
+  { id: "cl1", image: ASSETS.c1, },
+  { id: "cl2", image: ASSETS.c2, },
+  { id: "cl3", image: ASSETS.c3, },
+  { id: "cl4", image: ASSETS.c4, },
+  { id: "cl5", image: ASSETS.c5, },
+  { id: "cl6", image: ASSETS.c6, },
+  { id: "cl7", image: ASSETS.c7, },
+  { id: "cl8", image: ASSETS.c8, },
+  { id: "cl9", image: ASSETS.c9, },
+  { id: "cl10", image: ASSETS.c10, },
+  { id: "cl11", image: ASSETS.c11, },
+  { id: "cl12", image: ASSETS.c12, },
+  { id: "cl13", image: ASSETS.c13, },
+  { id: "cl14", image: ASSETS.c14, },
+  { id: "cl15", image: ASSETS.c15, },
+  { id: "cl16", image: ASSETS.c16, },
+  { id: "cl17", image: ASSETS.c17, },
+  { id: "cl18", image: ASSETS.c18, },
+  { id: "cl19", image: ASSETS.c19, },
+  { id: "cl20", image: ASSETS.c20, },
+  { id: "cl21", image: ASSETS.c21, },
+  { id: "cl22", image: ASSETS.c22, },
+  { id: "cl23", image: ASSETS.c23, },
+  { id: "cl24", image: ASSETS.c24, },
+  { id: "cl25", image: ASSETS.c25, },
+  { id: "cl26", image: ASSETS.c26, },
+  { id: "cl27", image: ASSETS.c27, },
+  { id: "cl28", image: ASSETS.c28, },
+  { id: "cl29", image: ASSETS.c29, },
+  { id: "cl20", image: ASSETS.c30, },
+] ;
 
 export const ARTICLES: ArticleItem[] = [
   { id: "ar1", imageUrl: ASSETS.articleImg, title: "The Best Way to Start Your Day", excerpt: "Every day must begin with a prayer, thanking God for the blessings and opportunities that lie ahead.", slug: "#" },

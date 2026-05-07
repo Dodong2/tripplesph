@@ -1,11 +1,14 @@
 import type { Pillar, AwardCard, BenefitGroup, StoryItem } from "../types";
 import { ASSETS } from "./index";
+import { Coins, Globe, User } from "lucide-react";
+
+
 
 // ─── About ────────────────────────────────────────────────────────────────────
 export const PILLARS: Pillar[] = [
-  { id: "pl1", iconUrl: "", title: "MAN", subtitle: "(Social Aspect)", description: "We build meaningful relationships with our team and empower them to reach their fullest potential." },
-  { id: "pl2", iconUrl: "", title: "MONEY", subtitle: "(Economic Aspect)", description: "Our joy is to drive significant growth and profit to your brand, as illustrated in our high-impact client results." },
-  { id: "pl3", iconUrl: "", title: "MOTHER EARTH", subtitle: "(Environmental Aspect)", description: "We champion social responsibility and empower other brands to do the same by supporting their CSR campaigns." },
+  { id: "pl1", icon: User, title: "MAN", subtitle: "(Social Aspect)", description: "We build meaningful relationships with our team and empower them to reach their fullest potential." },
+  { id: "pl2", icon: Coins, title: "MONEY", subtitle: "(Economic Aspect)", description: "Our joy is to drive significant growth and profit to your brand, as illustrated in our high-impact client results." },
+  { id: "pl3", icon: Globe, title: "MOTHER EARTH", subtitle: "(Environmental Aspect)", description: "We champion social responsibility and empower other brands to do the same by supporting their CSR campaigns." },
 ];
 
 export const AWARDS: AwardCard[] = [

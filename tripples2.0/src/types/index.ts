@@ -33,13 +33,14 @@ export interface WhyUsCard {
 export interface ProcessStep {
   id: string;
   number: string;
+  icon: LucideIcon;
   title: string;
   description: string;
 }
 
 export interface ServiceSnippet {
   id: string;
-  icon: string;
+  icon: LucideIcon;
   title: string;
   description: string;
   tags: string[];
@@ -58,8 +59,7 @@ export interface TestimonialItem {
 
 export interface ClientLogo {
   id: string;
-  label: string;
-  color: string;
+  image: string
 }
 
 export interface ArticleItem {
@@ -87,7 +87,8 @@ export interface ServiceBlock {
   title: string;
   description: string;
   iconBg: string;
-  iconUrl: string;
+  iconColor: string
+  icon: LucideIcon;
   iconAlt: string;
   imageUrl: string;
   imageAlt: string;
@@ -97,7 +98,9 @@ export interface ServiceBlock {
 
 export interface AdditionalService {
   id: string;
-  icon: string;
+  iconBg: string
+  iconColor: string
+  icon: LucideIcon;
   title: string;
   description: string;
   bgColor: string;
@@ -112,7 +115,7 @@ export interface TimelineEntry {
 
 export interface Pillar {
   id: string;
-  iconUrl: string;
+  icon: LucideIcon;
   title: string;
   subtitle: string;
   description: string;
@@ -143,6 +146,20 @@ export interface BenefitGroup {
 export interface StoryItem {
   label: string;
   text: string;
+}
+
+// ─── Contact Page ──────────────────────────────────────────────────────────────
+export interface ContactFaqItem {
+  id: string;
+  question: string;
+  answer: string;
+}
+
+export interface ContactInfoItem {
+  id: string;
+  icon: LucideIcon
+  label: string;
+  lines: string[];
 }
 
 // ─── Footer ──────────────────────────────────────────────────────────────────

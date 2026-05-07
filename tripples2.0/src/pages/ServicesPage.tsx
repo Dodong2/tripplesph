@@ -55,7 +55,9 @@ function ServiceHero() {
 function ServiceBlockSection() {
   return (
     <>
-      {SERVICE_BLOCKS.map((block, idx) => (
+      {SERVICE_BLOCKS.map((block, idx) => {
+        const Icon = block.icon
+        return (
         <section
           key={block.id}
           className={`py-16 ${idx % 2 !== 0 ? "bg-[#f8f6f6]" : "bg-white"}`}
@@ -68,15 +70,15 @@ function ServiceBlockSection() {
             {/* Content */}
             <div className="flex-1 min-w-[280px]">
               <div
-                className="w-24 h-24 rounded-xl flex items-center justify-center mb-5"
-                style={{ background: block.iconBg }}
+                className="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
+                style={{ background: block.iconBg, color: block.iconColor }}
               >
-                {ICONS[idx]}
+                <Icon size={30}/>
               </div>
-              <h2 className="font-['Poppins'] font-medium text-3xl md:text-[40px] text-black mb-5 leading-tight">
+              <h2 className="font-['Poppins'] font-medium text-3xl md:text-[35px] text-black mb-5 leading-tight">
                 {block.title}
               </h2>
-              <p className="font-['Inter'] text-lg md:text-2xl text-[#6d6d6d] leading-relaxed mb-8">
+              <p className="font-['Inter'] text-lg md:text-[20px] text-[#6d6d6d] leading-relaxed mb-8">
                 {block.description}
               </p>
               <ul className="flex flex-col gap-3.5">
@@ -98,7 +100,7 @@ function ServiceBlockSection() {
             </div>
           </div>
         </section>
-      ))}
+      )})}
     </>
   );
 }
@@ -110,15 +112,17 @@ function AdditionalServices() {
       <h2 className="font-['Poppins'] font-medium text-3xl md:text-[40px] text-black mb-2.5 leading-tight">Additional Services</h2>
       <p className="font-['Inter'] text-xl md:text-2xl text-[#6d6d6d] mb-12 leading-relaxed">More ways we can help grow your business</p>
       <div className="flex flex-wrap justify-center gap-6 max-w-[1400px] mx-auto">
-        {ADDITIONAL_SERVICES.map((s) => (
+        {ADDITIONAL_SERVICES.map((s) => {
+          const Icon = s.icon
+          return (
           <article key={s.id} className="bg-white rounded-xl shadow-[0_4px_12px_3px_rgba(0,0,0,.22)] p-8 flex-1 min-w-[260px] max-w-[440px] text-left">
-            <div className="w-16 h-16 rounded-lg flex items-center justify-center mb-4.5 text-3xl" style={{ background: s.bgColor }}>
-              {s.icon}
+            <div className="w-16 h-16 rounded-lg flex items-center justify-center mb-4.5 text-3xl" style={{ background: s.bgColor, color: s.iconColor }}>
+              <Icon/>
             </div>
             <h3 className="font-['Poppins'] text-xl md:text-2xl mb-2.5">{s.title}</h3>
             <p className="font-['Inter'] text-base md:text-lg text-[#6d6d6d] leading-snug">{s.description}</p>
           </article>
-        ))}
+        )})}
       </div>
     </section>
   );

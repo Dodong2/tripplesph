@@ -138,19 +138,23 @@ function HowWeStrive() {
         <strong className="text-[#007595] font-semibold">Triple Bottom Line concept</strong>, an approach that focuses on actions geared towards sustainable development.
       </p>
       <div className="flex flex-wrap justify-center gap-6 max-w-[1400px] mx-auto">
-        {PILLARS.map((p) => (
+        {PILLARS.map((p) => {
+          const Icon = p.icon
+          return (
           <article key={p.id} className="bg-[#f2fcfd] border border-[#a2f4fd] rounded-3xl p-8 flex-1 min-w-[240px] max-w-[440px] text-center">
             <div
-              className="w-28 h-28 rounded-xl mx-auto mb-4 flex items-center justify-center"
+              className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center"
               style={{ background: "linear-gradient(143deg, #5fc4dc 14%, #197896 50%, #197896 91%)" }}
             >
-              <span className="text-4xl text-white font-bold">{p.title[0]}</span>
+              <span className="text-4xl text-white font-bold">
+                <Icon size={30}/>
+              </span>
             </div>
             <h3 className="font-['Inter'] font-semibold text-2xl md:text-[34px] text-[#007595] mb-1">{p.title}</h3>
             <p className="font-['Inter'] font-medium text-lg md:text-2xl text-black mb-1">{p.subtitle}</p>
             <p className="font-['Inter'] text-sm md:text-base text-black leading-relaxed">{p.description}</p>
           </article>
-        ))}
+        )})}
       </div>
     </section>
   );
