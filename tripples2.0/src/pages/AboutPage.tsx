@@ -42,7 +42,7 @@ function StoryCard({ children }: { children: ReactNode }) {
 // ── How We Started ────────────────────────────────────────────────────────────
 function HowWeStarted() {
   return (
-    
+
     <section className="bg-[#187797] py-16 px-6">
       <div className="max-w-[1300px] mx-auto flex flex-col lg:flex-row gap-10 items-start">
 
@@ -61,14 +61,14 @@ function HowWeStarted() {
         {/* ── Right col: cards ── */}
         <div className="flex-1 flex flex-col gap-4">
 
-         
+
 
           {/* Card 1 — pioneers + ripple + innovation + growth */}
           <StoryCard>
-             {/* Intro text — plain, no card */}
-          <p className="font-['Inter'] text-base md:text-lg text-white leading-relaxed">
-            TRipples is the brainchild of Mr. Sison Soon, who started the company back in 2017.
-          </p>
+            {/* Intro text — plain, no card */}
+            <p className="font-['Inter'] text-base md:text-lg text-white leading-relaxed">
+              TRipples is the brainchild of Mr. Sison Soon, who started the company back in 2017.
+            </p>
             {STORY_CARD_1.map((item) => (
               <p key={item.label} className="font-['Inter'] text-sm md:text-base text-white leading-relaxed">
                 <span className="font-semibold text-[#7ee8f8]">{item.label}: </span>
@@ -105,27 +105,276 @@ function Awards() {
       <p className="font-['Inter'] text-center text-lg md:text-xl text-white mb-12 max-w-3xl mx-auto">
         Our dedication to innovation and exceptional results has earned us prestigious recognition from leading organizations across Asia and beyond.
       </p>
-      <div className="flex flex-wrap justify-center gap-6 max-w-[1400px] mx-auto">
-        {AWARDS.map((aw) => (
-          <div
-            key={aw.id}
-            className="flex-1 min-w-[280px] max-w-[520px] rounded-3xl overflow-hidden border border-[#4691a7]"
-            style={{ background: "linear-gradient(135deg, #2f788e 0%, #398ca4 100%)" }}
-          >
-            <div className="p-7">
-              <img src={aw.imageUrl} alt={aw.title} className="w-full h-44 object-cover rounded-xl mb-5" />
-              <h3 className="font-['Poppins'] font-semibold text-2xl md:text-[28px] text-white mb-2 leading-tight">{aw.title}</h3>
-              {aw.badge && <p className="font-['Poppins'] font-medium text-base text-[#74bbcb] mb-4">{aw.badge}</p>}
-              <p className="font-['Inter'] text-sm md:text-base text-white leading-relaxed mb-2">{aw.description}</p>
-              {aw.category && <p className="font-['Inter'] text-sm text-white/80">{aw.category}</p>}
+
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 max-w-[1400px] mx-auto">
+
+        {/* Card 1 — col-span-3 row-span-2 | text LEFT, image RIGHT */}
+        <div
+          className="md:col-span-3 md:row-span-2 rounded-[24px] overflow-hidden border border-[#4691a7] relative flex flex-row items-stretch"
+          style={{ background: "linear-gradient(to right, #2f788e, #398ca4)", minHeight: "133px" }}
+        >
+          {/* Decorative circle top-right */}
+          <div className="absolute w-[279px] h-[278px] top-[-105px] right-[-50px] opacity-30 rounded-full"
+            style={{ background: "radial-gradient(circle, #5196ac 0%, transparent 70%)" }}
+          />
+
+          {/* LEFT — Text Content */}
+          <div className="relative z-10 flex flex-col justify-center p-[10px]" style={{ minWidth: 0, flex: "1 1 0" }}>
+            {/* Title */}
+            <h3 className="font-['Poppins'] font-semibold text-[30px] text-white leading-tight mb-4 w-[298px]">
+              {AWARDS[0].title}
+            </h3>
+
+            {/* Vertical line + Badge/Org name */}
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-[3px] h-[56px] bg-[#74bbcb] rounded-full flex-shrink-0" />
+              {AWARDS[0].badge && (
+                <p className="font-['Poppins'] font-medium text-[20px] text-[#74bbcb]">
+                  {AWARDS[0].badge}
+                </p>
+              )}
+            </div>
+
+            {/* Description */}
+            <p className="font-['Inter'] font-normal text-[20px] text-white leading-[1.22] mb-8 max-w-[477px]">
+              {AWARDS[0].description}
+            </p>
+
+            {/* Dot + Category */}
+            {AWARDS[0].category && (
+              <div className="flex items-center gap-2">
+                <div className="w-[13px] h-[13px] rounded-full bg-white/60 flex-shrink-0" />
+                <p className="font-['Inter'] font-normal text-[16px] text-white">
+                  {AWARDS[0].category}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* RIGHT — Framed Image Box */}
+          <div className="relative flex-shrink-0 flex items-center justify-center p-6" style={{ width: "310px" }}>
+            {/* Frame/container box */}
+            <div
+              className="relative rounded-[17px] flex items-center justify-center"
+              style={{
+                background: "rgba(81, 150, 172, 0.25)",
+                border: "1px solid #4aabc7",
+                width: "300px",
+                height: "200px",
+              }}
+            >
+              <img
+                src={AWARDS[0].imageUrl}
+                alt={AWARDS[0].title}
+                className="object-contain rounded-[8px]"
+                style={{ width: "225px", height: "189px" }}
+              />
             </div>
           </div>
-        ))}
+        </div>
+
+        {/* Card 2 — col-span-2 row-span-2 col-start-4 | text LEFT, image RIGHT (small portrait) */}
+        <div
+          className="md:col-span-2 md:row-span-2 md:col-start-4 rounded-3xl overflow-hidden border border-[#4691a7] flex flex-col items-stretch"
+          style={{ background: "linear-gradient(135deg, #2f788e 0%, #398ca4 100%)", minHeight: "286px" }}
+        >
+          <div className="relative flex-shrink-0 flex items-center justify-center p-4" style={{ width: "500px" }}>
+            {/* Frame/container box */}
+            <div
+              className="relative rounded-[17px] flex items-center justify-center"
+              style={{
+                background: "rgba(81, 150, 172, 0.25)",
+                border: "1px solid #4aabc7",
+                width: "300px",
+                height: "200px",
+              }}
+            >
+              <img
+                src={AWARDS[1].imageUrl}
+                alt={AWARDS[1].title}
+                className="object-contain rounded-[8px]"
+                style={{ width: "225px", height: "159px" }}
+              />
+            </div>
+          </div>
+          <div className="p-3 flex flex-col justify-center" style={{ minWidth: 0, flex: "1 1 0" }}>
+            {AWARDS[1].badge && (
+              <p className="font-['Poppins'] font-medium text-sm text-[#74bbcb]">{AWARDS[1].badge}</p>
+            )}
+            <h3 className="font-['Poppins'] font-semibold text-base md:text-lg text-white mb-2 leading-tight">
+              {AWARDS[1].title}
+            </h3>
+            <p className="font-['Inter'] text-xs md:text-sm text-white leading-relaxed">{AWARDS[1].description}</p>
+          </div>
+
+        </div>
+
+        {/* Card 10 — col-span-2 row-span-2 row-start-3 | text LEFT, image RIGHT (small portrait) */}
+        <div
+          className="md:col-span-2 md:row-span-2 md:col-start-1 rounded-3xl overflow-hidden border border-[#4691a7] flex flex-col items-stretch"
+          style={{ background: "linear-gradient(135deg, #2f788e 0%, #398ca4 100%)", minHeight: "286px" }}
+        >
+          <div className="relative flex-shrink-0 flex items-center justify-center p-4" style={{ width: "500px" }}>
+            {/* Frame/container box */}
+            <div
+              className="relative rounded-[17px] flex items-center justify-center"
+              style={{
+                background: "rgba(81, 150, 172, 0.25)",
+                border: "1px solid #4aabc7",
+                width: "300px",
+                height: "200px",
+              }}
+            >
+              <img
+                src={AWARDS[2].imageUrl}
+                alt={AWARDS[2].title}
+                className="object-contain rounded-[8px]"
+                style={{ width: "225px", height: "159px" }}
+              />
+            </div>
+          </div>
+          <div className="p-3 flex flex-col justify-center" style={{ minWidth: 0, flex: "1 1 0" }}>
+            {AWARDS[2].badge && (
+              <p className="font-['Poppins'] font-medium text-sm text-[#74bbcb]">{AWARDS[2].badge}</p>
+            )}
+            <h3 className="font-['Poppins'] font-semibold text-base md:text-lg text-white mb-2 leading-tight">
+              {AWARDS[2].title}
+            </h3>
+            <p className="font-['Inter'] text-xs md:text-sm text-white leading-relaxed">{AWARDS[2].description}</p>
+          </div>
+
+        </div>
+
+        {/* Card 11 — col-span-3 row-span-2 col-start-3 row-start-3 | image LEFT (tall), text RIGHT */}
+         <div
+          className="md:col-span-3 md:row-span-2 rounded-[24px] overflow-hidden border border-[#4691a7] relative flex flex-row items-stretch"
+          style={{ background: "linear-gradient(to right, #2f788e, #398ca4)", minHeight: "133px" }}
+        >
+          {/* Decorative circle top-right */}
+          <div className="absolute w-[279px] h-[278px] top-[-105px] right-[-50px] opacity-30 rounded-full"
+            style={{ background: "radial-gradient(circle, #5196ac 0%, transparent 70%)" }}
+          />
+
+          {/* LEFT — Framed Image Box */}
+          <div className="relative flex-shrink-0 flex items-center justify-center p-6" style={{ width: "310px" }}>
+            {/* Frame/container box */}
+            <div
+              className="relative rounded-[17px] flex items-center justify-center"
+              style={{
+                background: "rgba(81, 150, 172, 0.25)",
+                border: "1px solid #4aabc7",
+                width: "300px",
+                height: "200px",
+              }}
+            >
+              <img
+                src={AWARDS[3].imageUrl}
+                alt={AWARDS[3].title}
+                className="object-contain rounded-[8px]"
+                style={{ width: "225px", height: "189px" }}
+              />
+            </div>
+          </div>
+
+          {/* RIGHT — Text Content */}
+          <div className="relative z-10 flex flex-col justify-center p-[10px]" style={{ minWidth: 0, flex: "1 1 0" }}>
+            {/* Title */}
+            <h3 className="font-['Poppins'] font-semibold text-[30px] text-white leading-tight mb-4 w-[298px]">
+              {AWARDS[3].title}
+            </h3>
+
+            {/* Vertical line + Badge/Org name */}
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-[3px] h-[56px] bg-[#74bbcb] rounded-full flex-shrink-0" />
+              {AWARDS[3].badge && (
+                <p className="font-['Poppins'] font-medium text-[20px] text-[#74bbcb]">
+                  {AWARDS[0].badge}
+                </p>
+              )}
+            </div>
+
+            {/* Description */}
+            <p className="font-['Inter'] font-normal text-[20px] text-white leading-[1.22] mb-8 max-w-[477px]">
+              {AWARDS[3].description}
+            </p>
+
+            {/* Dot + Category */}
+            {AWARDS[3].category && (
+              <div className="flex items-center gap-2">
+                <div className="w-[13px] h-[13px] rounded-full bg-white/60 flex-shrink-0" />
+                <p className="font-['Inter'] font-normal text-[16px] text-white">
+                  {AWARDS[3].category}
+                </p>
+              </div>
+            )}
+          </div>
+
+          
+        </div>
+
+        {/* Card 12 — col-span-3 row-span-2 col-start-2 row-start-5 | image LEFT (tall), text RIGHT */}
+        <div
+          className="md:col-span-3 md:row-span-2 md:col-start-2 md:row-start-5 rounded-3xl overflow-hidden border border-[#4691a7] flex flex-row items-stretch"
+          style={{ background: "linear-gradient(135deg, #2f788e 0%, #398ca4 100%)", minHeight: "286px" }}
+        >
+          {/* LEFT — Framed Image Box */}
+          <div className="relative flex-shrink-0 flex items-center justify-center p-6" style={{ width: "310px" }}>
+            {/* Frame/container box */}
+            <div
+              className="relative rounded-[17px] flex items-center justify-center"
+              style={{
+                background: "rgba(81, 150, 172, 0.25)",
+                border: "1px solid #4aabc7",
+                width: "300px",
+                height: "200px",
+              }}
+            >
+              <img
+                src={AWARDS[4].imageUrl}
+                alt={AWARDS[4].title}
+                className="object-contain rounded-[8px]"
+                style={{ width: "225px", height: "189px" }}
+              />
+            </div>
+          </div>
+           {/* RIGHT — Text Content */}
+          <div className="relative z-10 flex flex-col justify-center p-[10px]" style={{ minWidth: 0, flex: "1 1 0" }}>
+            {/* Title */}
+            <h3 className="font-['Poppins'] font-semibold text-[30px] text-white leading-tight mb-4 w-[298px]">
+              {AWARDS[4].title}
+            </h3>
+
+            {/* Vertical line + Badge/Org name */}
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-[3px] h-[56px] bg-[#74bbcb] rounded-full flex-shrink-0" />
+              {AWARDS[4].badge && (
+                <p className="font-['Poppins'] font-medium text-[20px] text-[#74bbcb]">
+                  {AWARDS[4].badge}
+                </p>
+              )}
+            </div>
+
+            {/* Description */}
+            <p className="font-['Inter'] font-normal text-[20px] text-white leading-[1.22] mb-8 max-w-[477px]">
+              {AWARDS[4].description}
+            </p>
+
+            {/* Dot + Category */}
+            {AWARDS[4].category && (
+              <div className="flex items-center gap-2">
+                <div className="w-[13px] h-[13px] rounded-full bg-white/60 flex-shrink-0" />
+                <p className="font-['Inter'] font-normal text-[16px] text-white">
+                  {AWARDS[4].category}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+
       </div>
     </section>
   );
 }
-
 // ── How We Strive (Triple Bottom Line) ───────────────────────────────────────
 function HowWeStrive() {
   return (
@@ -141,20 +390,21 @@ function HowWeStrive() {
         {PILLARS.map((p) => {
           const Icon = p.icon
           return (
-          <article key={p.id} className="bg-[#f2fcfd] border border-[#a2f4fd] rounded-3xl p-8 flex-1 min-w-[240px] max-w-[440px] text-center">
-            <div
-              className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center"
-              style={{ background: "linear-gradient(143deg, #5fc4dc 14%, #197896 50%, #197896 91%)" }}
-            >
-              <span className="text-4xl text-white font-bold">
-                <Icon size={30}/>
-              </span>
-            </div>
-            <h3 className="font-['Inter'] font-semibold text-2xl md:text-[34px] text-[#007595] mb-1">{p.title}</h3>
-            <p className="font-['Inter'] font-medium text-lg md:text-2xl text-black mb-1">{p.subtitle}</p>
-            <p className="font-['Inter'] text-sm md:text-base text-black leading-relaxed">{p.description}</p>
-          </article>
-        )})}
+            <article key={p.id} className="bg-[#f2fcfd] border border-[#a2f4fd] rounded-3xl p-8 flex-1 min-w-[240px] max-w-[440px] text-center">
+              <div
+                className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center"
+                style={{ background: "linear-gradient(143deg, #5fc4dc 14%, #197896 50%, #197896 91%)" }}
+              >
+                <span className="text-4xl text-white font-bold">
+                  <Icon size={30} />
+                </span>
+              </div>
+              <h3 className="font-['Inter'] font-semibold text-2xl md:text-[34px] text-[#007595] mb-1">{p.title}</h3>
+              <p className="font-['Inter'] font-medium text-lg md:text-2xl text-black mb-1">{p.subtitle}</p>
+              <p className="font-['Inter'] text-sm md:text-base text-black leading-relaxed">{p.description}</p>
+            </article>
+          )
+        })}
       </div>
     </section>
   );

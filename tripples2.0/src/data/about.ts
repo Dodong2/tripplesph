@@ -13,9 +13,9 @@ export const PILLARS: Pillar[] = [
 
 export const AWARDS: AwardCard[] = [
   { id: "aw1", imageUrl: ASSETS.award1, title: "Certificate of Excellence", badge: "Asia's Golden Legacy Awards", description: "Recognized for outstanding achievement in digital advertising innovation and client success across the Asian market.", category: "International Recognition" },
-  { id: "aw2", imageUrl: ASSETS.award2, title: "Excellence in Digital Marketing", badge: "Asia's Golden Legacy Awards", description: "Awarded for demonstrating exceptional creativity, strategic thinking, and measurable results in digital campaigns.", category: "Industry Leadership" },
-  { id: "aw3", imageUrl: ASSETS.award3, title: "DOST Partnership", badge: "", description: "Honored for exceptional collaboration in advancing technology and digital transformation initiatives.", category: "" },
-  { id: "aw4", imageUrl: ASSETS.award4, title: "Legacy Crown Award", badge: "", description: "Prestigious trophy awarded for lasting impact and pioneering contributions to the digital marketing industry.", category: "" },
+  { id: "aw2", imageUrl: ASSETS.award3, title: "DOST Partnership", badge: "", description: "Honored for exceptional collaboration in advancing technology and digital transformation initiatives.", category: "" },
+  { id: "aw3", imageUrl: ASSETS.award4, title: "Legacy Crown Award", badge: "", description: "Prestigious trophy awarded for lasting impact and pioneering contributions to the digital marketing industry.", category: "" },
+  { id: "aw4", imageUrl: ASSETS.award2, title: "Excellence in Digital Marketing", badge: "Asia's Golden Legacy Awards", description: "Awarded for demonstrating exceptional creativity, strategic thinking, and measurable results in digital campaigns.", category: "Industry Leadership" },
   { id: "aw5", imageUrl: ASSETS.award5, title: "Technology Partnership", badge: "DOST Starbooks Recognition", description: "Recognized for valuable partnership in promoting digital literacy and technology accessibility initiatives.", category: "" },
 ];
 
