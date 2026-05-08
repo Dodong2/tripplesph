@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RippleBackgroundWhite } from "../components/RippleBackgroundWhite";
 import {
   STAT_CARDS,
@@ -13,6 +13,7 @@ import {
   FAQS,
 } from "../data/home";
 import { LogoCarousel } from "../components/LogoCarousel";
+import { MoveRight } from "lucide-react";
 
 // ── Hero ─────────────────────────────────────────────────────────────────────
 // The Numbers section that follows has bg-gradient starting from #77bbcb.
@@ -27,7 +28,7 @@ function Hero() {
     >
       <section className="min-h-[500px] flex items-center justify-center text-center px-6 pb-20 pt-16 w-full">
         <div className="max-w-2xl w-full mx-auto">
-          <h1 className="font-['Poppins'] font-bold text-2xl sm:text-3xl md:text-[38px] text-white leading-tight mb-4">
+          <h1 className="font-['Poppins'] font-bold text-[] sm:text-3xl md:text-[30px] text-white leading-tight mb-4">
             Philippines' Digital Marketing Company that Creates Positive RIPPLE
             Effects.
           </h1>
@@ -36,18 +37,16 @@ function Hero() {
             CONNECTED with their Target Audiences.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <a
-              href="#"
+            <Link to="/services"
               className="bg-[#fffafa] rounded-full h-[44px] px-7 flex items-center font-['Nunito'] font-medium text-base text-[#0891b2] whitespace-nowrap hover:opacity-90 transition-opacity"
             >
               Explore Services →
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link to="/contacts"
               className="border border-white rounded-full h-[44px] px-7 flex items-center font-['Nunito'] font-medium text-base text-white hover:bg-white/10 transition-colors"
             >
               Get Started
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -120,9 +119,9 @@ function Impact() {
       </div>
       <a
         href="#"
-        className="inline-flex items-center h-[42px] px-6 border border-[#0092b8] rounded-full font-['Poppins'] font-bold text-base text-[#0092b8] hover:bg-[#0092b8]/5 transition-colors"
+        className="inline-flex items-center h-[42px] px-6 border border-[#0092b8] rounded-full font-['Poppins'] font-bold text-base text-[#0092b8] hover:bg-[#0092b8]/5 transition-colors gap-5"
       >
-        Get Similar Results for Your Business
+        <span>Get Results Like This</span> <MoveRight />
       </a>
     </section>
   );
@@ -267,9 +266,9 @@ function ServicesSnippet() {
       </div>
       <button
         onClick={() => navigate("/services")}
-        className="inline-flex items-center h-[42px] px-7 border-2 border-[#0092b8] rounded-[28px] bg-transparent cursor-pointer font-['Poppins'] font-medium text-base text-[#0092b8] hover:bg-[#0092b8]/5 transition-colors"
+        className="inline-flex items-center h-[42px] px-7 border-2 border-[#0092b8] rounded-[28px] bg-transparent cursor-pointer font-['Poppins'] font-medium text-base text-[#0092b8] hover:bg-[#0092b8]/5 transition-colors gap-5"
       >
-        View All Services →
+        <span>View All Services</span> <MoveRight />
       </button>
     </section>
   );
@@ -377,12 +376,11 @@ function Articles() {
           </article>
         ))}
       </div>
-      <a
-        href="#"
-        className="inline-flex items-center h-[42px] px-7 border-2 border-[#0092b8] rounded-[28px] font-['Poppins'] font-medium text-base text-[#0092b8] hover:bg-[#0092b8]/5 transition-colors"
+      <Link to="/blog"
+        className="inline-flex items-center h-[42px] px-7 border-2 border-[#0092b8] rounded-[28px] font-['Poppins'] font-medium text-base text-[#0092b8] hover:bg-[#0092b8]/5 transition-colors gap-5"
       >
-        View All Articles →
-      </a>
+        <span>View All Articles</span> <MoveRight />
+      </Link>
     </section>
   );
 }
@@ -391,7 +389,7 @@ function Articles() {
 function FAQs() {
   const [openId, setOpenId] = useState<string | null>(null);
   return (
-    <section className="bg-gradient-to-r from-[#77bbcb] via-[#f4feff] to-[#76baca] py-16 px-6">
+    <section className="bg-[#0d7490] py-16 px-6">
       <div className="max-w-[1300px] mx-auto flex flex-wrap gap-14 items-start">
         <div className="flex-shrink-0 min-w-[180px]">
           <h2
@@ -409,13 +407,13 @@ function FAQs() {
             <div key={faq.id}>
               <button
                 onClick={() => setOpenId(openId === faq.id ? null : faq.id)}
-                className={`w-full bg-[#d9d9d9] h-[46px] px-4 flex items-center justify-between font-['Poppins'] font-semibold text-sm text-black cursor-pointer border-none text-left transition-all ${
-                  openId === faq.id ? "rounded-t-[6px]" : "rounded-[6px]"
+                className={`w-full border-2 border-white border-b-0 h-[46px] px-4 flex items-center justify-between font-['Poppins'] font-semibold text-sm text-white cursor-pointer text-left transition-all ${
+                  openId === faq.id ? "" : ""
                 }`}
               >
                 {faq.question}
                 <span
-                  className="text-lg font-normal transition-transform duration-200"
+                  className="text-lg text-white font-normal transition-transform duration-200"
                   style={{
                     transform: openId === faq.id ? "rotate(45deg)" : "none",
                   }}
@@ -424,7 +422,7 @@ function FAQs() {
                 </span>
               </button>
               <div
-                className={`bg-[#989696] rounded-b-[6px] font-['Inter'] text-sm overflow-hidden transition-[max-height,padding] duration-300 ${
+                className={`text-white font-semibold border-2 border-t-0 border-white font-['Inter'] text-sm overflow-hidden transition-[max-height,padding] duration-300 ${
                   openId === faq.id
                     ? "max-h-[200px] px-4 py-3.5"
                     : "max-h-0 px-4 py-0"
@@ -445,14 +443,14 @@ export default function HomePage() {
   return (
     <main>
       <Hero />
-      <Numbers />
-      <Impact />
-      <WhyUs />
-      <Process />
-      <ServicesSnippet />
-      <Testimonials />
       <Clients />
+      <Testimonials />
+      <Impact />
+      <Numbers />
+      <WhyUs />
+      <ServicesSnippet />
       <Articles />
+      <Process />
       <FAQs />
     </main>
   );
