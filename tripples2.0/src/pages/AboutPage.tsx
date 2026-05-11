@@ -8,52 +8,54 @@ import { STORY_CARD_1 } from "../data/about";
 function AboutHero() {
   return (
     <section
-      className="min-h-screen relative flex flex-col items-center justify-center text-center px-6 pt-12 pb-16 overflow-hidden"
+      className="relative flex flex-col items-center justify-center text-center px-6 pt-12 overflow-hidden min-h-[100svh]"
       style={{ background: "linear-gradient(160deg, #b8dce8 0%, #5fb3c8 45%, #2a7f99 100%)" }}
     >
       {/* ── Top text block ── */}
-      <div className="relative z-10 max-w-4xl w-full mx-auto">
-
-        {/* Small teal subtitle */}
-        <p className="font-['Poppins'] font-semibold text-sm sm:text-base text-white/80 mb-1 tracking-wide">
+      <div className="relative z-10 max-w-4xl w-full mx-auto pb-16">
+        <p className="font-['Poppins'] font-bold md:text-[35px] sm:text-base text-white mb-1 tracking-wide">
           The Philippines' FIRST and BIGGEST
         </p>
-
-        {/* Bold title */}
-        <h2 className="font-['Poppins'] font-bold text-1xl sm:text-3xl md:text-[30px] text-white leading-tight mb-2">
+        <h2 className="font-['Poppins'] font-bold text-xl sm:text-3xl md:text-[30px] text-white leading-tight mb-2">
           Online Community for Promoting Campaigns
         </h2>
-
-        {/* Second subtitle */}
-        <p className="font-['Inter'] text-sm sm:text-base text-white/80 mb-8">
+        <p className="font-['Inter'] text-sm sm:text-base text-white/80">
           It is where people who care for Man, Money and Mother Earth Meet
         </p>
+      </div>
 
-        {/* WHO WE ARE */}
-        <h1 className="font-['Poppins'] font-bold text-[42px] sm:text-[80px] md:text-[100px] text-white leading-none mb-8">
-          WHO WE ARE
-        </h1>
-
-        {/* White card — paragraph + blockquote */}
-        <div className="bg-white rounded-2xl px-5 sm:px-10 py-5 text-center shadow-sm max-w-4xl mx-auto">
-          <p className="font-['Inter'] text-sm sm:text-base text-gray-700 leading-relaxed mb-4">
+      {/* ── Circle top container ── */}
+      <div
+        className="relative z-10 w-[120%] sm:w-[110%] md:w-[104%] pb-10 pt-12 px-6 flex-1 flex flex-col justify-center bg-[#0d7490]"
+        style={{
+          
+          borderRadius: "150% 150% 0 0 / 300% 300% 0 0",
+          marginLeft: "-10%",
+          marginRight: "-10%",
+        }}
+      >
+        <div className="max-w-4xl mx-auto px-[15%] sm:px-[12%] md:px-6">
+          <h1 className="font-['Poppins'] font-bold text-[40px] sm:text-[80px] md:text-[70px] text-white leading-none mb-5 ">
+            WHO WE ARE
+          </h1>
+          <p className="font-['Inter'] text-sm sm:text-base text-white leading-relaxed mb-2">
             TRipples is God's business. We believe and live by the fact that everything came and
             comes from Him, and so, we remember Him and dedicate this business to Him.
           </p>
-          <blockquote className="font-['Inter'] text-sm sm:text-base text-gray-600 italic leading-relaxed">
+          <blockquote className="font-['Inter'] text-sm sm:text-base text-white italic leading-relaxed">
             "You shall remember the LORD your God, for it is he who gives you power to get wealth."
             <br />– Deuteronomy 8:18a
           </blockquote>
         </div>
-
       </div>
     </section>
   );
 }
+
 // ── Reusable story card ───────────────────────────────────────────────────────
 interface StoryCardProps {
   children: ReactNode
-    className?: string 
+  className?: string
 }
 function StoryCard({ children, className }: StoryCardProps) {
   return (
@@ -68,61 +70,61 @@ function StoryCard({ children, className }: StoryCardProps) {
 function HowWeStarted() {
   return (
     <section
-      className="px-6 py-16"
-      style={{ background: "linear-gradient(160deg, #b8dce8 0%, #5fb3c8 45%, #2a7f99 100%)" }}
+      className="bg-[#0d7490] px-6 py-16"
+
     >
-     <div className="max-w-[900px] mx-auto flex flex-col lg:flex-row lg:justify-between items-start gap-10 lg:gap-80px">
+      <div className="max-w-[900px] mx-auto flex flex-col lg:flex-row lg:justify-between items-start gap-10 lg:gap-80px">
 
-  {/* ── Left col: title + photo ── */}
-<div className="flex-shrink-0 w-full lg:w-[260px] flex flex-row items-center -gap-10 lg:flex-col lg:items-start lg:gap-6">
-  <h2 className="font-['Poppins'] font-bold text-[52px] sm:text-[40px] lg:text-[64px] text-white leading-[1.05]">
-    HOW WE STARTED
-  </h2>
-  <img
-    src={ASSETS.founderImg}
-    alt="Founders"
-    className="w-52 h-52 lg:w-60 lg:h-60 rounded-full object-cover border-4 border-white/50 flex-shrink-0"
-  />
-</div>
+        {/* ── Left col: title + photo ── */}
+        <div className="flex-shrink-0 w-full lg:w-[260px] flex flex-row items-center -gap-10 lg:flex-col lg:items-start lg:gap-6">
+          <h2 className="font-['Poppins'] font-bold text-[52px] sm:text-[40px] lg:text-[64px] text-white leading-[1.05]">
+            HOW WE STARTED
+          </h2>
+          <img
+            src={ASSETS.founderImg}
+            alt="Founders"
+            className="w-52 h-52 lg:w-60 lg:h-60 rounded-full object-cover border-4 border-white/50 flex-shrink-0"
+          />
+        </div>
 
-  {/* ── Right col: 3 separate cards ── */}
-  {/* ✅ Tinanggal flex-1, fixed width na para gumana ang justify-between */}
-  <div className="w-full lg:w-[560px] flex flex-col gap-4">
-    {/* Card 1 */}
-    <StoryCard className="bg-white border border-[#4fb8cc]/40 rounded-2xl p-4 flex flex-col gap-3">
-      <p className="font-['Inter'] text-sm md:text-base text-gray-800 leading-relaxed">
-        TRipples is the brainchild of Mai Ryza Sison, who started the company back in 2017.
-      </p>
-      <p className="font-['Inter'] text-sm md:text-base text-gray-800 leading-relaxed">
-        <span className="font-semibold text-[#0891b2]">{STORY_CARD_1[0].label}: </span>
-        {STORY_CARD_1[0].text}
-      </p>
-    </StoryCard>
+        {/* ── Right col: 3 separate cards ── */}
+        {/* ✅ Tinanggal flex-1, fixed width na para gumana ang justify-between */}
+        <div className="w-full lg:w-[560px] flex flex-col gap-4">
+          {/* Card 1 */}
+          <StoryCard className="bg-white border border-[#4fb8cc]/40 rounded-2xl p-4 flex flex-col gap-3">
+            <p className="font-['Inter'] text-sm md:text-base text-gray-800 leading-relaxed">
+              TRipples is the brainchild of Mai Ryza Sison, who started the company back in 2017.
+            </p>
+            <p className="font-['Inter'] text-sm md:text-base text-gray-800 leading-relaxed">
+              <span className="font-semibold text-[#0891b2]">{STORY_CARD_1[0].label}: </span>
+              {STORY_CARD_1[0].text}
+            </p>
+          </StoryCard>
 
-    {/* Card 2 */}
-    <StoryCard className="bg-white border border-[#4fb8cc]/40 rounded-2xl p-4 flex flex-col gap-3">
-      {STORY_CARD_1.slice(1).map((item) => (
-        <p key={item.label} className="font-['Inter'] text-sm md:text-base text-gray-800 leading-relaxed">
-          <span className="font-semibold text-[#0891b2]">{item.label}: </span>
-          {item.text}
-        </p>
-      ))}
-    </StoryCard>
+          {/* Card 2 */}
+          <StoryCard className="bg-white border border-[#4fb8cc]/40 rounded-2xl p-4 flex flex-col gap-3">
+            {STORY_CARD_1.slice(1).map((item) => (
+              <p key={item.label} className="font-['Inter'] text-sm md:text-base text-gray-800 leading-relaxed">
+                <span className="font-semibold text-[#0891b2]">{item.label}: </span>
+                {item.text}
+              </p>
+            ))}
+          </StoryCard>
 
-    {/* Card 3 */}
-    <StoryCard className="bg-[rgba(0,117,149,1)] border border-[#4fb8cc]/40 rounded-2xl p-4 flex flex-col gap-3">
-      <p className="font-['Inter'] text-white text-sm md:text-base leading-relaxed">
-        Today, TRipples is the first and only full-stack digital marketing company in the Philippines.{" "}
-        <strong className="text-white">
-          "The first and the largest online community in the Philippines for spreading campaigns"
-        </strong>{" "}
-        is one of its taglines because it is the pioneer in Cost per Click (CPC) acquisition
-        technology that drives traffic to a particular landing URL using various social media channels.
-      </p>
-    </StoryCard>
-  </div>
+          {/* Card 3 */}
+          <StoryCard className="bg-[rgba(0,117,149,1)] border border-[#4fb8cc]/40 rounded-2xl p-4 flex flex-col gap-3">
+            <p className="font-['Inter'] text-white text-sm md:text-base leading-relaxed">
+              Today, TRipples is the first and only full-stack digital marketing company in the Philippines.{" "}
+              <strong className="text-white">
+                "The first and the largest online community in the Philippines for spreading campaigns"
+              </strong>{" "}
+              is one of its taglines because it is the pioneer in Cost per Click (CPC) acquisition
+              technology that drives traffic to a particular landing URL using various social media channels.
+            </p>
+          </StoryCard>
+        </div>
 
-</div>
+      </div>
     </section>
   );
 }
@@ -176,9 +178,8 @@ export const AwardCardWide: React.FC<AwardCardWideProps> = ({
 }) => {
   const imageBlock = (
     <div
-      className={`relative flex-shrink-0 flex items-center justify-center p-5 md:p-6 md:w-[310px] ${
-        imagePosition === "right" ? "order-first md:order-last" : ""
-      }`}
+      className={`relative flex-shrink-0 flex items-center justify-center p-5 md:p-6 md:w-[310px] ${imagePosition === "right" ? "order-first md:order-last" : ""
+        }`}
     >
       <div
         className="relative rounded-[17px] flex items-center justify-center w-full md:w-[300px] h-[180px] md:h-[200px]"
@@ -455,20 +456,21 @@ function Benefits() {
               {group.items.map((item) => {
                 const Icon = item.icon
                 return (
-                <div
-                  key={item.id}
-                  className="bg-[#308da7] border border-[#74bbcb] rounded-3xl p-5 flex items-start gap-4"
-                >
                   <div
-                    className="w-[67px] h-[67px] flex-shrink-0 rounded-xl flex items-center justify-center"
-                    style={{ background: "linear-gradient(135deg, #6bb4c5 0%, #49a7af 50%, #28809c 100%)" }}
-                  ><Icon size={30} className="text-white"/></div>
-                  <div>
-                    <h4 className="font-['Poppins'] font-bold text-base md:text-xl text-white leading-tight mb-1">{item.title}</h4>
-                    <p className="font-['Inter'] text-sm text-white leading-relaxed">{item.description}</p>
+                    key={item.id}
+                    className="bg-[#308da7] border border-[#74bbcb] rounded-3xl p-5 flex items-start gap-4"
+                  >
+                    <div
+                      className="w-[67px] h-[67px] flex-shrink-0 rounded-xl flex items-center justify-center"
+                      style={{ background: "linear-gradient(135deg, #6bb4c5 0%, #49a7af 50%, #28809c 100%)" }}
+                    ><Icon size={30} className="text-white" /></div>
+                    <div>
+                      <h4 className="font-['Poppins'] font-bold text-base md:text-xl text-white leading-tight mb-1">{item.title}</h4>
+                      <p className="font-['Inter'] text-sm text-white leading-relaxed">{item.description}</p>
+                    </div>
                   </div>
-                </div>
-              )})}
+                )
+              })}
             </div>
           </div>
         ))}
