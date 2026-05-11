@@ -57,7 +57,7 @@ function ContactForm() {
     "w-full h-12 px-4 rounded-lg bg-[#f3f3f5] font-['Inter'] text-base text-gray-700 placeholder-[#939393] outline-none focus:ring-2 focus:ring-[#197996]/40 transition-shadow";
 
   return (
-    <section className="bg-[#f9fafb] py-16 px-6">
+    <section className="bg-[#EDF9FD] py-16 px-6">
       <div className="max-w-[818px] mx-auto bg-white rounded-[42px] shadow-[0px_4px_16.1px_6px_rgba(0,0,0,0.25)] px-8 sm:px-14 py-12">
         <h2 className="font-['Poppins'] font-bold text-3xl md:text-[40px] text-black text-center mb-2 leading-tight">
           Get in touch with us!
@@ -170,7 +170,7 @@ function ContactForm() {
 // ── Contact Info Cards ────────────────────────────────────────────────────────
 function ContactInfoCards() {
   return (
-    <section className="bg-white py-14 px-6">
+    <section className="bg-[#EDF9FD] py-14 px-6">
       <div className="max-w-[1100px] mx-auto flex flex-wrap justify-center gap-6">
         {CONTACT_INFO.map((info) => {
           const Icon = info.icon
@@ -205,7 +205,7 @@ function ContactFAQs() {
   const [openId, setOpenId] = useState<string | null>(null);
 
   return (
-    <section className="bg-[#f9fafb] py-16 px-6">
+    <section className="bg-[#EDF9FD] py-16 px-6">
       <h2 className="font-['Poppins'] font-bold text-3xl md:text-[40px] text-black text-center mb-10 leading-tight">
         Frequently Asked Questions
       </h2>

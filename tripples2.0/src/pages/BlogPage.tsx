@@ -1,38 +1,7 @@
 import { useState, useMemo } from "react";
 import CTABanner from "../components/CTABanner";
 import { BLOG_POSTS, BLOG_CATEGORIES } from "../data/blog";
-
-// ── Search icon (inline SVG, avoids broken Figma asset) ──────────────────────
-function SearchIcon() {
-  return (
-    <svg viewBox="0 0 36 36" fill="none" className="w-5 h-5 text-white" aria-hidden="true">
-      <circle cx="15" cy="15" r="10" stroke="white" strokeWidth="2.5" />
-      <line x1="22" y1="22" x2="33" y2="33" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-// ── Calendar icon ─────────────────────────────────────────────────────────────
-function CalendarIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 flex-shrink-0" aria-hidden="true">
-      <rect x="3" y="5" width="18" height="16" rx="2" stroke="#6d6d6d" strokeWidth="1.5" />
-      <line x1="3" y1="10" x2="21" y2="10" stroke="#6d6d6d" strokeWidth="1.5" />
-      <line x1="8" y1="3" x2="8" y2="7" stroke="#6d6d6d" strokeWidth="1.5" strokeLinecap="round" />
-      <line x1="16" y1="3" x2="16" y2="7" stroke="#6d6d6d" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-// ── Person icon ───────────────────────────────────────────────────────────────
-function PersonIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 flex-shrink-0" aria-hidden="true">
-      <circle cx="12" cy="8" r="4" stroke="#6d6d6d" strokeWidth="1.5" />
-      <path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke="#6d6d6d" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  );
-}
+import { Calendar, Search, User } from "lucide-react";
 
 // ── Blog Hero ─────────────────────────────────────────────────────────────────
 function BlogHero({
@@ -54,16 +23,16 @@ function BlogHero({
         </p>
 
         {/* Search bar */}
-        <div className="flex items-center w-full max-w-[461px] h-[55px] bg-white border-[3px] border-[#0295ae] rounded-full overflow-hidden">
-          <div className="flex-shrink-0 w-[85px] h-full bg-[#0295ae] flex items-center justify-center">
-            <SearchIcon />
+        <div className="relative flex items-center w-full max-w-[461px] h-[55px] bg-white border-[3px] border-[#0295ae] rounded-full overflow-hidden">
+          <div className="absolute left-0 top-0 w-[55px] h-full flex items-center justify-center">
+            <Search className="text-gray-400" />
           </div>
           <input
             type="text"
             placeholder="Search articles…"
             value={search}
             onChange={(e) => onSearch(e.target.value)}
-            className="flex-1 px-4 font-['Inter'] text-base text-gray-700 outline-none bg-transparent placeholder-gray-400"
+            className="w-full pl-[67px] pr-4 font-['Inter'] text-base text-gray-700 outline-none bg-transparent placeholder-gray-400"
           />
         </div>
       </div>
@@ -86,11 +55,10 @@ function CategoryFilter({
           <button
             key={cat}
             onClick={() => onChange(cat)}
-            className={`h-[44px] px-6 rounded-full font-['Inter'] text-base font-medium transition-colors cursor-pointer ${
-              active === cat
+            className={`h-[44px] px-6 rounded-full font-['Inter'] text-base font-medium transition-colors cursor-pointer ${active === cat
                 ? "bg-[#06b6d4] text-white border-none"
                 : "bg-transparent border border-[#06b6d4] text-white hover:bg-[#06b6d4]/20"
-            }`}
+              }`}
           >
             {cat}
           </button>
@@ -136,11 +104,11 @@ function BlogCard({ post }: { post: BlogPost }) {
         {/* Meta row */}
         <div className="flex items-center justify-between mt-1 flex-wrap gap-2">
           <div className="flex items-center gap-1.5">
-            <PersonIcon />
+            <User className="text-[#6d6d6d]" />
             <span className="font-['Inter'] text-sm text-[#6d6d6d]">{post.author}</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <CalendarIcon />
+            <Calendar className="text-[#6d6d6d]" />
             <span className="font-['Inter'] text-sm text-[#6d6d6d]">{post.date}</span>
           </div>
         </div>
@@ -186,7 +154,7 @@ export default function BlogPage() {
       <CategoryFilter active={activeCategory} onChange={setActiveCategory} />
 
       {/* Cards grid on off-white bg */}
-      <section className="bg-[#f5f3ef] px-6 py-12">
+      <section className="bg-[#EDF9FD] px-6 py-12">
         <div className="max-w-[1400px] mx-auto">
           {filtered.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
