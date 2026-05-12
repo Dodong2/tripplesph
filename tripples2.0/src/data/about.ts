@@ -1,4 +1,4 @@
-import type { Pillar, AwardCard, BenefitGroup, StoryItem, WhyWeExistItem } from "../types";
+import type { Pillar, AwardCard, BenefitGroup, StoryItem, WhyWeExistItem, TimeStepItem } from "../types";
 import { ASSETS } from "./index";
 import { 
   Award, 
@@ -110,3 +110,43 @@ export const EXIST_ITEM: WhyWeExistItem[] = [
     { id: "we2", icon: Store, title: "Brands and SMEs", description: "We exist for brands and SMEs. Understanding what is in their heart, we design, create, and deliver quality services." },
     { id: "we3", icon: Handshake, title: "Non-profit organizations", description: "We exist for non-profit organizations. We help them promote their advocacies, and it is FREE!" },
   ];
+
+  export const TIME_STEPS: TimeStepItem[] = [
+  {
+    label: "The Birth",
+    desc: "In 2017, Tripples was born having been registered with SEC and other government bodies.",
+    active: true,
+    highlight: false
+  },
+  {
+    label: "The First Ripple",
+    desc: "Started the journey with a humble beginning with an X-deal with a photo-video supplier.",
+    active: true,
+    highlight: false
+  },
+  {
+    label: "The Pivot",
+    desc: "Thanks to the COVID-19 pandemic, Tripples was able to pivot making itself relevant and opening doors to the government clientele.",
+    active: true,
+    highlight: false
+  },
+  {
+    label: "The Growth",
+    desc: "Being a PHILGEPS Platinum member, Tripples has become eligible to participate in stringent multi-million government bids.",
+    active: true,
+    highlight: false
+  },
+  {
+    label: "The Now",
+    desc: "The company has made ripples of impacts to government, private sector, and NGOs through its expanded and trust-worthy services.",
+    active: true,
+    highlight: false
+  },
+  {
+    label: "The Future",
+    desc: "Coming soon are Tripples new products and services that would turn ripples into waves of positive change.",
+    active: true,
+    highlight: true,
+  },
+
+];

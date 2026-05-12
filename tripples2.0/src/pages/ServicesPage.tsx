@@ -1,11 +1,12 @@
 import CTABanner from "../components/CTABanner";
+import { DecorativeCircles } from "../components/DecorativeCircles";
 import { SERVICE_BLOCKS, ADDITIONAL_SERVICES,} from "../data/service";
 import { CircleCheckBig } from "lucide-react";
 
 // ── Service Hero ──────────────────────────────────────────────────────────────
 function ServiceHero() {
   return (
-    <section className="bg-[#197996] min-h-screen flex items-center justify-center text-center px-6">
+    <section className="bg-[#197996] relative min-h-screen flex items-center justify-center text-center px-6">
       <div className="py-20">
         <h1 className="font-['Poppins'] font-bold text-3xl sm:text-4xl md:text-[56px] lg:text-[70px] text-white leading-tight mb-6">
           Our Services
@@ -14,6 +15,7 @@ function ServiceHero() {
           Comprehensive digital solutions tailored to your business needs
         </p>
       </div>
+      <DecorativeCircles circles={10} mobileCircles={5}/>
     </section>
   );
 }

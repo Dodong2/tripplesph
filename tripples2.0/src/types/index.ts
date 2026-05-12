@@ -155,6 +155,13 @@ export interface WhyWeExistItem {
   description: string
 }
 
+export interface TimeStepItem {
+  label: string
+  desc: string
+  active: boolean
+  highlight: boolean
+}
+
 // ─── Contact Page ──────────────────────────────────────────────────────────────
 export interface ContactFaqItem {
   id: string;

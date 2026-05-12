@@ -53,11 +53,11 @@ export default function Navbar() {
 
           {/* Desktop actions */}
           <div className="hidden md:flex gap-2.5">
-            <button className="--font-dm-sans text-base px-4 h-[38px] rounded-[7px] border border-[#1a7997] text-[#1a7997] bg-white cursor-pointer hover:bg-[#f0f9fb] transition-colors">
+            {/* <button className="--font-dm-sans text-base px-4 h-[38px] rounded-[7px] border border-[#1a7997] text-[#1a7997] bg-white cursor-pointer hover:bg-[#f0f9fb] transition-colors">
               Login
-            </button>
+            </button> */}
             <button className="--font-dm-sans text-base px-4 h-[38px] rounded-[7px] border-none text-white bg-[#1a7997] cursor-pointer hover:opacity-90 transition-opacity">
-              Sign Up
+              {/* Sign Up */} coming soon...
             </button>
           </div>
 

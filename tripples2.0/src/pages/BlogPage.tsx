@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import CTABanner from "../components/CTABanner";
 import { BLOG_POSTS, BLOG_CATEGORIES } from "../data/blog";
 import { Calendar, Search, User } from "lucide-react";
+import { DecorativeCircles } from "../components/DecorativeCircles";
 
 // ── Blog Hero ─────────────────────────────────────────────────────────────────
 function BlogHero({
@@ -12,7 +13,7 @@ function BlogHero({
   onSearch: (v: string) => void;
 }) {
   return (
-    <section className="bg-[#197996] pt-14 pb-0 px-6">
+    <section className="bg-[#197996] relative pt-14 pb-0 px-6">
       <div className="max-w-[1400px] mx-auto">
         {/* Title + description */}
         <h1 className="font-['Poppins'] font-semibold text-[40px] sm:text-[56px] md:text-[64px] text-white tracking-[0.08em] leading-tight mb-4">
@@ -36,6 +37,7 @@ function BlogHero({
           />
         </div>
       </div>
+      <DecorativeCircles circles={10} mobileCircles={5}/>
     </section>
   );
 }
