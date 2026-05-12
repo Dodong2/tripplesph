@@ -63,7 +63,7 @@ function HowWeStarted() {
       <div className="mx-auto flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
 
         {/* ── Left: title + photo ── */}
-        <div className="flex-shrink-0 border-4 border-red-500 w-full lg:w-[10px] flex flex-row lg:flex-col items-center gap-4 lg:gap-3">
+        <div className="flex-shrink-0 w-full lg:w-[10px] flex flex-row lg:flex-col items-center gap-4 lg:gap-3">
           <div className="lg:absolute lg:left-10 lg:top-6 flex h-auto">
 
             {/* Mobile: left side | LG: right side (after image) */}
