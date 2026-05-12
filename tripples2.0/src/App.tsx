@@ -2,12 +2,15 @@ import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+//hooks
+import { ScrollToTop } from "./hooks/ScrollToTop";
 
 const HomePage    = lazy(() => import("./pages/HomePage"));
 const ServicesPage = lazy(() => import("./pages/ServicesPage"));
 const AboutPage   = lazy(() => import("./pages/AboutPage"));
-const BlogPage = lazy(() => import("./pages/BlogPage"));
-const ContactPage = lazy(() => import("./pages/ContactPage"))
+const BlogPage    = lazy(() => import("./pages/BlogPage"));
+const ContactPage = lazy(() => import("./pages/ContactPage"));
+
 
 function PageLoader() {
   return (
@@ -20,8 +23,9 @@ function PageLoader() {
 export default function App() {
   return (
     <BrowserRouter>
+      {/* ScrollToTop must be inside BrowserRouter to access useLocation */}
+      <ScrollToTop />
       <Navbar />
-      {/* push content below fixed navbar */}
       <div className="pt-[69px]">
         <Suspense fallback={<PageLoader />}>
           <Routes>

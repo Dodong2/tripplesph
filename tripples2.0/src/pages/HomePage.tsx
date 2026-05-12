@@ -21,19 +21,18 @@ import { MoveRight } from "lucide-react";
 function Hero() {
   return (
     <RippleBackgroundWhite
-      rippleOriginY={70}
+      rippleOriginY={65}
       rippleCount={5}
       animationDuration={5}
     >
       <section className="min-h-screen flex items-center justify-center text-center px-6 pb-20 pt-10 w-full">
-        <div className="max-w-2xl w-full mx-auto">
-          <h1 className="font-['Poppins'] font-bold text-[] sm:text-3xl md:text-[40px] text-white leading-tight mb-4">
+        <div className="max-w-5xl w-full mx-auto">
+          <h1 className="font-['Poppins'] font-bold text-[30px] sm:text-3xl md:text-[40px] text-white leading-tight mb-4">
             Philippines' Digital Marketing Company that Creates Positive RIPPLE
             Effects.
           </h1>
-          <p className="font-['Inter'] text-sm sm:text-base md:text-lg text-white max-w-md mx-auto mb-10 leading-relaxed">
-            It is where the HEARTS of Brands and other Organizations are
-            CONNECTED with their Target Audiences.
+          <p className="font-['Inter'] text-sm sm:text-base md:text-lg text-white max-w-lg mx-auto mb-10 leading-relaxed">
+            It is where the HEARTS of organizations and their clients are CONNECTED. 
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link to="/services"
