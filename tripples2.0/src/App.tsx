@@ -26,7 +26,7 @@ export default function App() {
       {/* ScrollToTop must be inside BrowserRouter to access useLocation */}
       <ScrollToTop />
       <Navbar />
-      <div className="pt-[69px]">
+      <div className="pt-[69px] overflow-x-hidden">
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/"         element={<HomePage />} />

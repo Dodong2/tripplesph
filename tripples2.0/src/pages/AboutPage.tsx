@@ -75,7 +75,7 @@ function HowWeStarted() {
               <img
                 src={ASSETS.founderImg}
                 alt="Founders"
-                className="w-52 h-52 lg:w-52 lg:h-52 rounded-full object-cover flex-shrink-0 z-20"
+                className="w-42 h-42 lg:w-52 lg:h-52 rounded-full object-cover flex-shrink-0 z-20"
               />
               <p className="text-white/80 text-xs text-center leading-snug hidden lg:block mt-1">
                 Pastors Francis Oliver and<br />Mai Ryza Sison<br />
