@@ -73,34 +73,41 @@ function Clients() {
   );
 }
 
-// ── Numbers ──────────────────────────────────────────────────────────────────
-function Numbers() {
+// ── Testimonials ─────────────────────────────────────────────────────────────
+function Testimonials() {
   return (
-    <section className="bg-gradient-to-r from-[#77bbcb] via-[#f4feff] to-[#76baca] py-16 px-6 text-center">
-      <span className="inline-flex items-center h-9 px-3.5 rounded-full border border-[#a3f4fd] bg-gradient-to-r from-[#ccfbf1] via-[#cffafe] to-[#a5f3fc] font-['Poppins'] font-bold text-[11px] text-[#0088bf] mb-4">
-        Proven Results
+    <section
+      className="py-16 px-6 text-center"
+      style={{
+        background: "linear-gradient(92.44deg, #74bbcb 0%, #3e9db4 50%, #197896 100%)",
+      }}
+    >
+      <span className="inline-flex items-center h-9 px-3.5 rounded-full border border-[#a3f4fd] bg-white font-['Poppins'] font-bold text-[11px] text-[#0088bf] mb-4">
+        Client Success Story
       </span>
-      <p className="font-['Inter'] text-lg mb-3 text-black">
-        Real growth from real campaigns. Here's what we achieved in 2024.
-      </p>
-      <h2 className="font-['Poppins'] font-bold text-[28px] sm:text-[44px] text-black mb-10 leading-tight">
-        Let the Numbers Talk
+      <h2 className="font-['Poppins'] font-bold text-[28px] sm:text-[44px] text-white leading-tight mb-3">
+        What Our Clients Say
       </h2>
-      <div className="flex flex-wrap justify-center gap-6 max-w-5xl mx-auto">
-        {STAT_CARDS.map((c) => (
-          <div
-            key={c.id}
-            className="bg-white border-2 border-[#197996] rounded-[22px] shadow-md p-7 flex-1 min-w-[240px] max-w-[400px]"
-          >
-            <p className="font-['Inter'] text-base text-[#666c7d] uppercase mb-1">
-              {c.label}
-            </p>
-            <p className="font-['Poppins'] font-semibold text-[64px] sm:text-[80px] text-[#009692] leading-none">
-              {c.value}
-            </p>
-            <p className="font-['Inter'] text-base text-[#666c7d] mt-1">
-              {c.sub}
-            </p>
+      <p className="font-['Inter'] text-lg md:text-xl text-white mb-12 leading-relaxed">
+        Real testimonials from businesses that achieved real growth
+      </p>
+
+      <div className="flex flex-wrap justify-center gap-7 max-w-[1400px] mx-auto">
+        {TESTIMONIALS.map((t) => (
+          <div key={t.id} className="relative flex-1 min-w-[220px] max-w-[290px] pt-12">
+            {/* Avatar overlapping top */}
+            <img
+              src={t.avatarUrl}
+              alt={t.organization}
+              className="absolute top-0 left-1/2 -translate-x-1/2 w-[88px] h-[88px] rounded-full object-cover border-[3px] border-white shadow-md z-10"
+            />
+            {/* Card */}
+            <div className="bg-white border-2 border-[#53eafd] rounded-[28px] pt-14 pb-6 px-[22px] flex flex-col gap-1.5 text-center h-full">
+              <p className="font-['Inter'] text-[12.5px] text-gray-700 leading-[1.55]">{t.intro}</p>
+              <p className="font-['Poppins'] font-bold text-[14px] text-black leading-[1.4]">{t.highlight}</p>
+              <p className="font-['Inter'] text-[12.5px] text-gray-700 leading-[1.55]">{t.detail}</p>
+              <p className="font-['Inter'] italic text-[12px] text-gray-500 mt-1">{t.source}</p>
+            </div>
           </div>
         ))}
       </div>
@@ -146,6 +153,41 @@ function Impact() {
   );
 }
 
+// ── Numbers ──────────────────────────────────────────────────────────────────
+function Numbers() {
+  return (
+    <section className="bg-gradient-to-r from-[#77bbcb] via-[#f4feff] to-[#76baca] py-16 px-6 text-center">
+      <span className="inline-flex items-center h-9 px-3.5 rounded-full border border-[#a3f4fd] bg-gradient-to-r from-[#ccfbf1] via-[#cffafe] to-[#a5f3fc] font-['Poppins'] font-bold text-[11px] text-[#0088bf] mb-4">
+        Proven Results
+      </span>
+      <p className="font-['Inter'] text-lg mb-3 text-black">
+        Real growth from real campaigns. Here's what we achieved in 2024.
+      </p>
+      <h2 className="font-['Poppins'] font-bold text-[28px] sm:text-[44px] text-black mb-10 leading-tight">
+        Let the Numbers Talk
+      </h2>
+      <div className="flex flex-wrap justify-center gap-6 max-w-5xl mx-auto">
+        {STAT_CARDS.map((c) => (
+          <div
+            key={c.id}
+            className="bg-white border-2 border-[#197996] rounded-[22px] shadow-md p-7 flex-1 min-w-[240px] max-w-[400px]"
+          >
+            <p className="font-['Inter'] text-base text-[#666c7d] uppercase mb-1">
+              {c.label}
+            </p>
+            <p className="font-['Poppins'] font-semibold text-[64px] sm:text-[80px] text-[#009692] leading-none">
+              {c.value}
+            </p>
+            <p className="font-['Inter'] text-base text-[#666c7d] mt-1">
+              {c.sub}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 // ── WhyUs ────────────────────────────────────────────────────────────────────
 function WhyUs() {
   return (
@@ -187,59 +229,6 @@ function WhyUs() {
           );
         })}
       </div>
-    </section>
-  );
-}
-
-
-// ── Process ──────────────────────────────────────────────────────────────────
-function Process() {
-  return (
-    <section className=" bg-gradient-to-r from-[#77bbcb] via-[#f4feff] to-[#76baca] text-center">
-      <div className="py-16 px-6">
-      <span className="inline-flex items-center h-9 px-3.5 rounded-full border border-[#a3f4fd] bg-gradient-to-r from-[#ccfbf1] via-[#cffafe] to-[#a5f3fc] font-['Poppins'] font-bold text-[11px] text-[#0088bf] mb-4">
-        Our Process
-      </span>
-      <h2 className="font-['Poppins'] font-bold text-[28px] sm:text-[44px] text-black leading-tight mb-3">
-        How We Drive Results
-      </h2>
-      <p className="font-['Inter'] text-lg md:text-xl text-gray-700 mb-10 leading-relaxed">
-        A proven 4-step framework that consistently delivers growth
-      </p>
-      <div className="flex flex-wrap justify-center gap-6 max-w-[1400px] mx-auto">
-        {PROCESS_STEPS.map((s) => {
-          const Icon = s.icon;
-          return (
-            <article
-              key={s.id}
-              className="relative bg-white border-2 border-[#53eafd] rounded-xl shadow-md p-8 flex-1 min-w-[220px] max-w-[300px] text-left"
-            >
-              <div className="absolute -top-[14px] -left-4 w-10 h-10 rounded-full bg-gradient-to-br from-[#0d9488] to-[#06b6d4] flex items-center justify-center font-['Poppins'] font-semibold text-sm text-white">
-                {s.number}
-              </div>
-
-              <div className="mt-5">
-                <div className="w-12 h-12 bg-gradient-to-r from-[#ccfbf1] via-[#cffafe] to-[#a5f3fc] rounded-[10px] mb-3.5 flex items-center justify-center">
-                  <Icon className="text-[#0092B8]" size={30} />
-                </div>
-                <h3 className="font-['Poppins'] font-semibold text-base mb-2">
-                  {s.title}
-                </h3>
-                <p className="font-['Inter'] text-sm leading-relaxed text-gray-700">
-                  {s.description}
-                </p>
-              </div>
-            </article>
-          );
-        })}
-      </div>
-      </div>
-      <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-  <path 
-    d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" 
-    fill="#0d7490"
-  />
-</svg>
     </section>
   );
 }
@@ -302,49 +291,6 @@ function ServicesSnippet() {
   );
 }
 
-// ── Testimonials ─────────────────────────────────────────────────────────────
-function Testimonials() {
-  return (
-    <section
-      className="py-16 px-6 text-center"
-      style={{
-        background: "linear-gradient(92.44deg, #74bbcb 0%, #3e9db4 50%, #197896 100%)",
-      }}
-    >
-      <span className="inline-flex items-center h-9 px-3.5 rounded-full border border-[#a3f4fd] bg-white font-['Poppins'] font-bold text-[11px] text-[#0088bf] mb-4">
-        Client Success Story
-      </span>
-      <h2 className="font-['Poppins'] font-bold text-[28px] sm:text-[44px] text-white leading-tight mb-3">
-        What Our Clients Say
-      </h2>
-      <p className="font-['Inter'] text-lg md:text-xl text-white mb-12 leading-relaxed">
-        Real testimonials from businesses that achieved real growth
-      </p>
-
-      <div className="flex flex-wrap justify-center gap-7 max-w-[1400px] mx-auto">
-        {TESTIMONIALS.map((t) => (
-          <div key={t.id} className="relative flex-1 min-w-[220px] max-w-[290px] pt-12">
-            {/* Avatar overlapping top */}
-            <img
-              src={t.avatarUrl}
-              alt={t.organization}
-              className="absolute top-0 left-1/2 -translate-x-1/2 w-[88px] h-[88px] rounded-full object-cover border-[3px] border-white shadow-md z-10"
-            />
-            {/* Card */}
-            <div className="bg-white border-2 border-[#53eafd] rounded-[28px] pt-14 pb-6 px-[22px] flex flex-col gap-1.5 text-center h-full">
-              <p className="font-['Inter'] text-[12.5px] text-gray-700 leading-[1.55]">{t.intro}</p>
-              <p className="font-['Poppins'] font-bold text-[14px] text-black leading-[1.4]">{t.highlight}</p>
-              <p className="font-['Inter'] text-[12.5px] text-gray-700 leading-[1.55]">{t.detail}</p>
-              <p className="font-['Inter'] italic text-[12px] text-gray-500 mt-1">{t.source}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-
 // ── Articles ─────────────────────────────────────────────────────────────────
 function Articles() {
   return (
@@ -388,6 +334,58 @@ function Articles() {
       >
         <span>View All Articles</span> <MoveRight />
       </Link>
+    </section>
+  );
+}
+
+// ── Process ──────────────────────────────────────────────────────────────────
+function Process() {
+  return (
+    <section className=" bg-gradient-to-r from-[#77bbcb] via-[#f4feff] to-[#76baca] text-center">
+      <div className="py-16 px-6">
+      <span className="inline-flex items-center h-9 px-3.5 rounded-full border border-[#a3f4fd] bg-gradient-to-r from-[#ccfbf1] via-[#cffafe] to-[#a5f3fc] font-['Poppins'] font-bold text-[11px] text-[#0088bf] mb-4">
+        Our Process
+      </span>
+      <h2 className="font-['Poppins'] font-bold text-[28px] sm:text-[44px] text-black leading-tight mb-3">
+        How We Drive Results
+      </h2>
+      <p className="font-['Inter'] text-lg md:text-xl text-gray-700 mb-10 leading-relaxed">
+        A proven 4-step framework that consistently delivers growth
+      </p>
+      <div className="flex flex-wrap justify-center gap-6 max-w-[1400px] mx-auto">
+        {PROCESS_STEPS.map((s) => {
+          const Icon = s.icon;
+          return (
+            <article
+              key={s.id}
+              className="relative bg-white border-2 border-[#53eafd] rounded-xl shadow-md p-8 flex-1 min-w-[220px] max-w-[300px] text-left"
+            >
+              <div className="absolute -top-[14px] -left-4 w-10 h-10 rounded-full bg-gradient-to-br from-[#0d9488] to-[#06b6d4] flex items-center justify-center font-['Poppins'] font-semibold text-sm text-white">
+                {s.number}
+              </div>
+
+              <div className="mt-5">
+                <div className="w-12 h-12 bg-gradient-to-r from-[#ccfbf1] via-[#cffafe] to-[#a5f3fc] rounded-[10px] mb-3.5 flex items-center justify-center">
+                  <Icon className="text-[#0092B8]" size={30} />
+                </div>
+                <h3 className="font-['Poppins'] font-semibold text-base mb-2">
+                  {s.title}
+                </h3>
+                <p className="font-['Inter'] text-sm leading-relaxed text-gray-700">
+                  {s.description}
+                </p>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+      </div>
+      <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+  <path 
+    d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" 
+    fill="#0d7490"
+  />
+</svg>
     </section>
   );
 }

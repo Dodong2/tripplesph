@@ -22,7 +22,7 @@ function PageLoader() {
 
 export default function App() {
   return (
-    <BrowserRouter basename="/tripples2.0">
+    <BrowserRouter>
       {/* ScrollToTop must be inside BrowserRouter to access useLocation */}
       <ScrollToTop />
       <Navbar />

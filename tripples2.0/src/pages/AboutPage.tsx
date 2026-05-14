@@ -53,117 +53,97 @@ function AboutHero() {
 }
 
 // ── How We Started ────────────────────────────────────────────────────────────
-
-
 function HowWeStarted() {
   return (
-    <section
-      className="relative bg-[#187797] overflow-hidden px-6 py-10"
-    >
-      <div className="mx-auto flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
+    <section className="relative bg-[#187797] overflow-hidden px-6 py-10">
+  {/* ✅ Dagdag ng max-w at mx-auto para centered sa lahat ng screen */}
+  <div className="max-w-[1200px] mx-auto flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
 
-        {/* ── Left: title + photo ── */}
-        <div className="flex-shrink-0 w-full lg:w-[10px] flex flex-row lg:flex-col items-center gap-4 lg:gap-3">
-          <div className="lg:absolute lg:left-10 lg:top-6 flex h-auto">
-
-            {/* Mobile: left side | LG: right side (after image) */}
-            <h2 className="order-first lg:order-last mb-5 font-['Poppins'] font-extrabold text-white leading-[1.05] text-[28px] sm:text-[32px] lg:text-[48px] text-left lg:text-center">
-              HOW WE<br />STARTED
-            </h2>
-
-            <div className="flex-shrink-0 w-full lg:w-[250px] flex flex-row items-center -gap-10 lg:flex-col lg:items-center lg:gap-1">
-              <img
-                src={ASSETS.founderImg}
-                alt="Founders"
-                className="w-52 h-52 lg:w-52 lg:h-52 rounded-full object-cover flex-shrink-0 z-20"
-              />
-              <p className="text-white/80 text-xs text-center leading-snug hidden lg:block mt-1">
-                Pastors Francis Oliver and<br />Mai Ryza Sison<br />
-                <span className="font-bold text-white/50 uppercase tracking-widest text-[10px]">Founders</span>
-              </p>
-            </div>
-
-          </div>
-        </div>
-
-        {/* ── Right: Diagonal timeline ── */}
-        {/* DESKTOP: absolute-positioned ascending diagonal */}
-        <div className="flex-1 relative hidden lg:block z-20" style={{ height: 460 }}>
-
-
-
-          {TIME_STEPS.map((step, i) => {
-            // Ascending diagonal positions
-            const positions = [
-              { left: 0, top: 335 },
-              { left: 200, top: 255 },
-              { left: 400, top: 178 },
-              { left: 600, top: 105 },
-              { left: 800, top: 38 },
-              { left: 1000, top: -15 },
-            ];
-            const pos = positions[i];
-            return (
-              <div
-                key={step.label}
-                className="absolute flex flex-col gap-1.5"
-                style={{ left: pos.left, top: pos.top }}
-              >
-                <div
-                  className={[
-                    "rounded-full px-4 py-2.5 font-['Poppins'] font-bold text-white text-center text-[12px] uppercase tracking-wide whitespace-nowrap transition-transform hover:scale-105",
-                    step.highlight
-                      ? "bg-white/25 border border-white/60"
-                      : "bg-[rgba(0,90,110,0.85)] border border-white/25",
-                  ].join(" ")}
-                >
-                  {step.label}
-                </div>
-                <p
-                  className="text-white/85 text-[11px] leading-snug font-['Inter']"
-                  style={{ maxWidth: i >= 3 ? 190 : 175 }}
-                >
-                  {step.desc}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* MOBILE: vertical stack */}
-        <div className="flex flex-col gap-4 lg:hidden w-full">
-          {/* MOBILE: names appear */}
-          <p className="text-white/80 text-xs text-center leading-snug -mt-8">
-            Pastors Francis Oliver and<br />Mai Ryza Sison
-            <br />
+    {/* ── Left: title + photo ── */}
+    <div className="flex-shrink-0 w-full lg:w-[10px] flex flex-row lg:flex-col items-center gap-4 lg:gap-3">
+      <div className="lg:absolute lg:left-[calc(50%-580px)] lg:top-6 flex h-auto">
+        <h2 className="order-first lg:order-last mb-5 font-['Poppins'] font-extrabold text-white leading-[1.05] text-[28px] sm:text-[32px] lg:text-[48px] text-left lg:text-center">
+          HOW WE<br />STARTED
+        </h2>
+        <div className="flex-shrink-0 w-full lg:w-[250px] flex flex-row items-center lg:flex-col lg:items-center lg:gap-1">
+          <img
+            src={ASSETS.founderImg}
+            alt="Founders"
+            className="w-52 h-52 lg:w-52 lg:h-52 rounded-full object-cover flex-shrink-0 z-20"
+          />
+          <p className="text-white/80 text-xs text-center leading-snug hidden lg:block mt-1">
+            Pastors Francis Oliver and<br />Mai Ryza Sison<br />
             <span className="font-bold text-white/50 uppercase tracking-widest text-[10px]">Founders</span>
           </p>
-
-          {TIME_STEPS.map((step) => (
-            <div key={step.label} className="flex gap-3 items-start">
-              <div
-                className={[
-                  "rounded-full px-4 py-2 font-['Poppins'] font-bold text-white text-[11px] uppercase tracking-wide whitespace-nowrap flex-shrink-0",
-                  step.highlight
-                    ? "bg-white/25 border border-white/60"
-                    : "bg-[rgba(0,90,110,0.85)] border border-white/20",
-                ].join(" ")}
-              >
-                {step.label}
-              </div>
-              <p className="text-white text-[12px] leading-snug font-['Inter'] pt-1.5">
-                {step.desc}
-              </p>
-            </div>
-          ))}
         </div>
-
       </div>
+    </div>
 
-      <DecorativeCircles circles={5} mobileCircles={5} />
-      <div className="sm:block hidden absolute w-70 h-70 rounded-full bg-[#EDF9FD] -bottom-10 -right-10" />
-      <div className="sm:block hidden absolute w-20 h-20 rounded-full bg-[#EDF9FD] -bottom-9 right-50" />
-    </section>
+    {/* ── Right: Diagonal timeline — DESKTOP ── */}
+    <div className="flex-1 relative hidden lg:block z-20" style={{ height: 460 }}>
+      {TIME_STEPS.map((step, i) => {
+        // ✅ Percentage-based positions para responsive
+        const positions = [
+          { left: "0%",  top: 335 },
+          { left: "17%", top: 255 },
+          { left: "34%", top: 178 },
+          { left: "51%", top: 105 },
+          { left: "68%", top: 38  },
+          { left: "85%", top: -15 },
+        ];
+        const pos = positions[i];
+        return (
+          <div
+            key={step.label}
+            className="absolute flex flex-col gap-1.5"
+            style={{ left: pos.left, top: pos.top }}
+          >
+            <div
+              className={[
+                "rounded-full px-4 py-2.5 font-['Poppins'] font-bold text-white text-center text-[12px] uppercase tracking-wide whitespace-nowrap transition-transform hover:scale-105",
+                step.highlight
+                  ? "bg-white/25 border border-white/60"
+                  : "bg-[rgba(0,90,110,0.85)] border border-white/25",
+              ].join(" ")}
+            >
+              {step.label}
+            </div>
+            <p
+              className="text-white/85 text-[11px] leading-snug font-['Inter']"
+              style={{ maxWidth: i >= 3 ? 190 : 175 }}
+            >
+              {step.desc}
+            </p>
+          </div>
+        );
+      })}
+    </div>
+
+    {/* MOBILE: vertical stack — walang pagbabago */}
+    <div className="flex flex-col gap-4 lg:hidden w-full">
+      <p className="text-white/80 text-xs text-center leading-snug -mt-8">
+        Pastors Francis Oliver and<br />Mai Ryza Sison<br />
+        <span className="font-bold text-white/50 uppercase tracking-widest text-[10px]">Founders</span>
+      </p>
+      {TIME_STEPS.map((step) => (
+        <div key={step.label} className="flex gap-3 items-start">
+          <div className={[
+            "rounded-full px-4 py-2 font-['Poppins'] font-bold text-white text-[11px] uppercase tracking-wide whitespace-nowrap flex-shrink-0",
+            step.highlight ? "bg-white/25 border border-white/60" : "bg-[rgba(0,90,110,0.85)] border border-white/20",
+          ].join(" ")}>
+            {step.label}
+          </div>
+          <p className="text-white text-[12px] leading-snug font-['Inter'] pt-1.5">{step.desc}</p>
+        </div>
+      ))}
+    </div>
+
+  </div>
+
+  <DecorativeCircles circles={5} mobileCircles={5} />
+  <div className="sm:block hidden absolute w-70 h-70 rounded-full bg-[#EDF9FD] -bottom-10 -right-10" />
+  <div className="sm:block hidden absolute w-20 h-20 rounded-full bg-[#EDF9FD] -bottom-9 right-50" />
+</section>
   );
 }
 

@@ -7,7 +7,7 @@ import { useContactForm } from "../hooks/useContactForm";
 // ── Contact Hero ──────────────────────────────────────────────────────────────
 function ContactHero() {
   return (
-    <section className="bg-[#197996] relative min-h-[380px] flex items-center justify-center text-center px-6 py-16">
+    <section className="bg-[#197996] relative min-h-screen flex items-center justify-center text-center px-6 py-16">
       <div className="max-w-4xl">
         <h1 className="font-['Poppins'] font-bold text-3xl sm:text-5xl md:text-[70px] text-white leading-tight mb-6 tracking-tight">
           WE'D LOVE TO HEAR FROM YOU
