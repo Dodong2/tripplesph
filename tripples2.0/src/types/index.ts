@@ -206,3 +206,26 @@ export interface AwardCardTallProps {
   gridClass?: string;
 }
 
+// ─── chatbot ──────────────────────────────────────────────────────────────────
+export interface Message {
+  id: string;
+  from: "bot" | "user";
+  text: string;
+  isTyping?: boolean;
+}
+
+export interface ChatOption {
+  id: string;
+  label: string;
+  answer: string;
+}
+
+export interface ChatCategory {
+  id: string;
+  category: string;
+  icon: LucideIcon;
+  iconsColor: string
+  options: ChatOption[];
+}
+
+

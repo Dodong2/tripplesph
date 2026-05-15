@@ -1,10 +1,12 @@
 import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+/* components */
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-//hooks
+import ChatBot from "./components/tripples-chatbot/ChatBot";
+/* hooks */
 import { ScrollToTop } from "./hooks/ScrollToTop";
-
+/* pages */
 const HomePage    = lazy(() => import("./pages/HomePage"));
 const ServicesPage = lazy(() => import("./pages/ServicesPage"));
 const AboutPage   = lazy(() => import("./pages/AboutPage"));
@@ -38,6 +40,7 @@ export default function App() {
         </Suspense>
       </div>
       <Footer />
+      <ChatBot/>
     </BrowserRouter>
   );
 }
