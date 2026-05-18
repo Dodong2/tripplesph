@@ -32,7 +32,7 @@ function Hero() {
             Effects.
           </h1>
           <p className="font-['Inter'] text-sm sm:text-base md:text-lg text-[#1a7997] max-w-lg mx-auto mb-10 leading-relaxed">
-            It is where the HEARTS of organizations and their clients are CONNECTED. 
+            It is where the HEARTS of organizations and their clients are CONNECTED.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link to="/services"
@@ -40,7 +40,7 @@ function Hero() {
             >
               Explore Services →
             </Link>
-            <Link to="/contacts"
+            <Link to="https://enthusiastic-red-goat.18-136-157-239.cpanel.site"
               className="bg-[#0891b2] rounded-full h-[44px] px-7 flex items-center font-['Nunito'] font-medium text-base text-white"
             >
               Get Started
@@ -55,17 +55,18 @@ function Hero() {
 // ── Clients ──────────────────────────────────────────────────────────────────
 function Clients() {
   // Split 30 logos into two rows of 15
-  const row1 = CLIENT_LOGOS.slice(0, 15);
-  const row2 = CLIENT_LOGOS.slice(15, 30);
+  const half = Math.ceil(CLIENT_LOGOS.length / 2);
+  const row1 = CLIENT_LOGOS.slice(0, half);
+  const row2 = CLIENT_LOGOS.slice(half);
 
   return (
     <section
       className="py-14 text-center overflow-hidden bg-[#0d7490]"
       style={{ marginTop: "-2px" }}
     >
-     
+
       <h2 className="font-['Poppins'] font-bold text-[28px] sm:text-[44px] text-white mb-7 leading-tight">
-        Our Clients
+        Our Clients and Partners
       </h2>
       <LogoCarousel logos={row1} reverse={false} />
       <LogoCarousel logos={row2} reverse={true} />
@@ -343,49 +344,49 @@ function Process() {
   return (
     <section className=" bg-gradient-to-r from-[#77bbcb] via-[#f4feff] to-[#76baca] text-center">
       <div className="py-16 px-6">
-      <span className="inline-flex items-center h-9 px-3.5 rounded-full border border-[#a3f4fd] bg-gradient-to-r from-[#ccfbf1] via-[#cffafe] to-[#a5f3fc] font-['Poppins'] font-bold text-[11px] text-[#0088bf] mb-4">
-        Our Process
-      </span>
-      <h2 className="font-['Poppins'] font-bold text-[28px] sm:text-[44px] text-black leading-tight mb-3">
-        How We Drive Results
-      </h2>
-      <p className="font-['Inter'] text-lg md:text-xl text-gray-700 mb-10 leading-relaxed">
-        A proven 4-step framework that consistently delivers growth
-      </p>
-      <div className="flex flex-wrap justify-center gap-6 max-w-[1400px] mx-auto">
-        {PROCESS_STEPS.map((s) => {
-          const Icon = s.icon;
-          return (
-            <article
-              key={s.id}
-              className="relative bg-white border-2 border-[#53eafd] rounded-xl shadow-md p-8 flex-1 min-w-[220px] max-w-[300px] text-left"
-            >
-              <div className="absolute -top-[14px] -left-4 w-10 h-10 rounded-full bg-gradient-to-br from-[#0d9488] to-[#06b6d4] flex items-center justify-center font-['Poppins'] font-semibold text-sm text-white">
-                {s.number}
-              </div>
-
-              <div className="mt-5">
-                <div className="w-12 h-12 bg-gradient-to-r from-[#ccfbf1] via-[#cffafe] to-[#a5f3fc] rounded-[10px] mb-3.5 flex items-center justify-center">
-                  <Icon className="text-[#0092B8]" size={30} />
+        <span className="inline-flex items-center h-9 px-3.5 rounded-full border border-[#a3f4fd] bg-gradient-to-r from-[#ccfbf1] via-[#cffafe] to-[#a5f3fc] font-['Poppins'] font-bold text-[11px] text-[#0088bf] mb-4">
+          Our Process
+        </span>
+        <h2 className="font-['Poppins'] font-bold text-[28px] sm:text-[44px] text-black leading-tight mb-3">
+          How We Drive Results
+        </h2>
+        <p className="font-['Inter'] text-lg md:text-xl text-gray-700 mb-10 leading-relaxed">
+          A proven 4-step framework that consistently delivers growth
+        </p>
+        <div className="flex flex-wrap justify-center gap-6 max-w-[1400px] mx-auto">
+          {PROCESS_STEPS.map((s) => {
+            const Icon = s.icon;
+            return (
+              <article
+                key={s.id}
+                className="relative bg-white border-2 border-[#53eafd] rounded-xl shadow-md p-8 flex-1 min-w-[220px] max-w-[300px] text-left"
+              >
+                <div className="absolute -top-[14px] -left-4 w-10 h-10 rounded-full bg-gradient-to-br from-[#0d9488] to-[#06b6d4] flex items-center justify-center font-['Poppins'] font-semibold text-sm text-white">
+                  {s.number}
                 </div>
-                <h3 className="font-['Poppins'] font-semibold text-base mb-2">
-                  {s.title}
-                </h3>
-                <p className="font-['Inter'] text-sm leading-relaxed text-gray-700">
-                  {s.description}
-                </p>
-              </div>
-            </article>
-          );
-        })}
-      </div>
+
+                <div className="mt-5">
+                  <div className="w-12 h-12 bg-gradient-to-r from-[#ccfbf1] via-[#cffafe] to-[#a5f3fc] rounded-[10px] mb-3.5 flex items-center justify-center">
+                    <Icon className="text-[#0092B8]" size={30} />
+                  </div>
+                  <h3 className="font-['Poppins'] font-semibold text-base mb-2">
+                    {s.title}
+                  </h3>
+                  <p className="font-['Inter'] text-sm leading-relaxed text-gray-700">
+                    {s.description}
+                  </p>
+                </div>
+              </article>
+            );
+          })}
+        </div>
       </div>
       <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-  <path 
-    d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" 
-    fill="#0d7490"
-  />
-</svg>
+        <path
+          d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"
+          fill="#0d7490"
+        />
+      </svg>
     </section>
   );
 }
@@ -395,53 +396,51 @@ function FAQs() {
   const [openId, setOpenId] = useState<string | null>(null);
   return (
     <section className="bg-[#0d7490] overflow-hidden"
-       style={{ marginTop: "-2px" }}
+      style={{ marginTop: "-2px" }}
     >
-    <div className="py-16 px-6">
-      <div className="max-w-[1300px] mx-auto flex flex-wrap gap-14 items-start">
-        <div className="flex-shrink-0 min-w-[180px]">
-          <h2
-            className="font-['Poppins'] font-bold text-white leading-none"
-            style={{
-              fontSize: "clamp(64px,10vw,120px)",
-              textShadow: "2px 2px 8px rgba(0,0,0,.2)",
-            }}
-          >
-            FAQs
-          </h2>
-        </div>
-        <div className="flex-1 min-w-[280px] flex flex-col gap-2">
-          {FAQS.map((faq) => (
-            <div key={faq.id}>
-              <button
-                onClick={() => setOpenId(openId === faq.id ? null : faq.id)}
-                className={`w-full border-2 border-white border-b-0 h-[46px] px-4 flex items-center justify-between font-['Poppins'] font-semibold text-sm text-white cursor-pointer text-left transition-all ${
-                  openId === faq.id ? "" : ""
-                }`}
-              >
-                {faq.question}
-                <span
-                  className="text-lg text-white font-normal transition-transform duration-200"
-                  style={{
-                    transform: openId === faq.id ? "rotate(45deg)" : "none",
-                  }}
+      <div className="py-16 px-6">
+        <div className="max-w-[1300px] mx-auto flex flex-wrap gap-14 items-start">
+          <div className="flex-shrink-0 min-w-[180px]">
+            <h2
+              className="font-['Poppins'] font-bold text-white leading-none"
+              style={{
+                fontSize: "clamp(64px,10vw,120px)",
+                textShadow: "2px 2px 8px rgba(0,0,0,.2)",
+              }}
+            >
+              FAQs
+            </h2>
+          </div>
+          <div className="flex-1 min-w-[280px] flex flex-col gap-2">
+            {FAQS.map((faq) => (
+              <div key={faq.id}>
+                <button
+                  onClick={() => setOpenId(openId === faq.id ? null : faq.id)}
+                  className={`w-full border-2 border-white border-b-0 h-[46px] px-4 flex items-center justify-between font-['Poppins'] font-semibold text-sm text-white cursor-pointer text-left transition-all ${openId === faq.id ? "" : ""
+                    }`}
                 >
-                  +
-                </span>
-              </button>
-              <div
-                className={`text-white font-semibold border-2 border-t-0 border-white font-['Inter'] text-sm overflow-hidden transition-[max-height,padding] duration-300 ${
-                  openId === faq.id
-                    ? "max-h-[200px] px-4 py-3.5"
-                    : "max-h-0 px-4 py-0"
-                }`}
-              >
-                {faq.answer}
+                  {faq.question}
+                  <span
+                    className="text-lg text-white font-normal transition-transform duration-200"
+                    style={{
+                      transform: openId === faq.id ? "rotate(45deg)" : "none",
+                    }}
+                  >
+                    +
+                  </span>
+                </button>
+                <div
+                  className={`text-white font-semibold border-2 border-t-0 border-white font-['Inter'] text-sm overflow-hidden transition-[max-height,padding] duration-300 ${openId === faq.id
+                      ? "max-h-[200px] px-4 py-3.5"
+                      : "max-h-0 px-4 py-0"
+                    }`}
+                >
+                  {faq.answer}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
       </div>
     </section>
   );

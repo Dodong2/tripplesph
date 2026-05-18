@@ -1,6 +1,8 @@
 import type {
   NavLink,
-  FooterColumn,
+  FooterSocialLink,
+  FooterNavLink,
+  FooterContact
 } from "../types";
 
 // images
@@ -9,7 +11,11 @@ import WordMark from '../assets/wordmark.png'
 import Articleimage from '../assets/article-sample.png'
 import CpcImage from '../assets/cpc-sample.png'
 import ContentImg from '../assets/content-sample.png'
-import DigitalImage from '../assets/digital-sample.png'
+import DigitalImage from '../assets/digital-marketing.jpg'
+import AVP from '../assets/avp.jpg'
+import Train from '../assets/train.jpg'
+import CPC from '../assets/cpc.jpg'
+import Web from '../assets/web.jpg'
 import Client1 from '../assets/Client logos/client-1-sample.png'
 import Client2 from '../assets/Client logos/client-2-sample.png'
 import Client3 from '../assets/Client logos/client-3-sample.png'
@@ -40,6 +46,8 @@ import Client27 from '../assets/Client logos/client-27-sample.png'
 import Client28 from '../assets/Client logos/client-28-sample.png'
 import Client29 from '../assets/Client logos/client-29-sample.png'
 import Client30 from '../assets/Client logos/client-30-sample.png'
+import Client31 from '../assets/Client logos/client-31-sample.png'
+import Client32 from '../assets/Client logos/client-32-sample.png'
 import Founder from '../assets/founder.png'
 import Award1 from '../assets/award1.png'
 import Award2 from '../assets/award2.png'
@@ -53,9 +61,12 @@ export const ASSETS = {
   logoIcon: LogoIcons,
   logoWordmark: WordMark,
   articleImg: Articleimage,
-  cpcImg: CpcImage,
   contentImg: ContentImg,
   digitalImg: DigitalImage,
+  TrainImg: Train,
+  AvpImg: AVP,
+  CPCImg: CPC,
+  WebImg: Web,
   c1: Client1,
   c2: Client2,
   c3: Client3,
@@ -86,6 +97,8 @@ export const ASSETS = {
   c28: Client28,
   c29: Client29,
   c30: Client30,
+  c31: Client31,
+  c32: Client32,
   // About
   founderImg: Founder,
   award1: Award1,
@@ -106,8 +119,26 @@ export const NAV_LINKS: NavLink[] = [
 ];
 
 // ─── Footer ───────────────────────────────────────────────────────────────────
-export const FOOTER_COLUMNS: FooterColumn[] = [
-  { id: "fc1", heading: "CREATING RIPPLE EFFECTS", body: "TRipples exists to create positive ripple effects for humanity, businesses and the society by connecting the hearts of the brands and non-profits with that of the customers and audiences.\n\nWe exist for humanity. Thus, we compensate our online community with cash and rewards." },
-  { id: "fc2", heading: "CREATING RIPPLE EFFECTS", body: "TRipples exists to create positive ripple effects for humanity, businesses and the society by connecting the hearts of the brands and non-profits with that of the customers and audiences." },
-  { id: "fc3", heading: "CREATING RIPPLE EFFECTS", body: "TRipples exists to create positive ripple effects for humanity, businesses and the society." },
+export const FOOTER_DESCRIPTION =
+  `TRipples exists to create positive ripple effects for humanity, businesses and the society by connecting the hearts of the brands and non-profits with that of the customers and audiences.\n\nWe exist for humanity. Thus, we compensate our online community with cash and rewards (gift items, vouchers, and points).`;
+
+export const FOOTER_SOCIAL_LINKS: FooterSocialLink[] = [
+  { id: "fs1", label: "Tripples",          url: "https://facebook.com/TRipplesPH",         platform: "facebook" },
+  { id: "fs2", label: "TripplesPH",        url: "https://facebook.com/TrippPH",       platform: "facebook" },
+  { id: "fs3", label: "Positive Tripples", url: "https://www.facebook.com/OfficialTRipples", platform: "facebook" },
+  { id: "fs4", label: "Tripples PH",       url: "https://www.youtube.com/@tripplesph5736",       platform: "youtube"  },
 ];
+
+export const FOOTER_NAV_LINKS: FooterNavLink[] = [
+  { id: "fn1", label: "About Us",  path: "/about"    },
+  { id: "fn2", label: "Service",   path: "/services" },
+  { id: "fn3", label: "Blog",      path: "/blog"     },
+  { id: "fn4", label: "Contacts",  path: "/contacts" },
+];
+
+export const FOOTER_CONTACT: FooterContact = {
+  id: "fc1",
+  email:   "oliver.sison@tripplesph.com",
+  phone:   "0921-508-6584 (Smart)",
+  address: "11023 Holding Drive Off Jose Velasco Ave. UPLB Batong Malake, Los Baños, Laguna 4030",
+};

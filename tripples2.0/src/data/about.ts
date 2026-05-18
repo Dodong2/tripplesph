@@ -53,7 +53,7 @@ export const BENEFIT_GROUPS: BenefitGroup[] = [
       { id: "bi2", icon: TrendingUp, title: "Productivity Incentive (PI)", description: "The company provides PI to every milestone achievement of the staff" },
       { id: "bi3", icon: Calendar, title: "13th Month Pay", description: "We follow and observe DOLE's policy on 13th month pay" },
       { id: "bi4", icon: Heart, title: "HMO", description: "Medical & hospital bills are covered per policy" },
-      { id: "bi5", icon: Briefcase, title: "SSS, Philhealth, Pagibig Benefits", description: "The company provides PI to every milestone achievement of the staff" },
+      { id: "bi5", icon: Briefcase, title: "SSS, Philhealth, Pagibig Benefits", description: "All government benefits are given to the staff" },
       { id: "bi6", icon: Award, title: "Life Insurance & Cooperative", description: "We follow and observe DOLE's policy on 13th month pay" },
     ],
   },

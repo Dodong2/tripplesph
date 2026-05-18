@@ -99,7 +99,9 @@ export const CLIENT_LOGOS: ClientLogo[] = [
   { id: "cl27", image: ASSETS.c27, },
   { id: "cl28", image: ASSETS.c28, },
   { id: "cl29", image: ASSETS.c29, },
-  { id: "cl20", image: ASSETS.c30, },
+  { id: "cl30", image: ASSETS.c30, },
+  { id: "cl31", image: ASSETS.c31, },
+  { id: "cl32", image: ASSETS.c32, },
 ] ;
 
 export const ARTICLES: ArticleItem[] = [

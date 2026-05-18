@@ -56,94 +56,94 @@ function AboutHero() {
 function HowWeStarted() {
   return (
     <section className="relative bg-[#187797] overflow-hidden px-6 py-10">
-  {/* ✅ Dagdag ng max-w at mx-auto para centered sa lahat ng screen */}
-  <div className="max-w-[1200px] mx-auto flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
+      {/* ✅ Dagdag ng max-w at mx-auto para centered sa lahat ng screen */}
+      <div className="max-w-[1200px] mx-auto flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
 
-    {/* ── Left: title + photo ── */}
-    <div className="flex-shrink-0 w-full lg:w-[10px] flex flex-row lg:flex-col items-center gap-4 lg:gap-3">
-      <div className="lg:absolute lg:left-[calc(50%-580px)] lg:top-6 flex h-auto">
-        <h2 className="order-first lg:order-last mb-5 font-['Poppins'] font-extrabold text-white leading-[1.05] text-[28px] sm:text-[32px] lg:text-[48px] text-left lg:text-center">
-          HOW WE<br />STARTED
-        </h2>
-        <div className="flex-shrink-0 w-full lg:w-[250px] flex flex-row items-center lg:flex-col lg:items-center lg:gap-1">
-          <img
-            src={ASSETS.founderImg}
-            alt="Founders"
-            className="w-52 h-52 lg:w-52 lg:h-52 rounded-full object-cover flex-shrink-0 z-20"
-          />
-          <p className="text-white/80 text-xs text-center leading-snug hidden lg:block mt-1">
+        {/* ── Left: title + photo ── */}
+        <div className="flex-shrink-0 w-full lg:w-[10px] flex flex-row lg:flex-col items-center gap-4 lg:gap-3">
+          <div className="lg:absolute lg:left-[calc(50%-580px)] lg:top-6 flex h-auto">
+            <h2 className="order-first lg:order-last mb-5 font-['Poppins'] font-extrabold text-white leading-[1.05] text-[28px] sm:text-[32px] lg:text-[48px] text-left lg:text-center">
+              HOW WE<br />STARTED
+            </h2>
+            <div className="flex-shrink-0 w-full lg:w-[250px] flex flex-row items-center lg:flex-col lg:items-center lg:gap-1">
+              <img
+                src={ASSETS.founderImg}
+                alt="Founders"
+                className="w-52 h-52 lg:w-52 lg:h-52 rounded-full object-cover flex-shrink-0 z-20"
+              />
+              <p className="text-white/80 text-xs text-center leading-snug hidden lg:block mt-1">
+                Pastors Francis Oliver and<br />Mai Ryza Sison<br />
+                <span className="font-bold text-white/50 uppercase tracking-widest text-[10px]">Founders</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Right: Diagonal timeline — DESKTOP ── */}
+        <div className="flex-1 relative hidden lg:block z-20" style={{ height: 460 }}>
+          {TIME_STEPS.map((step, i) => {
+            // ✅ Percentage-based positions para responsive
+            const positions = [
+              { left: "0%", top: 335 },
+              { left: "17%", top: 255 },
+              { left: "34%", top: 178 },
+              { left: "51%", top: 105 },
+              { left: "68%", top: 38 },
+              { left: "85%", top: -15 },
+            ];
+            const pos = positions[i];
+            return (
+              <div
+                key={step.label}
+                className="absolute flex flex-col gap-1.5"
+                style={{ left: pos.left, top: pos.top }}
+              >
+                <div
+                  className={[
+                    "rounded-full px-4 py-2.5 font-['Poppins'] font-bold text-white text-center text-[12px] uppercase tracking-wide whitespace-nowrap transition-transform hover:scale-105",
+                    step.highlight
+                      ? "bg-white/25 border border-white/60"
+                      : "bg-[rgba(0,90,110,0.85)] border border-white/25",
+                  ].join(" ")}
+                >
+                  {step.label}
+                </div>
+                <p
+                  className="text-white/85 text-[11px] leading-snug font-['Inter']"
+                  style={{ maxWidth: i >= 3 ? 190 : 175 }}
+                >
+                  {step.desc}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* MOBILE: vertical stack — walang pagbabago */}
+        <div className="flex flex-col gap-4 lg:hidden w-full">
+          <p className="text-white/80 text-xs text-center leading-snug -mt-8">
             Pastors Francis Oliver and<br />Mai Ryza Sison<br />
             <span className="font-bold text-white/50 uppercase tracking-widest text-[10px]">Founders</span>
           </p>
-        </div>
-      </div>
-    </div>
-
-    {/* ── Right: Diagonal timeline — DESKTOP ── */}
-    <div className="flex-1 relative hidden lg:block z-20" style={{ height: 460 }}>
-      {TIME_STEPS.map((step, i) => {
-        // ✅ Percentage-based positions para responsive
-        const positions = [
-          { left: "0%",  top: 335 },
-          { left: "17%", top: 255 },
-          { left: "34%", top: 178 },
-          { left: "51%", top: 105 },
-          { left: "68%", top: 38  },
-          { left: "85%", top: -15 },
-        ];
-        const pos = positions[i];
-        return (
-          <div
-            key={step.label}
-            className="absolute flex flex-col gap-1.5"
-            style={{ left: pos.left, top: pos.top }}
-          >
-            <div
-              className={[
-                "rounded-full px-4 py-2.5 font-['Poppins'] font-bold text-white text-center text-[12px] uppercase tracking-wide whitespace-nowrap transition-transform hover:scale-105",
-                step.highlight
-                  ? "bg-white/25 border border-white/60"
-                  : "bg-[rgba(0,90,110,0.85)] border border-white/25",
-              ].join(" ")}
-            >
-              {step.label}
+          {TIME_STEPS.map((step) => (
+            <div key={step.label} className="flex gap-3 items-start">
+              <div className={[
+                "rounded-full px-4 py-2 font-['Poppins'] font-bold text-white text-[11px] uppercase tracking-wide whitespace-nowrap flex-shrink-0",
+                step.highlight ? "bg-white/25 border border-white/60" : "bg-[rgba(0,90,110,0.85)] border border-white/20",
+              ].join(" ")}>
+                {step.label}
+              </div>
+              <p className="text-white text-[12px] leading-snug font-['Inter'] pt-1.5">{step.desc}</p>
             </div>
-            <p
-              className="text-white/85 text-[11px] leading-snug font-['Inter']"
-              style={{ maxWidth: i >= 3 ? 190 : 175 }}
-            >
-              {step.desc}
-            </p>
-          </div>
-        );
-      })}
-    </div>
-
-    {/* MOBILE: vertical stack — walang pagbabago */}
-    <div className="flex flex-col gap-4 lg:hidden w-full">
-      <p className="text-white/80 text-xs text-center leading-snug -mt-8">
-        Pastors Francis Oliver and<br />Mai Ryza Sison<br />
-        <span className="font-bold text-white/50 uppercase tracking-widest text-[10px]">Founders</span>
-      </p>
-      {TIME_STEPS.map((step) => (
-        <div key={step.label} className="flex gap-3 items-start">
-          <div className={[
-            "rounded-full px-4 py-2 font-['Poppins'] font-bold text-white text-[11px] uppercase tracking-wide whitespace-nowrap flex-shrink-0",
-            step.highlight ? "bg-white/25 border border-white/60" : "bg-[rgba(0,90,110,0.85)] border border-white/20",
-          ].join(" ")}>
-            {step.label}
-          </div>
-          <p className="text-white text-[12px] leading-snug font-['Inter'] pt-1.5">{step.desc}</p>
+          ))}
         </div>
-      ))}
-    </div>
 
-  </div>
+      </div>
 
-  <DecorativeCircles circles={5} mobileCircles={5} />
-  <div className="sm:block hidden absolute w-70 h-70 rounded-full bg-[#EDF9FD] -bottom-10 -right-10" />
-  <div className="sm:block hidden absolute w-20 h-20 rounded-full bg-[#EDF9FD] -bottom-9 right-50" />
-</section>
+      <DecorativeCircles circles={5} mobileCircles={5} />
+      <div className="sm:block hidden absolute w-70 h-70 rounded-full bg-[#EDF9FD] -bottom-10 -right-10" />
+      <div className="sm:block hidden absolute w-20 h-20 rounded-full bg-[#EDF9FD] -bottom-9 right-50" />
+    </section>
   );
 }
 
@@ -252,7 +252,7 @@ function HowWeStrive() {
           )
         })}
       </div>
-       {/* <DecorativeCircles circles={5} mobileCircles={5}/> */}
+      {/* <DecorativeCircles circles={5} mobileCircles={5}/> */}
     </section>
   );
 }
@@ -326,22 +326,22 @@ function Benefits() {
       <div className="max-w-[1400px] mx-auto flex flex-col gap-12">
         {BENEFIT_GROUPS.map((group) => (
           <div key={group.id}>
-            <h3 className="font-['Poppins'] font-bold text-2xl md:text-[36px] text-white mb-6">{group.groupTitle}</h3>
+            <h3 className="font-['Poppins'] font-bold text-2xl md:text-[36px] text-center text-white mb-6">{group.groupTitle}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {group.items.map((item) => {
                 const Icon = item.icon
                 return (
                   <div
                     key={item.id}
-                    className="bg-[#308da7] border border-[#74bbcb] rounded-3xl p-5 flex items-start gap-4"
+                    className="bg-[#308da7] border border-[#74bbcb] rounded-3xl p-4 flex items-center gap-4"
                   >
                     <div
                       className="w-[67px] h-[67px] flex-shrink-0 rounded-xl flex items-center justify-center"
                       style={{ background: "linear-gradient(135deg, #6bb4c5 0%, #49a7af 50%, #28809c 100%)" }}
                     ><Icon size={30} className="text-white" /></div>
                     <div>
-                      <h4 className="font-['Poppins'] font-bold text-base md:text-xl text-white leading-tight mb-1">{item.title}</h4>
-                      <p className="font-['Inter'] text-sm text-white leading-relaxed">{item.description}</p>
+                      <h4 className="font-['Poppins'] font-semibold text-base md:text-[17px] text-white leading-tight mb-1">{item.title}</h4>
+                      <p className="font-['Inter'] text-sm text-white leading-relaxed tracking-wider">{item.description}</p>
                     </div>
                   </div>
                 )
@@ -350,7 +350,7 @@ function Benefits() {
           </div>
         ))}
       </div>
-       <DecorativeCircles circles={20} mobileCircles={5}/>
+      <DecorativeCircles circles={20} mobileCircles={5} />
     </section>
   );
 }

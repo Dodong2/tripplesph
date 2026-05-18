@@ -24,7 +24,7 @@ function PageLoader() {
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter >
       {/* ScrollToTop must be inside BrowserRouter to access useLocation */}
       <ScrollToTop />
       <Navbar />

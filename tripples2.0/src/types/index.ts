@@ -183,6 +183,26 @@ export interface FooterColumn {
   body: string;
 }
 
+export interface FooterSocialLink {
+  id: string;
+  label: string;
+  url: string;
+  platform: "facebook" | "youtube";
+}
+
+export interface FooterNavLink {
+  id: string;
+  label: string;
+  path: string;
+}
+
+export interface FooterContact {
+  id: string;
+  email: string;
+  phone: string;
+  address: string;
+}
+
 // ─── components types wide and tall ──────────────────────────────────────────────────────────────────
 
 export interface AwardCardWideProps {
