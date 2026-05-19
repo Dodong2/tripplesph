@@ -1,54 +1,16 @@
 import { ASSETS } from ".";
 import type { AdditionalService, ServiceBlock } from "../types";
-import { ChartColumnIncreasing, FileText, Megaphone, MonitorCog, Presentation, SquarePen, SquarePlay, Target, UsersRound } from 'lucide-react'
+import { ChartColumnIncreasing, FileText, Megaphone, MonitorCog, Presentation, SquarePlay, Target, UsersRound } from 'lucide-react'
 
 // ─── Services ─────────────────────────────────────────────────────────────────
 export const SERVICE_BLOCKS: ServiceBlock[] = [
-  {
+    {
     id: "sb1",
-    title: "CPC Advertising",
-    description: "Drive measurable results and expand your digital presence with targeted advertising solutions designed to reach the right audience at the right time. Gain valuable customer insights through detailed campaign performance reports. \n\nMake your brand visible where your audience spends their time.",
-    iconBg: "#dbeafe",
-    iconColor: "#155DFC",
-    icon: Target,
-    iconAlt: "Target icon",
-    imageUrl: ASSETS.CPCImg,
-    imageAlt: "Cpc",
-    flipped: false,
-    features: [
-      { id: "f1", text: "Online Campaigns" },
-      { id: "f2", text: "Affiliate Marketing" },
-      { id: "f3", text: "Events Promotion" },
-      { id: "f4", text: "Website Traffic" },
-      { id: "f5", text: "Lead Generation" },
-    ],
-  },
-  {
-    id: "sb2",
-    title: "Content Management",
-    description: "Streamline your content workflow with our comprehensive management solutions. From ideation to publication, we handle every aspect of your content ecosystem.",
-    iconBg: "#c9fff4",
-    iconColor: "#009689",
-    icon: SquarePen,
-    iconAlt: "Edit icon",
-    imageUrl: ASSETS.contentImg,
-    imageAlt: "Content",
-    flipped: true,
-    features: [
-      { id: "f1", text: "Content Strategy Development" },
-      { id: "f2", text: "Editorial Calendar Management" },
-      { id: "f3", text: "Multi-platform Publishing" },
-      { id: "f4", text: "SEO-Optimized Content" },
-      { id: "f5", text: "Brand Voice & Guidelines" },
-      { id: "f6", text: "Content Performance Analytics" },
-    ],
-  },
-  {
-    id: "sb3",
     title: "Digital Marketing",
     description: "Boost your brand’s online presence through our strategic and results-driven digital marketing solutions. \n\nGrow your audience. Increase engagement. Drive results digitally. ",
-    iconBg: "#FFEDD4",
-    iconColor: "#F54900",
+    
+    iconBg: "#dbeafe",
+    iconColor: "#155DFC",
     icon: ChartColumnIncreasing,
     iconAlt: "Chart icon",
     imageUrl: ASSETS.digitalImg,
@@ -67,7 +29,7 @@ export const SERVICE_BLOCKS: ServiceBlock[] = [
     ],
   },
   {
-    id: "sb4",
+    id: "sb2",
     title: "Audio-Visual Production (AVP)",
     description: "Bring your ideas to life through high-quality and creative multimedia production solutions. From concept development to final output, we deliver compelling audio-visual content that elevates your brand and message. ",
     iconBg: "#FCE7F3",
@@ -87,8 +49,8 @@ export const SERVICE_BLOCKS: ServiceBlock[] = [
       { id: "f7", text: "Infomercial" },
     ],
   },
-    {
-    id: "sb5",
+  {
+    id: "sb3",
     title: "Training",
     description: "Train your people with our online or onsite programs. Depending on your current needs, our specialized training programs focus on media engagement, video production, internal knowledge transfer, and team communication skills Training & Capacity Development. ",
     iconBg: "#CEFAFE",
@@ -101,7 +63,26 @@ export const SERVICE_BLOCKS: ServiceBlock[] = [
     features: [
     ],
   },
-    {
+  {
+    id: "sb4",
+    title: "CPC Advertising",
+    description: "Drive measurable results and expand your digital presence with targeted advertising solutions designed to reach the right audience at the right time. Gain valuable customer insights through detailed campaign performance reports. \n\nMake your brand visible where your audience spends their time.",
+    iconBg: "#FFEDD4",
+    iconColor: "#F54900",
+    icon: Target,
+    iconAlt: "Target icon",
+    imageUrl: ASSETS.CPCImg,
+    imageAlt: "Cpc",
+    flipped: true,
+    features: [
+      { id: "f1", text: "Online Campaigns" },
+      { id: "f2", text: "Affiliate Marketing" },
+      { id: "f3", text: "Events Promotion" },
+      { id: "f4", text: "Website Traffic" },
+      { id: "f5", text: "Lead Generation" },
+    ],
+  },
+  {
     id: "sb6",
     title: "Website and Mobile App Development ",
     description: "Strengthen your digital presence with modern websites and high-performing mobile applications designed to connect, engage, and grow your business. ",
@@ -111,7 +92,7 @@ export const SERVICE_BLOCKS: ServiceBlock[] = [
     iconAlt: "Edit icon",
     imageUrl: ASSETS.WebImg,
     imageAlt: "Website",
-    flipped: true,
+    flipped: false,
     features: [],
   },
 ];

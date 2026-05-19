@@ -10,7 +10,6 @@ import LogoIcons from '../assets/logo-icon.png'
 import WordMark from '../assets/wordmark.png'
 import Articleimage from '../assets/article-sample.png'
 // services images
-import Content from '../assets/services/content-sample.webp'
 import DigitalImage from '../assets/services/digital-marketing.webp'
 import AVP from '../assets/services/avp.webp'
 import Train from '../assets/services/train.webp'
@@ -65,7 +64,6 @@ export const ASSETS = {
   logoWordmark: WordMark,
   articleImg: Articleimage,
   // services images
-  contentImg: Content,
   digitalImg: DigitalImage,
   TrainImg: Train,
   AvpImg: AVP,
