@@ -9,13 +9,14 @@ import type {
 import LogoIcons from '../assets/logo-icon.png'
 import WordMark from '../assets/wordmark.png'
 import Articleimage from '../assets/article-sample.png'
-import CpcImage from '../assets/cpc-sample.png'
-import ContentImg from '../assets/content-sample.png'
-import DigitalImage from '../assets/digital-marketing.jpg'
-import AVP from '../assets/avp.jpg'
-import Train from '../assets/train.jpg'
-import CPC from '../assets/cpc.jpg'
-import Web from '../assets/web.jpg'
+// services images
+import Content from '../assets/services/content-sample.webp'
+import DigitalImage from '../assets/services/digital-marketing.webp'
+import AVP from '../assets/services/avp.jpg'
+import Train from '../assets/services/train.webp'
+import CPC from '../assets/services/cpc.webp'
+import Web from '../assets/services/web.webp'
+// Home clients logo
 import Client1 from '../assets/Client logos/client-1-sample.png'
 import Client2 from '../assets/Client logos/client-2-sample.png'
 import Client3 from '../assets/Client logos/client-3-sample.png'
@@ -48,25 +49,29 @@ import Client29 from '../assets/Client logos/client-29-sample.png'
 import Client30 from '../assets/Client logos/client-30-sample.png'
 import Client31 from '../assets/Client logos/client-31-sample.png'
 import Client32 from '../assets/Client logos/client-32-sample.png'
+// company
 import Founder from '../assets/founder.png'
-import Award1 from '../assets/award1.png'
-import Award2 from '../assets/award2.png'
-import Award3 from '../assets/award3.png'
-import Award4 from '../assets/award4.png'
-import Award5 from '../assets/award5.png'
 import Team from '../assets/Team.png'
+// awards
+import Award1 from '../assets/awards/award1.png'
+import Award2 from '../assets/awards/award2.png'
+import Award3 from '../assets/awards/award3.png'
+import Award4 from '../assets/awards/award4.png'
+import Award5 from '../assets/awards/award5.png'
 
 // ─── Assets (Figma) ──────────────────────────────────────────────────────────
 export const ASSETS = {
   logoIcon: LogoIcons,
   logoWordmark: WordMark,
   articleImg: Articleimage,
-  contentImg: ContentImg,
+  // services images
+  contentImg: Content,
   digitalImg: DigitalImage,
   TrainImg: Train,
   AvpImg: AVP,
   CPCImg: CPC,
   WebImg: Web,
+  // Home clients logo
   c1: Client1,
   c2: Client2,
   c3: Client3,
@@ -99,14 +104,15 @@ export const ASSETS = {
   c30: Client30,
   c31: Client31,
   c32: Client32,
-  // About
+  // company
   founderImg: Founder,
+  teamPhoto: Team,
+  // awards
   award1: Award1,
   award2: Award2,
   award3: Award3,
   award4: Award4,
   award5: Award5,
-  teamPhoto: Team,
 };
 
 // ─── Nav ─────────────────────────────────────────────────────────────────────
@@ -140,5 +146,5 @@ export const FOOTER_CONTACT: FooterContact = {
   id: "fc1",
   email:   "oliver.sison@tripplesph.com",
   phone:   "0921-508-6584 (Smart)",
-  address: "11023 Holding Drive Off Jose Velasco Ave. UPLB Batong Malake, Los Baños, Laguna 4030",
+  address: "11023 Downhill Drive Off Jose Velasco Ave. UPLB Batong Malake , Los Baños , Laguna 4030",
 };
